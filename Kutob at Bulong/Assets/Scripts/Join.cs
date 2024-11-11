@@ -14,6 +14,7 @@ public class Join : UnityEngine.MonoBehaviour
     public Dropdown aswangDropdown;
 
     private List<PhotonPlayer> playersInRoom = new List<PhotonPlayer>();
+    private List<string> playerRoles = new List<string>();
 
     void Start()
     {
@@ -142,15 +143,19 @@ public class Join : UnityEngine.MonoBehaviour
         shuffledPlayers.Sort((x, y) => rand.Next(-1, 2));
 
         int aswangAssigned = 0;
+        playerRoles.Clear();
+
         foreach (PhotonPlayer player in shuffledPlayers)
         {
             if (aswangAssigned < aswangCount)
             {
-                NotifyChatbox($"{player.name} has been assigned the Aswang role.");
+                playerRoles.Add("Aswang");
+                NotifyChatbox($"{player.name} has been assigned the Aswang role (Privately).");
                 aswangAssigned++;
             }
             else
             {
+                playerRoles.Add("Normal");
                 NotifyChatbox($"{player.name} is a normal player.");
             }
         }
@@ -162,5 +167,20 @@ public class Join : UnityEngine.MonoBehaviour
         else if (selectedPlayers >= 8 && selectedPlayers <= 9) return 2;
         else if (selectedPlayers == 10) return 3;
         return 0;
+    }
+
+    private void RevealPlayerRole()
+    {
+        int playerIndex = PhotonNetwork.player.ID - 1;
+        if (playerRoles.Count > playerIndex)
+        {
+            string role = playerRoles[playerIndex];
+            NotifyChatbox($"Your role is: {role}");
+        }
+    }
+
+    public void OnGameStart()
+    {
+        RevealPlayerRole();
     }
 }
