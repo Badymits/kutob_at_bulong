@@ -1461,7 +1461,7 @@ GameObject:
   - component: {fileID: 1876798340}
   - component: {fileID: 1876798339}
   - component: {fileID: 1876798338}
-  - component: {fileID: 1876798337}
+  - component: {fileID: 1876798341}
   m_Layer: 5
   m_Name: Confirm Btn
   m_TagString: Untagged
@@ -1489,18 +1489,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -15}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1876798337
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1876798335}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0677103b2083e64b897c5da7bc82e2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1876798338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1544,19 +1532,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1876798339}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1876798337}
-        m_TargetAssemblyTypeName: SelectTarget, Assembly-CSharp
-        m_MethodName: TargetConfirmed
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1876798339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1595,6 +1571,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1876798335}
   m_CullTransparentMesh: 1
+--- !u!114 &1876798341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1876798335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45ed60673e7386646b28c97b094bdfa5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 0}
+  voteButton: {fileID: 1876798338}
+  votingUI: {fileID: 809540635}
+  photonView: {fileID: 0}
 --- !u!1 &2142557707
 GameObject:
   m_ObjectHideFlags: 0

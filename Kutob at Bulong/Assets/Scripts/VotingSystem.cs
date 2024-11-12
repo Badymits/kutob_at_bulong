@@ -12,6 +12,8 @@ public class VotingSystem : MonoBehaviour
 
     public PhotonView photonView;
 
+    private List<PhotonPlayer> votedPlayer = new List<PhotonPlayer>();  
+
     private void Start()
     {
         voteButton.onClick.AddListener(VoteToEliminate);
@@ -19,7 +21,7 @@ public class VotingSystem : MonoBehaviour
 
     void VoteToEliminate()
     {
-        photonView.RPC("Announcement", PhotonTargets.All);
+        
         if (photonView.isMine)
         {
             // Voting Logic: Each player votes to eliminate someone
