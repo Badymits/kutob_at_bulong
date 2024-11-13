@@ -1912,7 +1912,6 @@ MonoBehaviour:
   - {fileID: 31763645}
   - {fileID: 1166630634}
   - {fileID: 1731985117}
-  ownerUIElement: {fileID: 809281492}
 --- !u!1 &1095637056
 GameObject:
   m_ObjectHideFlags: 0

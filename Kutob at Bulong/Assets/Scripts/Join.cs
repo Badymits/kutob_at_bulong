@@ -12,7 +12,6 @@ public class Join : Photon.MonoBehaviour
     public Transform playerCardsContainer; // Parent container for player cards
     public TMP_Text roomCodeTMP; // Room code display
     public Transform[] spawnPoints; // Array of spawn points for player cards
-    public GameObject ownerUIElement;
 
     private List<PhotonPlayer> playersInRoom = new List<PhotonPlayer>(); // List of players in the room
     private PhotonView photonView;
@@ -58,51 +57,30 @@ public class Join : Photon.MonoBehaviour
     void ShowOwnerUI()
     {
         // Show UI elements for the lobby owner (if applicable)
-        if (ownerUIElement != null)
-        {
-            ownerUIElement.SetActive(true);
-        }
     }
 
     void HideOwnerUI()
     {
         // Hide UI elements for non-owners (if applicable)
-        if (ownerUIElement != null)
-        {
-            ownerUIElement.SetActive(false);
-        }
     }
 
     public void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
     {
-        Debug.Log(newPlayer.NickName + " has entered the room.");
+        Debug.Log(newPlayer.NickName);
+        Debug.Log($"{newPlayer.NickName} has entered the room.");
         playersInRoom.Add(newPlayer);
 
-        // Instantiate a new player card and set its position
-        GameObject playerCard = Instantiate(playerCardPrefab, playerCardsContainer);
-        int playerIndex = playersInRoom.Count - 1; // Get the index of the new player
-        SetPlayerPosition(playerCard, playerIndex); // Set position based on index
-
         StartCoroutine(addDelay());
+        UpdatePlayerList();
     }
 
     public void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
     {
-        Debug.Log(otherPlayer.NickName + " has left the room.");
+        Debug.Log($"{otherPlayer.NickName} has left the room.");
         playersInRoom.Remove(otherPlayer);
 
-        // Clear and re-instantiate all remaining player cards to update positions
-        foreach (Transform child in playerCardsContainer)
-        {
-            Destroy(child.gameObject); // Remove old cards
-        }
-
-        // Re-instantiate and reposition all remaining players' cards
-        for (int i = 0; i < playersInRoom.Count; i++)
-        {
-            GameObject playerCard = Instantiate(playerCardPrefab, playerCardsContainer);
-            SetPlayerPosition(playerCard, i); // Set position based on index
-        }
+        // Clear all existing cards and re-instantiate remaining players' cards
+        UpdatePlayerList();
     }
 
     private void UpdatePlayerList()
@@ -123,6 +101,7 @@ public class Join : Photon.MonoBehaviour
             PhotonPlayer player = PhotonNetwork.playerList[i];
             GameObject playerCard = Instantiate(playerCardPrefab, playerCardsContainer);
 
+            // Set player's nickname on the card
             TextMeshProUGUI textComponent = playerCard.GetComponentInChildren<TextMeshProUGUI>();
             if (textComponent != null)
             {
@@ -130,22 +109,28 @@ public class Join : Photon.MonoBehaviour
                 textComponent.enableAutoSizing = false;
                 textComponent.fontSize = 44;
             }
+            else
+            {
+                Debug.LogError("TextMeshProUGUI component not found in playerCardPrefab.");
+            }
 
+            // Set position and size of the player's card
             RectTransform rectTransform = playerCard.GetComponent<RectTransform>();
             if (rectTransform != null)
             {
-                rectTransform.localScale = Vector3.one;
-                rectTransform.sizeDelta = new Vector2(200, cardHeight);
+                rectTransform.localScale = Vector3.one; // Ensure correct scaling
+                rectTransform.sizeDelta = new Vector2(300, 300); // Set fixed size for all cards
                 rectTransform.anchoredPosition = new Vector2(0, startYPosition - (i * (cardHeight + cardSpacing)));
             }
 
-            SetPlayerPosition(playerCard, i); // Position each card based on index
+            // Set parent container for proper hierarchy management
+            playerCard.transform.SetParent(playerCardsContainer);
         }
     }
 
     private void SetPlayerPosition(GameObject playerCard, int playerIndex)
     {
-        if (playerIndex < spawnPoints.Length)
+        if (playerIndex < spawnPoints.Length && spawnPoints[playerIndex] != null)
         {
             Vector3 spawnPosition = spawnPoints[playerIndex].position;
 
@@ -155,6 +140,10 @@ public class Join : Photon.MonoBehaviour
                 rectTransform.position = spawnPosition;  // Set position based on predefined spawn point
                 rectTransform.localScale = Vector3.one;  // Ensure correct scaling
             }
+        }
+        else
+        {
+            Debug.LogError($"Spawn point for player index {playerIndex} is missing or out of bounds.");
         }
     }
 }
