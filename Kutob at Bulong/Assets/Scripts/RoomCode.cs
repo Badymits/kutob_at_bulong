@@ -6,7 +6,18 @@ public class RoomCode : MonoBehaviour
 {
     //public InputField roomCodeInputField;
 
- 
+
+    private void Start()
+    {
+        //something to prevent the warning/error
+    }
+
+    public void OnConnectedToMaster()
+    {
+        Debug.Log("Connected to master server");
+        //GoToGameScene(GenerateRoomCode(8));
+    }
+
     public void GenerateRandomRoomCode()
     {
         string roomCode = GenerateRoomCode(8);
@@ -14,12 +25,6 @@ public class RoomCode : MonoBehaviour
         PlayerPrefs.SetString("RoomCode", roomCode);
         PlayerPrefs.Save();
         GoToGameScene(roomCode);
-    }
-
-    public void OnConnectedToMaster()
-    {
-        Debug.Log("Connected to master server");
-        //GoToGameScene(GenerateRoomCode(8));
     }
 
     private string GenerateRoomCode(int length)
