@@ -151,13 +151,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 555f042971e06dc4e894ce9cb4500920, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomCodeInput: {fileID: 0}
-  chatbox: {fileID: 0}
   playerCardPrefab: {fileID: 412111090}
   playerCardsContainer: {fileID: 0}
-  playersCountText: {fileID: 0}
-  playersDropdown: {fileID: 0}
-  aswangDropdown: {fileID: 0}
+  roomCodeTMP: {fileID: 0}
+  ownerUIElement: {fileID: 0}
 --- !u!4 &373037985
 Transform:
   m_ObjectHideFlags: 0

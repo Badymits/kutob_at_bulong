@@ -825,10 +825,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7df34c27b576ada488d8b697b0593e84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 1812314984}
-  spawnArea: {fileID: 1393220317}
-  horizontalSpacing: 2
-  maxCardsPerRow: 5
 --- !u!1 &1306593153
 GameObject:
   m_ObjectHideFlags: 0
@@ -1454,24 +1450,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1772241548}
   m_CullTransparentMesh: 1
---- !u!1 &1812314984 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9122413985524950524, guid: 673425f58b42aa14ab1092e7e1b85a2d, type: 3}
-  m_PrefabInstance: {fileID: 3692023366271045653}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1812314991
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1812314984}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 599f3f1b64088fc4b8aff2f839706a98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  modal: {fileID: 570048353}
 --- !u!1 &1988101790
 GameObject:
   m_ObjectHideFlags: 0
@@ -1709,116 +1687,10 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &3692023366271045653
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 659638676148910922, guid: 673425f58b42aa14ab1092e7e1b85a2d, type: 3}
-      propertyPath: m_Delegates.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 659638676148910922, guid: 673425f58b42aa14ab1092e7e1b85a2d, type: 3}
-      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 659638676148910922, guid: 673425f58b42aa14ab1092e7e1b85a2d, type: 3}
-      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 659638676148910922, guid: 673425f58b42aa14ab1092e7e1b85a2d, type: 3}
-      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 659638676148910922, guid: 673425f58b42aa14ab1092e7e1b85a2d, type: 3}
-      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 659638676148910922, guid: 673425f58b42aa14ab1092e7e1b85a2d, type: 3}
-      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OpenModal
-      objectReference: {fileID: 0}
-    - target: {fileID: 659638676148910922, guid: 673425f58b42aa14ab1092e7e1b85a2d, type: 3}
-      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ModalControl, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 659638676148910922, guid: 673425f58b42aa14ab1092e7e1b85a2d, type: 3}
-      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 4265659640727769628, guid: 673425f58b42aa14ab1092e7e1b85a2d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.30509079
-      objectReference: {fileID: 0}
-    - target: {fileID: 4265659640727769628, guid: 673425f58b42aa14ab1092e7e1b85a2d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.30509079
-      objectReference: {fileID: 0}
-    - target: {fileID: 4265659640727769628, guid: 673425f58b42aa14ab1092e7e1b85a2d, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.30509079
-      objectReference: {fileID: 0}
-    - target: {fileID: 4265659640727769628, guid: 673425f58b42aa14ab1092e7e1b85a2d, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -5.206
-      objectReference: {fileID: 0}
-    - target: {fileID: 4265659640727769628, guid: 673425f58b42aa14ab1092e7e1b85a2d, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.1775
-      objectReference: {fileID: 0}
-    - target: {fileID: 4265659640727769628, guid: 673425f58b42aa14ab1092e7e1b85a2d, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4265659640727769628, guid: 673425f58b42aa14ab1092e7e1b85a2d, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4265659640727769628, guid: 673425f58b42aa14ab1092e7e1b85a2d, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4265659640727769628, guid: 673425f58b42aa14ab1092e7e1b85a2d, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4265659640727769628, guid: 673425f58b42aa14ab1092e7e1b85a2d, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4265659640727769628, guid: 673425f58b42aa14ab1092e7e1b85a2d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4265659640727769628, guid: 673425f58b42aa14ab1092e7e1b85a2d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4265659640727769628, guid: 673425f58b42aa14ab1092e7e1b85a2d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9122413985524950524, guid: 673425f58b42aa14ab1092e7e1b85a2d, type: 3}
-      propertyPath: m_Name
-      value: Taumbayan_Tatay
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 659638676148910922, guid: 673425f58b42aa14ab1092e7e1b85a2d, type: 3}
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 9122413985524950524, guid: 673425f58b42aa14ab1092e7e1b85a2d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1812314991}
-  m_SourcePrefab: {fileID: 100100000, guid: 673425f58b42aa14ab1092e7e1b85a2d, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1988101793}
-  - {fileID: 3692023366271045653}
   - {fileID: 1243607865}
   - {fileID: 2074686419}
