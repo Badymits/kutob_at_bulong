@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+
 public class JoinModalControl : MonoBehaviour
 {
     public TMP_InputField inputField;

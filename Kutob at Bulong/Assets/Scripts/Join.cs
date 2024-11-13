@@ -1,12 +1,13 @@
 using Photon;
+using Photon.Realtime;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class Join : UnityEngine.MonoBehaviour
 {
+
     //public InputField roomCodeInput;
     //public Text chatbox;
     public GameObject playerCardPrefab;
@@ -43,17 +44,18 @@ public class Join : UnityEngine.MonoBehaviour
                 // Hide the UI element if the current player is not the room owner
                 HideOwnerUI();
             }
-            
+
+            //string savedRoomCode = PlayerPrefs.GetString("RoomCode");
+            roomCodeTMP.text = roomCode;
+            PhotonNetwork.player.NickName = PlayerPrefs.GetString("Username");
+            UpdatePlayersList();
         }
 
         /*playersDropdown.onValueChanged.AddListener(delegate { OnPlayerCountChanged(); });
         aswangDropdown.onValueChanged.AddListener(delegate { OnAswangCountChanged(); });*/
 
-
-        //string savedRoomCode = PlayerPrefs.GetString("RoomCode");
-        roomCodeTMP.text = roomCode;
-        PhotonNetwork.player.NickName = PlayerPrefs.GetString("Username");
-        UpdatePlayersList();
+        
+    
     }
 
     void ShowOwnerUI()
@@ -72,33 +74,29 @@ public class Join : UnityEngine.MonoBehaviour
             ownerUIElement.SetActive(false);  // Disable the UI element
         }
     }
+    
 
-    void OnConnectedToMaster()
-    {
-        NotifyChatbox("Connected to Master Server. Please enter a room code to join.");
-    }
-
-    void OnJoinedRoom()
+    public void OnJoinedRoom()
     {
         NotifyChatbox($"{PhotonNetwork.player.name} has joined the room.");
         UpdatePlayersList();
     }
 
-    void OnPlayerEnteredRoom(PhotonPlayer newPlayer)
+    public void OnPlayerEnteredRoom(PhotonPlayer newPlayer)
     {
         NotifyChatbox($"{newPlayer.name} has joined the room.");
         playersInRoom.Add(newPlayer);
         UpdatePlayersList();
     }
 
-    void OnPlayerLeftRoom(PhotonPlayer otherPlayer)
+    public void OnPlayerLeftRoom(PhotonPlayer otherPlayer)
     {
         NotifyChatbox($"{otherPlayer.name} has left the room.");
         playersInRoom.Remove(otherPlayer);
         UpdatePlayersList();
     }
 
-    void OnJoinRoomFailed(string roomName, bool isOffline, string error)
+    public void OnJoinRoomFailed(string roomName, bool isOffline, string error)
     {
         NotifyChatbox("Failed to join room: " + error);
     }
@@ -111,6 +109,8 @@ public class Join : UnityEngine.MonoBehaviour
         }*/
         Debug.Log(message);
     }
+
+
 
     private void UpdatePlayersList()
     {
@@ -147,7 +147,7 @@ public class Join : UnityEngine.MonoBehaviour
         //playersCountText.text = $"Players: {PhotonNetwork.playerList.Length}/10";
     }
 
-    private void SetGameRoles(int selectedPlayers, int selectedAswangs)
+    /*private void SetGameRoles(int selectedPlayers, int selectedAswangs)
     {
         if (selectedAswangs > selectedPlayers)
         {
@@ -207,5 +207,5 @@ public class Join : UnityEngine.MonoBehaviour
     public void OnGameStart()
     {
         RevealPlayerRole();
-    }
+    }*/
 }
