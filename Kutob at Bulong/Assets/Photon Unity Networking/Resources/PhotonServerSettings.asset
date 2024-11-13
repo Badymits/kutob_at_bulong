@@ -45,4 +45,6 @@ MonoBehaviour:
   - RequestForPickupTimes
   - TaggedPlayer
   - UpdatePhase
+  - AssignRoleToPlayer
+  - SetPositionRPC
   DisableAutoOpenWizard: 1

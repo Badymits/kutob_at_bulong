@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 29804919}
   - component: {fileID: 29804921}
   - component: {fileID: 29804920}
+  - component: {fileID: 29804922}
   m_Layer: 5
   m_Name: Image (7)
   m_TagString: Untagged
@@ -197,6 +198,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 29804918}
   m_CullTransparentMesh: 1
+--- !u!114 &29804922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 29804918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents: []
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 10
+  instantiationId: 10
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &158021593
 GameObject:
   m_ObjectHideFlags: 0
@@ -208,6 +235,7 @@ GameObject:
   - component: {fileID: 158021594}
   - component: {fileID: 158021596}
   - component: {fileID: 158021595}
+  - component: {fileID: 158021597}
   m_Layer: 5
   m_Name: Image (1)
   m_TagString: Untagged
@@ -272,6 +300,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 158021593}
   m_CullTransparentMesh: 1
+--- !u!114 &158021597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158021593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents: []
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 9
+  instantiationId: 9
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &197041867
 GameObject:
   m_ObjectHideFlags: 0
@@ -417,6 +471,7 @@ GameObject:
   - component: {fileID: 198107680}
   - component: {fileID: 198107682}
   - component: {fileID: 198107681}
+  - component: {fileID: 198107683}
   m_Layer: 5
   m_Name: Image (9)
   m_TagString: Untagged
@@ -481,6 +536,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 198107679}
   m_CullTransparentMesh: 1
+--- !u!114 &198107683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 198107679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents: []
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 8
+  instantiationId: 8
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &300009768
 GameObject:
   m_ObjectHideFlags: 0
@@ -1141,6 +1222,7 @@ GameObject:
   - component: {fileID: 977569978}
   - component: {fileID: 977569980}
   - component: {fileID: 977569979}
+  - component: {fileID: 977569981}
   m_Layer: 5
   m_Name: Image (6)
   m_TagString: Untagged
@@ -1205,6 +1287,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 977569977}
   m_CullTransparentMesh: 1
+--- !u!114 &977569981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 977569977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents: []
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 7
+  instantiationId: 7
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &1006328109
 GameObject:
   m_ObjectHideFlags: 0
@@ -1485,6 +1593,17 @@ MonoBehaviour:
   playerCardPrefab: {fileID: 5232949141410952396, guid: 556265d611f83454580c521f7713b274, type: 3}
   playerCardsContainer: {fileID: 937410043}
   roomCodeTMP: {fileID: 300009770}
+  spawnPoints:
+  - {fileID: 1139392455}
+  - {fileID: 158021594}
+  - {fileID: 2108058227}
+  - {fileID: 1673078781}
+  - {fileID: 1409538420}
+  - {fileID: 1189497845}
+  - {fileID: 977569978}
+  - {fileID: 29804919}
+  - {fileID: 1679744311}
+  - {fileID: 198107680}
   ownerUIElement: {fileID: 809281492}
 --- !u!1 &1135810560
 GameObject:
@@ -1735,6 +1854,7 @@ GameObject:
   - component: {fileID: 1189497845}
   - component: {fileID: 1189497847}
   - component: {fileID: 1189497846}
+  - component: {fileID: 1189497848}
   m_Layer: 5
   m_Name: Image (5)
   m_TagString: Untagged
@@ -1799,6 +1919,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1189497844}
   m_CullTransparentMesh: 1
+--- !u!114 &1189497848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1189497844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents: []
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 6
+  instantiationId: 6
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &1299247420
 GameObject:
   m_ObjectHideFlags: 0
@@ -2079,6 +2225,7 @@ GameObject:
   - component: {fileID: 1409538420}
   - component: {fileID: 1409538422}
   - component: {fileID: 1409538421}
+  - component: {fileID: 1409538423}
   m_Layer: 5
   m_Name: Image (4)
   m_TagString: Untagged
@@ -2143,6 +2290,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1409538419}
   m_CullTransparentMesh: 1
+--- !u!114 &1409538423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1409538419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents: []
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 5
+  instantiationId: 5
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &1472543337
 GameObject:
   m_ObjectHideFlags: 0
@@ -2288,6 +2461,7 @@ GameObject:
   - component: {fileID: 1673078781}
   - component: {fileID: 1673078783}
   - component: {fileID: 1673078782}
+  - component: {fileID: 1673078784}
   m_Layer: 5
   m_Name: Image (3)
   m_TagString: Untagged
@@ -2352,6 +2526,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1673078780}
   m_CullTransparentMesh: 1
+--- !u!114 &1673078784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1673078780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents: []
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 4
+  instantiationId: 4
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &1674837920
 GameObject:
   m_ObjectHideFlags: 0
@@ -2497,6 +2697,7 @@ GameObject:
   - component: {fileID: 1679744311}
   - component: {fileID: 1679744313}
   - component: {fileID: 1679744312}
+  - component: {fileID: 1679744314}
   m_Layer: 5
   m_Name: Image (8)
   m_TagString: Untagged
@@ -2561,6 +2762,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1679744310}
   m_CullTransparentMesh: 1
+--- !u!114 &1679744314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1679744310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents: []
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 3
+  instantiationId: 3
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &1706875520
 GameObject:
   m_ObjectHideFlags: 0
@@ -3029,6 +3256,7 @@ GameObject:
   - component: {fileID: 2108058227}
   - component: {fileID: 2108058229}
   - component: {fileID: 2108058228}
+  - component: {fileID: 2108058230}
   m_Layer: 5
   m_Name: Image (2)
   m_TagString: Untagged
@@ -3093,6 +3321,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2108058226}
   m_CullTransparentMesh: 1
+--- !u!114 &2108058230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108058226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents: []
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 2
+  instantiationId: 2
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &2147219305
 GameObject:
   m_ObjectHideFlags: 0
