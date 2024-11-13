@@ -12,11 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f3758f8f58fdef43803eb9be1df0608, type: 3}
   m_Name: PhotonServerSettings
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
   AppID: 237bdf10-7c8a-42e3-830c-f712573180f7
   VoiceAppID: 
   ChatAppID: 
   HostType: 1
   PreferredRegion: 2
+=======
+  AppID: a551e742-9bec-41d1-bcc0-92d5c4bab6b8
+  VoiceAppID: 
+  ChatAppID: 
+  HostType: 1
+  PreferredRegion: 0
+>>>>>>> 691453d0ecffd662d8fa2db69c75176be63cc14a
   EnabledRegions: -1
   Protocol: 0
   ServerAddress: 
@@ -43,6 +51,9 @@ MonoBehaviour:
   - RequestForPickupItems
   - RequestForPickupTimes
   - TaggedPlayer
+<<<<<<< HEAD
   - UpdatePhase
   - GetMessage
+=======
+>>>>>>> 691453d0ecffd662d8fa2db69c75176be63cc14a
   DisableAutoOpenWizard: 1
