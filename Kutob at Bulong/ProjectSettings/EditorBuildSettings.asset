@@ -23,4 +23,22 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ManananggalReveal.unity
     guid: ade58082c0f0eca479312bff82727a0a
+  - enabled: 1
+    path: Assets/Scenes/MangangasoReveal.unity
+    guid: a21e88d9b6109ca44919fffa7e555e6a
+  - enabled: 1
+    path: Assets/Scenes/BerbalangReveal.unity
+    guid: fef671c1cd172da4b884dc4da05830e7
+  - enabled: 1
+    path: Assets/Scenes/BabaylanReveal.unity
+    guid: ffac433e65c638445acee094c66ae7a1
+  - enabled: 1
+    path: Assets/Scenes/MnadurugoReveal.unity
+    guid: 68fbe8ed48b08a04092ab00f221f3c59
+  - enabled: 1
+    path: Assets/Scenes/ManghuhulaReveal.unity
+    guid: f2a1272b2ee073c4ea4e783a16220670
+  - enabled: 1
+    path: Assets/Scenes/Introduction.unity
+    guid: 23c635fdb5309b244a4b64da91bdbed0
   m_configObjects: {}
