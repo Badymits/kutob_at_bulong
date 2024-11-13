@@ -33,6 +33,7 @@ MonoBehaviour:
   - DestroyRpc
   - DoJump
   - Flash
+  - GetMessage
   - InstantiateRpc
   - Marco
   - PickupItemInit
@@ -43,4 +44,5 @@ MonoBehaviour:
   - RequestForPickupItems
   - RequestForPickupTimes
   - TaggedPlayer
+  - UpdatePhase
   DisableAutoOpenWizard: 1
