@@ -2,43 +2,32 @@ using Photon;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static NightPhaseManager;
 
-public class Join : UnityEngine.MonoBehaviour
+public class Join : Photon.MonoBehaviour
 {
+    public GameObject playerCardPrefab; // Prefab for player cards
+    public Transform playerCardsContainer; // Parent container for player cards
+    public TMP_Text roomCodeTMP; // Room code display
+    public Transform[] spawnPoints; // Array of spawn points for player cards
 
-    //public InputField roomCodeInput;
-    //public Text chatbox;
-    public GameObject playerCardPrefab;
-    public Transform playerCardsContainer;
-    //public Text playersCountText;
-    /*public Dropdown playersDropdown;
-    public Dropdown aswangDropdown;*/
-    public TMP_Text roomCodeTMP;
-    public Transform[] spawnPoints; // Array of spawn points
-
-    private List<PhotonPlayer> playersInRoom = new List<PhotonPlayer>();
-    private Dictionary<int, string> playerRoles = new Dictionary<int, string>();
-    //private List<string> playerRoles = new List<string>();
+    private List<PhotonPlayer> playersInRoom = new List<PhotonPlayer>(); // List of players in the room
     private PhotonView photonView;
-
-    public GameObject ownerUIElement;
-
 
     void Start()
     {
         photonView = GetComponent<PhotonView>();
-        string roomCode = "";
 
+        // Display room code if available
+        string roomCode = "";
         if (PhotonNetwork.inRoom && PhotonNetwork.room.CustomProperties.ContainsKey("RoomCode"))
         {
             roomCode = PhotonNetwork.room.CustomProperties["RoomCode"].ToString();
             Debug.Log("The room code: " + roomCode);
         }
+
         if (PhotonNetwork.connected)
         {
             if (PhotonNetwork.isMasterClient)
@@ -51,16 +40,13 @@ public class Join : UnityEngine.MonoBehaviour
             }
 
             roomCodeTMP.text = roomCode;
+
+            // Set player's nickname from PlayerPrefs
             PhotonNetwork.player.NickName = PlayerPrefs.GetString("Username");
+
             UpdatePlayerList();
-            SetPlayerPosition();
         }
-
-        /*playersDropdown.onValueChanged.AddListener(delegate { OnPlayerCountChanged(); });
-        aswangDropdown.onValueChanged.AddListener(delegate { OnAswangCountChanged(); });*/
-
     }
-
 
     IEnumerator addDelay()
     {
@@ -70,56 +56,49 @@ public class Join : UnityEngine.MonoBehaviour
 
     void ShowOwnerUI()
     {
-        if (ownerUIElement != null)
-        {
-            ownerUIElement.SetActive(true);
-        }
+        // Show UI elements for the lobby owner (if applicable)
     }
 
     void HideOwnerUI()
     {
-        if (ownerUIElement != null)
-        {
-            ownerUIElement.SetActive(false);
-        }
+        // Hide UI elements for non-owners (if applicable)
     }
 
     public void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
     {
-        
-        Debug.Log(newPlayer.NickName);
-        Debug.Log($"{newPlayer.NickName} has entered the room.");
+        Debug.Log(newPlayer.NickName + " has entered the room.");
         playersInRoom.Add(newPlayer);
-        StartCoroutine(addDelay());
-        UpdatePlayerList();
-        SetPlayerPosition(); // Update positions after a new player joins
-    }
 
+        // Instantiate a new player card and set its position
+        GameObject playerCard = Instantiate(playerCardPrefab, playerCardsContainer);
+        int playerIndex = playersInRoom.Count - 1; // Get the index of the new player
+        SetPlayerPosition(playerCard, playerIndex); // Set position based on index
+
+        StartCoroutine(addDelay());
+    }
 
     public void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
     {
-        Debug.Log($"{otherPlayer.NickName} has left the room.");
+        Debug.Log(otherPlayer.NickName + " has left the room.");
         playersInRoom.Remove(otherPlayer);
-        UpdatePlayerList();
-        SetPlayerPosition(); // Update positions after a new player joins
-    }
 
-
-    private void NotifyChatbox(string message)
-    {
-        /*if (chatbox != null)
+        // Clear and re-instantiate all remaining player cards to update positions
+        foreach (Transform child in playerCardsContainer)
         {
-            chatbox.text += message + "\n";
-        }*/
-        Debug.Log(message);
+            Destroy(child.gameObject); // Remove old cards
+        }
+
+        // Re-instantiate and reposition all remaining players' cards
+        for (int i = 0; i < playersInRoom.Count; i++)
+        {
+            GameObject playerCard = Instantiate(playerCardPrefab, playerCardsContainer);
+            SetPlayerPosition(playerCard, i); // Set position based on index
+        }
     }
-
-
 
     private void UpdatePlayerList()
     {
-
-
+        // Clear existing cards before updating
         foreach (Transform child in playerCardsContainer)
         {
             Destroy(child.gameObject);
@@ -129,6 +108,7 @@ public class Join : UnityEngine.MonoBehaviour
         float cardSpacing = 10f;
         float startYPosition = 0f;
 
+        // Loop through all players and instantiate a card for each one
         for (int i = 0; i < PhotonNetwork.playerList.Length; i++)
         {
             PhotonPlayer player = PhotonNetwork.playerList[i];
@@ -137,7 +117,7 @@ public class Join : UnityEngine.MonoBehaviour
             TextMeshProUGUI textComponent = playerCard.GetComponentInChildren<TextMeshProUGUI>();
             if (textComponent != null)
             {
-                textComponent.text = player.NickName;
+                textComponent.text = player.NickName; // Set player's nickname on the card
                 textComponent.enableAutoSizing = false;
                 textComponent.fontSize = 44;
             }
@@ -150,85 +130,22 @@ public class Join : UnityEngine.MonoBehaviour
                 rectTransform.anchoredPosition = new Vector2(0, startYPosition - (i * (cardHeight + cardSpacing)));
             }
 
-            playerCard.transform.SetParent(playerCardsContainer);
+            SetPlayerPosition(playerCard, i); // Position each card based on index
         }
     }
 
-    private void SetPlayerPosition()
+    private void SetPlayerPosition(GameObject playerCard, int playerIndex)
     {
-        int playerIndex = PhotonNetwork.playerList.Length - 1;
         if (playerIndex < spawnPoints.Length)
         {
             Vector3 spawnPosition = spawnPoints[playerIndex].position;
-            photonView.RPC("SetPositionRPC", PhotonNetwork.player, spawnPosition);
-        }
-    }
 
-    [PunRPC]
-    private void SetPositionRPC(Vector3 position)
-    {
-        transform.position = position;
-    }
-    public void SetGameRoles(int selectedPlayers, int selectedAswangs)
-    {
-        if (selectedAswangs > selectedPlayers)
-        {
-            NotifyChatbox("Invalid Aswang count. Aswang count cannot exceed total players.");
-            return;
-        }
-
-        NotifyChatbox($"Total Players: {selectedPlayers}, Aswangs: {selectedAswangs}");
-        AssignRolesToPlayers(selectedAswangs);
-    }
-
-    private void AssignRolesToPlayers(int aswangCount)
-    {
-        List<PhotonPlayer> shuffledPlayers = new List<PhotonPlayer>(PhotonNetwork.playerList);
-        System.Random rand = new System.Random();
-        shuffledPlayers.Sort((x, y) => rand.Next(-1, 2));
-
-        int aswangAssigned = 0;
-        playerRoles.Clear();
-
-        foreach (PhotonPlayer player in shuffledPlayers)
-        {
-            if (aswangAssigned < aswangCount)
+            RectTransform rectTransform = playerCard.GetComponent<RectTransform>();
+            if (rectTransform != null)
             {
-                playerRoles[player.ID] = "Aswang";
-                photonView.RPC("AssignRoleToPlayer", player, "Aswang");
-                aswangAssigned++;
+                rectTransform.position = spawnPosition;  // Set position based on predefined spawn point
+                rectTransform.localScale = Vector3.one;  // Ensure correct scaling
             }
-            else
-            {
-                playerRoles[player.ID] = "Normal";
-                photonView.RPC("AssignRoleToPlayer", player, "Normal");
-            }
-        }
-    }
-
-    [PunRPC]
-    private void AssignRoleToPlayer(string role)
-    {
-        NotifyChatbox($"Your role is: {role}");
-    }
-
-    private int DetermineAswangCount(int selectedPlayers)
-    {
-        if (selectedPlayers >= 5 && selectedPlayers <= 7) return 1;
-        else if (selectedPlayers >= 8 && selectedPlayers <= 9) return 2;
-        else if (selectedPlayers == 10) return 3;
-        return 0;
-    }
-
-    public void OnGameStart()
-    {
-        if (playerRoles.ContainsKey(PhotonNetwork.player.ID))
-        {
-            string role = playerRoles[PhotonNetwork.player.ID];
-            NotifyChatbox($"Your role is: {role}");
         }
     }
 }
-
-
-

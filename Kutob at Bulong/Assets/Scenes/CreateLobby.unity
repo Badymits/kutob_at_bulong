@@ -197,6 +197,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 29804918}
   m_CullTransparentMesh: 1
+--- !u!1 &31763644
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 31763645}
+  m_Layer: 0
+  m_Name: PlayerSlot8
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &31763645
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 31763644}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.47, y: 0.73, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 42103603}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &42103602
 GameObject:
   m_ObjectHideFlags: 0
@@ -207,7 +238,6 @@ GameObject:
   m_Component:
   - component: {fileID: 42103603}
   - component: {fileID: 42103604}
-  - component: {fileID: 42103605}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -229,6 +259,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 29804919}
+  - {fileID: 31763645}
   m_Father: {fileID: 1774581377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &42103604
@@ -258,23 +289,68 @@ MonoBehaviour:
   instantiationId: 20
   currentMasterID: -1
   isRuntimeInstantiated: 0
---- !u!114 &42103605
-MonoBehaviour:
+--- !u!1 &48374001
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 42103602}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 555f042971e06dc4e894ce9cb4500920, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCardPrefab: {fileID: 5232949141410952396, guid: 556265d611f83454580c521f7713b274, type: 3}
-  playerCardsContainer: {fileID: 1095637057}
-  roomCodeTMP: {fileID: 0}
-  spawnPoints: []
-  ownerUIElement: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 48374002}
+  m_Layer: 0
+  m_Name: PlayerSlot4
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &48374002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 48374001}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.65, y: 3.6000004, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1697482560}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &151378370
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 151378371}
+  m_Layer: 0
+  m_Name: PlayerSlot3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &151378371
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 151378370}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.51, y: 3.6000004, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1948738380}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &158021593
 GameObject:
   m_ObjectHideFlags: 0
@@ -559,6 +635,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 198107679}
   m_CullTransparentMesh: 1
+--- !u!1 &289621498
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 289621499}
+  m_Layer: 0
+  m_Name: PlayerSlot7
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &289621499
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 289621498}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -5.420001, y: 0.63, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 355711670}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &300009768
 GameObject:
   m_ObjectHideFlags: 0
@@ -693,6 +800,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 300009768}
   m_CullTransparentMesh: 1
+--- !u!1 &344873718
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 344873719}
+  m_Layer: 0
+  m_Name: PlayerSlot2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &344873719
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 344873718}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -5.42, y: 3.6000004, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2093582697}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &355711669
 GameObject:
   m_ObjectHideFlags: 0
@@ -703,7 +841,6 @@ GameObject:
   m_Component:
   - component: {fileID: 355711670}
   - component: {fileID: 355711671}
-  - component: {fileID: 355711672}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -725,6 +862,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 977569978}
+  - {fileID: 289621499}
   m_Father: {fileID: 1774581377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &355711671
@@ -747,29 +885,44 @@ MonoBehaviour:
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 19
   instantiationId: 19
   currentMasterID: -1
   isRuntimeInstantiated: 0
---- !u!114 &355711672
-MonoBehaviour:
+--- !u!1 &435402987
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 355711669}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 555f042971e06dc4e894ce9cb4500920, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCardPrefab: {fileID: 5232949141410952396, guid: 556265d611f83454580c521f7713b274, type: 3}
-  playerCardsContainer: {fileID: 1095637057}
-  roomCodeTMP: {fileID: 0}
-  spawnPoints: []
-  ownerUIElement: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 435402988}
+  m_Layer: 0
+  m_Name: PlayerSlot1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &435402988
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435402987}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.34, y: 3.6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2107052991}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &445339706
 GameObject:
   m_ObjectHideFlags: 0
@@ -1133,6 +1286,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 593361960}
   m_CullTransparentMesh: 1
+--- !u!1 &650639833
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 650639834}
+  m_Layer: 0
+  m_Name: PlayerSlot5
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &650639834
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 650639833}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.24, y: 3.6000004, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1851731769}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &660801364
 GameObject:
   m_ObjectHideFlags: 0
@@ -1143,7 +1327,6 @@ GameObject:
   m_Component:
   - component: {fileID: 660801365}
   - component: {fileID: 660801366}
-  - component: {fileID: 660801367}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -1165,6 +1348,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1679744311}
+  - {fileID: 1166630634}
   m_Father: {fileID: 1774581377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &660801366
@@ -1194,23 +1378,37 @@ MonoBehaviour:
   instantiationId: 18
   currentMasterID: -1
   isRuntimeInstantiated: 0
---- !u!114 &660801367
-MonoBehaviour:
+--- !u!1 &699827216
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 660801364}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 555f042971e06dc4e894ce9cb4500920, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCardPrefab: {fileID: 5232949141410952396, guid: 556265d611f83454580c521f7713b274, type: 3}
-  playerCardsContainer: {fileID: 1095637057}
-  roomCodeTMP: {fileID: 0}
-  spawnPoints: []
-  ownerUIElement: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 699827217}
+  m_Layer: 0
+  m_Name: PlayerSlot6
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &699827217
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 699827216}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -7.31, y: 0.63, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1523282582}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &714913131
 GameObject:
   m_ObjectHideFlags: 0
@@ -1221,7 +1419,6 @@ GameObject:
   m_Component:
   - component: {fileID: 714913132}
   - component: {fileID: 714913133}
-  - component: {fileID: 714913134}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -1243,6 +1440,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 198107680}
+  - {fileID: 1731985117}
   m_Father: {fileID: 1774581377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &714913133
@@ -1272,23 +1470,6 @@ MonoBehaviour:
   instantiationId: 17
   currentMasterID: -1
   isRuntimeInstantiated: 0
---- !u!114 &714913134
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 714913131}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 555f042971e06dc4e894ce9cb4500920, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCardPrefab: {fileID: 5232949141410952396, guid: 556265d611f83454580c521f7713b274, type: 3}
-  playerCardsContainer: {fileID: 1095637057}
-  roomCodeTMP: {fileID: 0}
-  spawnPoints: []
-  ownerUIElement: {fileID: 0}
 --- !u!1 &809281492
 GameObject:
   m_ObjectHideFlags: 0
@@ -1721,17 +1902,16 @@ MonoBehaviour:
   playerCardsContainer: {fileID: 1095637057}
   roomCodeTMP: {fileID: 300009770}
   spawnPoints:
-  - {fileID: 2107052991}
-  - {fileID: 2093582697}
-  - {fileID: 1948738380}
-  - {fileID: 1697482560}
-  - {fileID: 1697482560}
-  - {fileID: 1523282582}
-  - {fileID: 355711670}
-  - {fileID: 42103603}
-  - {fileID: 660801365}
-  - {fileID: 714913132}
-  ownerUIElement: {fileID: 809281492}
+  - {fileID: 435402988}
+  - {fileID: 344873719}
+  - {fileID: 151378371}
+  - {fileID: 48374002}
+  - {fileID: 650639834}
+  - {fileID: 699827217}
+  - {fileID: 289621499}
+  - {fileID: 31763645}
+  - {fileID: 1166630634}
+  - {fileID: 1731985117}
 --- !u!1 &1095637056
 GameObject:
   m_ObjectHideFlags: 0
@@ -2018,6 +2198,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1139392454}
   m_CullTransparentMesh: 1
+--- !u!1 &1166630633
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1166630634}
+  m_Layer: 0
+  m_Name: PlayerSlot9
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1166630634
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1166630633}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.69, y: 0.67, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 660801365}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1189497844
 GameObject:
   m_ObjectHideFlags: 0
@@ -2581,7 +2792,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1523282582}
   - component: {fileID: 1523282583}
-  - component: {fileID: 1523282584}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -2603,6 +2813,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1189497845}
+  - {fileID: 699827217}
   m_Father: {fileID: 1774581377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1523282583
@@ -2632,23 +2843,6 @@ MonoBehaviour:
   instantiationId: 16
   currentMasterID: -1
   isRuntimeInstantiated: 0
---- !u!114 &1523282584
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1523282581}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 555f042971e06dc4e894ce9cb4500920, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCardPrefab: {fileID: 5232949141410952396, guid: 556265d611f83454580c521f7713b274, type: 3}
-  playerCardsContainer: {fileID: 1095637057}
-  roomCodeTMP: {fileID: 0}
-  spawnPoints: []
-  ownerUIElement: {fileID: 0}
 --- !u!1 &1673078780
 GameObject:
   m_ObjectHideFlags: 0
@@ -2943,7 +3137,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1697482560}
   - component: {fileID: 1697482561}
-  - component: {fileID: 1697482562}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -2965,6 +3158,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1673078781}
+  - {fileID: 48374002}
   m_Father: {fileID: 1774581377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1697482561
@@ -2994,23 +3188,6 @@ MonoBehaviour:
   instantiationId: 15
   currentMasterID: -1
   isRuntimeInstantiated: 0
---- !u!114 &1697482562
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1697482559}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 555f042971e06dc4e894ce9cb4500920, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCardPrefab: {fileID: 5232949141410952396, guid: 556265d611f83454580c521f7713b274, type: 3}
-  playerCardsContainer: {fileID: 1095637057}
-  roomCodeTMP: {fileID: 0}
-  spawnPoints: []
-  ownerUIElement: {fileID: 0}
 --- !u!1 &1706875520
 GameObject:
   m_ObjectHideFlags: 0
@@ -3048,6 +3225,37 @@ RectTransform:
   m_AnchoredPosition: {x: -554.88, y: -218}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1731985116
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1731985117}
+  m_Layer: 0
+  m_Name: PlayerSlot10
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1731985117
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1731985116}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.26, y: 0.71, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 714913132}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1774581376
 GameObject:
   m_ObjectHideFlags: 0
@@ -3358,7 +3566,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1851731769}
   - component: {fileID: 1851731770}
-  - component: {fileID: 1851731771}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -3380,6 +3587,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1409538420}
+  - {fileID: 650639834}
   m_Father: {fileID: 1774581377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1851731770
@@ -3409,23 +3617,6 @@ MonoBehaviour:
   instantiationId: 14
   currentMasterID: -1
   isRuntimeInstantiated: 0
---- !u!114 &1851731771
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1851731768}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 555f042971e06dc4e894ce9cb4500920, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCardPrefab: {fileID: 5232949141410952396, guid: 556265d611f83454580c521f7713b274, type: 3}
-  playerCardsContainer: {fileID: 1095637057}
-  roomCodeTMP: {fileID: 0}
-  spawnPoints: []
-  ownerUIElement: {fileID: 0}
 --- !u!1 &1908317763
 GameObject:
   m_ObjectHideFlags: 0
@@ -3504,7 +3695,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1948738380}
   - component: {fileID: 1948738381}
-  - component: {fileID: 1948738382}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -3526,6 +3716,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2108058227}
+  - {fileID: 151378371}
   m_Father: {fileID: 1774581377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1948738381
@@ -3555,23 +3746,6 @@ MonoBehaviour:
   instantiationId: 13
   currentMasterID: -1
   isRuntimeInstantiated: 0
---- !u!114 &1948738382
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1948738379}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 555f042971e06dc4e894ce9cb4500920, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCardPrefab: {fileID: 5232949141410952396, guid: 556265d611f83454580c521f7713b274, type: 3}
-  playerCardsContainer: {fileID: 1095637057}
-  roomCodeTMP: {fileID: 0}
-  spawnPoints: []
-  ownerUIElement: {fileID: 0}
 --- !u!1 &2093582696
 GameObject:
   m_ObjectHideFlags: 0
@@ -3582,7 +3756,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2093582697}
   - component: {fileID: 2093582698}
-  - component: {fileID: 2093582699}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -3604,6 +3777,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 158021594}
+  - {fileID: 344873719}
   m_Father: {fileID: 1774581377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2093582698
@@ -3633,23 +3807,6 @@ MonoBehaviour:
   instantiationId: 12
   currentMasterID: -1
   isRuntimeInstantiated: 0
---- !u!114 &2093582699
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2093582696}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 555f042971e06dc4e894ce9cb4500920, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCardPrefab: {fileID: 5232949141410952396, guid: 556265d611f83454580c521f7713b274, type: 3}
-  playerCardsContainer: {fileID: 1095637057}
-  roomCodeTMP: {fileID: 0}
-  spawnPoints: []
-  ownerUIElement: {fileID: 0}
 --- !u!1 &2102829678
 GameObject:
   m_ObjectHideFlags: 0
@@ -3712,7 +3869,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2107052991}
   - component: {fileID: 2107052992}
-  - component: {fileID: 2107052993}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -3734,6 +3890,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1139392455}
+  - {fileID: 435402988}
   m_Father: {fileID: 1774581377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2107052992
@@ -3763,23 +3920,6 @@ MonoBehaviour:
   instantiationId: 11
   currentMasterID: -1
   isRuntimeInstantiated: 0
---- !u!114 &2107052993
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2107052990}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 555f042971e06dc4e894ce9cb4500920, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCardPrefab: {fileID: 5232949141410952396, guid: 556265d611f83454580c521f7713b274, type: 3}
-  playerCardsContainer: {fileID: 1095637057}
-  roomCodeTMP: {fileID: 0}
-  spawnPoints: []
-  ownerUIElement: {fileID: 0}
 --- !u!1 &2108058226
 GameObject:
   m_ObjectHideFlags: 0
