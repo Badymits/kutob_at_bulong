@@ -4,14 +4,27 @@ using UnityEngine.SceneManagement;
 
 public class RoomCode : MonoBehaviour
 {
-    public InputField roomCodeInputField;
+    //public InputField roomCodeInputField;
+
+
+    private void Start()
+    {
+        //something to prevent the warning/error
+    }
+
+    public void OnConnectedToMaster()
+    {
+        Debug.Log("Connected to master server");
+        //GoToGameScene(GenerateRoomCode(8));
+    }
 
     public void GenerateRandomRoomCode()
     {
         string roomCode = GenerateRoomCode(8);
-        roomCodeInputField.text = roomCode;
+        //roomCodeInputField.text = roomCode;
         PlayerPrefs.SetString("RoomCode", roomCode);
         PlayerPrefs.Save();
+        GoToGameScene(roomCode);
     }
 
     private string GenerateRoomCode(int length)
@@ -28,18 +41,39 @@ public class RoomCode : MonoBehaviour
         return randomRoomCode;
     }
 
-    public void GoToGameScene()
+    public void GoToGameScene(string roomCode)
     {
-        string roomCode = roomCodeInputField.text;
+        /*string roomCode = roomCodeInputField.text;
         if (string.IsNullOrEmpty(roomCode))
         {
             Debug.LogError("Room code is empty!");
             return;
-        }
+        }*/
 
         PlayerPrefs.SetString("RoomCode", roomCode);
         PlayerPrefs.Save();
 
-        SceneManager.LoadScene("GameScene");
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.MaxPlayers = 10;
+
+        roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable
+        {
+            { "RoomCode", roomCode },  // Store the room code in custom properties
+            { "Scene", "CreateLobby" }
+        };
+
+        roomOptions.IsVisible = false;
+
+        roomOptions.CustomRoomPropertiesForLobby = new string[] { roomCode };
+
+        PhotonNetwork.CreateRoom(roomCode, roomOptions, null);
+
+        //SceneManager.LoadScene("CreateLobby");
+    }
+
+
+    public void OnJoinedRoom()
+    {
+        PhotonNetwork.LoadLevel("CreateLobby");
     }
 }
