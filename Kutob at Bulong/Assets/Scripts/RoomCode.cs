@@ -53,7 +53,8 @@ public class RoomCode : MonoBehaviour
 
         roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable
         {
-            { "RoomCode", roomCode }  // Store the room code in custom properties
+            { "RoomCode", roomCode },  // Store the room code in custom properties
+            { "Scene", "CreateLobby" }
         };
 
         roomOptions.IsVisible = false;
