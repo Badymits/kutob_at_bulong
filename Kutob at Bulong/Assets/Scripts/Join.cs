@@ -1,6 +1,8 @@
 using Photon;
 using Photon.Realtime;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,40 +19,41 @@ public class Join : UnityEngine.MonoBehaviour
     /*public Dropdown playersDropdown;
     public Dropdown aswangDropdown;*/
     public TMP_Text roomCodeTMP;
+    public Transform[] spawnPoints; // Array of spawn points
 
     private List<PhotonPlayer> playersInRoom = new List<PhotonPlayer>();
-    private List<string> playerRoles = new List<string>();
+    private Dictionary<int, string> playerRoles = new Dictionary<int, string>();
+    //private List<string> playerRoles = new List<string>();
+    private PhotonView photonView;
 
     public GameObject ownerUIElement;
 
 
     void Start()
     {
+        photonView = GetComponent<PhotonView>();
         string roomCode = "";
 
-        if (PhotonNetwork.inRoom && PhotonNetwork.room.CustomProperties.ContainsKey("RoomCode")){
+        if (PhotonNetwork.inRoom && PhotonNetwork.room.CustomProperties.ContainsKey("RoomCode"))
+        {
             roomCode = PhotonNetwork.room.CustomProperties["RoomCode"].ToString();
             Debug.Log("The room code: " + roomCode);
         }
         if (PhotonNetwork.connected)
         {
-            
-            // Check if the current player is the master client (room owner)
             if (PhotonNetwork.isMasterClient)
             {
-                // Show UI element only if the current player is the room owner (master client)
                 ShowOwnerUI();
             }
             else
             {
-                // Hide the UI element if the current player is not the room owner
                 HideOwnerUI();
             }
 
-            //string savedRoomCode = PlayerPrefs.GetString("RoomCode");
             roomCodeTMP.text = roomCode;
             PhotonNetwork.player.NickName = PlayerPrefs.GetString("Username");
             UpdatePlayerList();
+            SetPlayerPosition();
         }
 
         /*playersDropdown.onValueChanged.AddListener(delegate { OnPlayerCountChanged(); });
@@ -58,28 +61,38 @@ public class Join : UnityEngine.MonoBehaviour
 
     }
 
+
+    IEnumerator addDelay()
+    {
+        yield return new WaitForSecondsRealtime(.5f);
+        UpdatePlayerList();
+    }
+
     void ShowOwnerUI()
     {
         if (ownerUIElement != null)
         {
-            ownerUIElement.SetActive(true);  // Enable the UI element
+            ownerUIElement.SetActive(true);
         }
     }
 
-    // Method to hide the UI element
     void HideOwnerUI()
     {
         if (ownerUIElement != null)
         {
-            ownerUIElement.SetActive(false);  // Disable the UI element
+            ownerUIElement.SetActive(false);
         }
     }
 
     public void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
     {
+        
+        Debug.Log(newPlayer.NickName);
         Debug.Log($"{newPlayer.NickName} has entered the room.");
         playersInRoom.Add(newPlayer);
+        StartCoroutine(addDelay());
         UpdatePlayerList();
+        SetPlayerPosition(); // Update positions after a new player joins
     }
 
 
@@ -88,6 +101,7 @@ public class Join : UnityEngine.MonoBehaviour
         Debug.Log($"{otherPlayer.NickName} has left the room.");
         playersInRoom.Remove(otherPlayer);
         UpdatePlayerList();
+        SetPlayerPosition(); // Update positions after a new player joins
     }
 
 
@@ -104,48 +118,58 @@ public class Join : UnityEngine.MonoBehaviour
 
     private void UpdatePlayerList()
     {
-        // Iterate over each player in the room and instantiate their card
-        foreach (PhotonPlayer player in PhotonNetwork.playerList)
-        {
-            // Calculate the spawn position (optional, based on your layout)
-            Vector3 spawnPosition = playerCardsContainer.position; // Can be adjusted for spacing
 
-            // Instantiate the player card prefab
+
+        foreach (Transform child in playerCardsContainer)
+        {
+            Destroy(child.gameObject);
+        }
+
+        float cardHeight = 300f;
+        float cardSpacing = 10f;
+        float startYPosition = 0f;
+
+        for (int i = 0; i < PhotonNetwork.playerList.Length; i++)
+        {
+            PhotonPlayer player = PhotonNetwork.playerList[i];
             GameObject playerCard = Instantiate(playerCardPrefab, playerCardsContainer);
 
-            // Set the player name on the card's TextMeshProUGUI component
             TextMeshProUGUI textComponent = playerCard.GetComponentInChildren<TextMeshProUGUI>();
             if (textComponent != null)
             {
                 textComponent.text = player.NickName;
-
-                // Disable Auto Size (to prevent it from resizing the text)
                 textComponent.enableAutoSizing = false;
-
-                // Optionally, set the font size manually
-                textComponent.fontSize = 44;  // Example font size
+                textComponent.fontSize = 44;
             }
 
-            // Set the rectTransform properties if needed (e.g., size, scale, etc.)
             RectTransform rectTransform = playerCard.GetComponent<RectTransform>();
             if (rectTransform != null)
             {
-                rectTransform.localScale = Vector3.one; // Reset scale
-                rectTransform.sizeDelta = new Vector2(200, 300); // Set a specific size if needed
-
-                // If you want to space out the cards in a row, you can adjust the position:
-                rectTransform.anchoredPosition = new Vector2(0, 0);  // Adjust this based on your layout
+                rectTransform.localScale = Vector3.one;
+                rectTransform.sizeDelta = new Vector2(200, cardHeight);
+                rectTransform.anchoredPosition = new Vector2(0, startYPosition - (i * (cardHeight + cardSpacing)));
             }
 
-            // Optionally, make the player card a child of the playerCardsContainer
-            if (playerCardsContainer != null)
-            {
-                playerCard.transform.SetParent(playerCardsContainer);
-            }
+            playerCard.transform.SetParent(playerCardsContainer);
         }
     }
 
-    /*private void SetGameRoles(int selectedPlayers, int selectedAswangs)
+    private void SetPlayerPosition()
+    {
+        int playerIndex = PhotonNetwork.playerList.Length - 1;
+        if (playerIndex < spawnPoints.Length)
+        {
+            Vector3 spawnPosition = spawnPoints[playerIndex].position;
+            photonView.RPC("SetPositionRPC", PhotonNetwork.player, spawnPosition);
+        }
+    }
+
+    [PunRPC]
+    private void SetPositionRPC(Vector3 position)
+    {
+        transform.position = position;
+    }
+    public void SetGameRoles(int selectedPlayers, int selectedAswangs)
     {
         if (selectedAswangs > selectedPlayers)
         {
@@ -154,7 +178,6 @@ public class Join : UnityEngine.MonoBehaviour
         }
 
         NotifyChatbox($"Total Players: {selectedPlayers}, Aswangs: {selectedAswangs}");
-
         AssignRolesToPlayers(selectedAswangs);
     }
 
@@ -162,7 +185,6 @@ public class Join : UnityEngine.MonoBehaviour
     {
         List<PhotonPlayer> shuffledPlayers = new List<PhotonPlayer>(PhotonNetwork.playerList);
         System.Random rand = new System.Random();
-
         shuffledPlayers.Sort((x, y) => rand.Next(-1, 2));
 
         int aswangAssigned = 0;
@@ -172,16 +194,22 @@ public class Join : UnityEngine.MonoBehaviour
         {
             if (aswangAssigned < aswangCount)
             {
-                playerRoles.Add("Aswang");
-                NotifyChatbox($"{player.name} has been assigned the Aswang role (Privately).");
+                playerRoles[player.ID] = "Aswang";
+                photonView.RPC("AssignRoleToPlayer", player, "Aswang");
                 aswangAssigned++;
             }
             else
             {
-                playerRoles.Add("Normal");
-                NotifyChatbox($"{player.name} is a normal player.");
+                playerRoles[player.ID] = "Normal";
+                photonView.RPC("AssignRoleToPlayer", player, "Normal");
             }
         }
+    }
+
+    [PunRPC]
+    private void AssignRoleToPlayer(string role)
+    {
+        NotifyChatbox($"Your role is: {role}");
     }
 
     private int DetermineAswangCount(int selectedPlayers)
@@ -192,18 +220,15 @@ public class Join : UnityEngine.MonoBehaviour
         return 0;
     }
 
-    private void RevealPlayerRole()
+    public void OnGameStart()
     {
-        int playerIndex = PhotonNetwork.player.ID - 1;
-        if (playerRoles.Count > playerIndex)
+        if (playerRoles.ContainsKey(PhotonNetwork.player.ID))
         {
-            string role = playerRoles[playerIndex];
+            string role = playerRoles[PhotonNetwork.player.ID];
             NotifyChatbox($"Your role is: {role}");
         }
     }
-
-    public void OnGameStart()
-    {
-        RevealPlayerRole();
-    }*/
 }
+
+
+
