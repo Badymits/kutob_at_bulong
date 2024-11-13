@@ -125,9 +125,15 @@ public class Join : UnityEngine.MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        foreach (PhotonPlayer player in PhotonNetwork.playerList)
+        float cardHeight = 300f;
+        float cardSpacing = 10f;
+        float startYPosition = 0f;
+
+        for (int i = 0; i < PhotonNetwork.playerList.Length; i++)
         {
+            PhotonPlayer player = PhotonNetwork.playerList[i];
             GameObject playerCard = Instantiate(playerCardPrefab, playerCardsContainer);
+
             TextMeshProUGUI textComponent = playerCard.GetComponentInChildren<TextMeshProUGUI>();
             if (textComponent != null)
             {
@@ -135,13 +141,15 @@ public class Join : UnityEngine.MonoBehaviour
                 textComponent.enableAutoSizing = false;
                 textComponent.fontSize = 44;
             }
+
             RectTransform rectTransform = playerCard.GetComponent<RectTransform>();
             if (rectTransform != null)
             {
                 rectTransform.localScale = Vector3.one;
-                rectTransform.sizeDelta = new Vector2(200, 300);
-                rectTransform.anchoredPosition = new Vector2(0, 0);
+                rectTransform.sizeDelta = new Vector2(200, cardHeight);
+                rectTransform.anchoredPosition = new Vector2(0, startYPosition - (i * (cardHeight + cardSpacing)));
             }
+
             playerCard.transform.SetParent(playerCardsContainer);
         }
     }

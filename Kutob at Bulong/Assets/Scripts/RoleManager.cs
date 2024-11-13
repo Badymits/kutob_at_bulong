@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Realtime;
 using System.Data;
-
+using System;
 
 public enum RoleNormal
 {
@@ -11,7 +11,6 @@ public enum RoleNormal
     Aswang,
     Babaylan,
     Manghuhula,
-    Taumbayan
 }
 
 public enum RoleAswang
@@ -26,8 +25,18 @@ public class RoleManager : MonoBehaviour
     
 
     // Store the roles for each player
-    public RoleNormal[] playerRoles;
-    public RoleAswang[] playerAswang;
+
+    private RoleNormal[] normalRoles = new RoleNormal[] { RoleNormal.Mangangaso, RoleNormal.Aswang, RoleNormal.Babaylan, RoleNormal.Manghuhula };
+    private RoleAswang[] aswangRoles = new RoleAswang[] { RoleAswang.Mandurugo, RoleAswang.Manananggal, RoleAswang.Berbalang};
+
+    //keep track of players who already got assigned roles to avoid duplicates.
+    private List<PhotonPlayer> playersAssignedRoles = new List<PhotonPlayer>();
+
+    private List<String> takenRole = new List<String>();
+
+
+    /*int roleIndex = Random.Range(0, 3);  // 0 = Villager, 1 = Werewolf, 2 = Seer
+    playerRole = (PlayerRole) roleIndex;*/
     void Awake()
     {
         // Singleton pattern
@@ -43,23 +52,97 @@ public class RoleManager : MonoBehaviour
 
     public void AssignRoles()
     {
-       
-        var playerArray = PhotonNetwork.playerList;
-        Debug.Log(playerArray);
+      
+        Debug.Log(PhotonNetwork.playerList);
 
         System.Random random = new System.Random();
 
         int playerCount = PhotonNetwork.playerList.Length;
         int aswangCount = 1; // Need ko dito yung settings na sinet sa lobby
 
-        /*foreach(var player in players)
+        foreach (PhotonPlayer player in PhotonNetwork.playerList)
         {
+
+            while (true)
+            {
+                int roleIndex = random.Next(0, 4);
+                RoleNormal role = normalRoles[roleIndex];
+
+                Debug.Log("Role: " + role);
+
+                // populate list first with most important roles
+                if (playersAssignedRoles.Count >= (5 + aswangCount - 1))
+                {
+
+                    AssignRoleToPlayer(player, "Taumbayan");
+
+                    // Log the assigned role
+                    Debug.Log($"Assigned Taumbayan role to player: {player.NickName}");
+                    playersAssignedRoles.Add(player);
+                    break;
+                }
+
+                else if (!takenRole.Contains(role.ToString()))
+                {
+                    if (role.ToString() != "Aswang")
+                    {
+                        AssignRoleToPlayer(player, role.ToString());
+                        takenRole.Add(role.ToString());
+                        break;
+                    }
+                    else if (role.ToString() == "Aswang" && aswangCount != 0)
+                    {
+                        int aswangIndex = random.Next(0, 2);
+                        RoleAswang role_aswang = aswangRoles[aswangIndex];
+                        AssignAswangRoleToPlayer(player, role_aswang.ToString());
+                    }
+                }
+
+
+                else if (role.ToString() == "Aswang" && aswangCount != 0)
+                {
+                    int aswangIndex = random.Next(0, 2);
+                    RoleAswang role_aswang = aswangRoles[aswangIndex];
+
+                    Debug.Log(role_aswang.ToString());
+
+                    AssignAswangRoleToPlayer(player, role_aswang.ToString() );
+
+
+                    Debug.Log($"Assigned {role_aswang.ToString()} role to player: {player.NickName}");
+                    aswangCount -= 1;
+
+                    playersAssignedRoles.Add(player);
+                    break;
+
+                }
+            }
             Debug.Log("Player ID: " + player.UserId);
             Debug.Log("Player Name: " + player.NickName);
-        } */
+        }
 
 
     }
+
+    public void AssignRoleToPlayer(PhotonPlayer player, string role)
+    {
+        ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable
+        {
+            { "Role", role }
+        };
+        player.SetCustomProperties(playerProperties);
+    }
+
+    public void AssignAswangRoleToPlayer(PhotonPlayer player, string role)
+    {
+        ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable
+        {
+            { "Role", role }
+        };
+        player.SetCustomProperties(playerProperties);
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
