@@ -93,10 +93,10 @@ public class Join : Photon.MonoBehaviour
     private void UpdatePlayerList()
     {
         // Clear existing cards before updating
-        /*foreach (Transform child in playerCardsContainer)
+        foreach (Transform child in playerCardsContainer)
         {
             Destroy(child.gameObject);
-        }*/
+        }
 
         float cardHeight = 300f;
         float cardSpacing = 10f;

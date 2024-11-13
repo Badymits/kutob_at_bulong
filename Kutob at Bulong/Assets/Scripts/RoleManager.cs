@@ -52,7 +52,7 @@ public class RoleManager : MonoBehaviour
 
     public void AssignRoles()
     {
-      
+        
         Debug.Log(PhotonNetwork.playerList);
 
         System.Random random = new System.Random();
@@ -71,7 +71,7 @@ public class RoleManager : MonoBehaviour
                 Debug.Log("Role: " + role);
 
                 // populate list first with most important roles
-                if (playersAssignedRoles.Count >= (5 + aswangCount - 1))
+                if (playersAssignedRoles.Count >= (normalRoles.Length + aswangCount - 1))
                 {
 
                     AssignRoleToPlayer(player, "Taumbayan");
@@ -88,13 +88,19 @@ public class RoleManager : MonoBehaviour
                     {
                         AssignRoleToPlayer(player, role.ToString());
                         takenRole.Add(role.ToString());
+                        playersAssignedRoles.Add(player);
                         break;
                     }
                     else if (role.ToString() == "Aswang" && aswangCount != 0)
                     {
                         int aswangIndex = random.Next(0, 2);
                         RoleAswang role_aswang = aswangRoles[aswangIndex];
+
+                        Debug.Log($"Assigned {role_aswang.ToString()} role to player: {player.NickName}");
                         AssignAswangRoleToPlayer(player, role_aswang.ToString());
+                        aswangCount--;
+                        playersAssignedRoles.Add(player);
+                        break;
                     }
                 }
 
@@ -120,12 +126,13 @@ public class RoleManager : MonoBehaviour
             Debug.Log("Player ID: " + player.UserId);
             Debug.Log("Player Name: " + player.NickName);
         }
-
+        Debug.Log(playersAssignedRoles);
         DistributeScene();
     }
 
     public void AssignRoleToPlayer(PhotonPlayer player, string role)
     {
+        Debug.Log("Player Role: " + role);
         ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable
         {
             { "Role", role }
@@ -135,6 +142,7 @@ public class RoleManager : MonoBehaviour
 
     public void AssignAswangRoleToPlayer(PhotonPlayer player, string role)
     {
+        Debug.Log("Aswang Role: " + role);
         ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable
         {
             { "Role", role }
@@ -144,13 +152,16 @@ public class RoleManager : MonoBehaviour
 
     public void DistributeScene()
     {
-        foreach (PhotonPlayer player in playersAssignedRoles)
+        Debug.Log("Distribute Scene reaced");
+        foreach (PhotonPlayer player in PhotonNetwork.playerList)
         {
             if (player.CustomProperties.ContainsKey("Role"))
             {
                 string playerRole = (string)player.CustomProperties["Role"];
-                LoadSceneBasedOnRole(playerRole);
+                
                 Debug.Log(player.NickName + " has role: " + playerRole);
+
+                LoadSceneBasedOnRole(playerRole);
             }
             
         }
@@ -158,6 +169,7 @@ public class RoleManager : MonoBehaviour
 
     public void LoadSceneBasedOnRole(string role)
     {
+        Debug.Log("LoadScenebasedOnRole Reached");
         switch (role)
         {
             case "Mangangaso":
