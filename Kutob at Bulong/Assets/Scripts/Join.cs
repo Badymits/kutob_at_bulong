@@ -33,6 +33,7 @@ public class Join : UnityEngine.MonoBehaviour
         }
         if (PhotonNetwork.connected)
         {
+            
             // Check if the current player is the master client (room owner)
             if (PhotonNetwork.isMasterClient)
             {
@@ -74,32 +75,20 @@ public class Join : UnityEngine.MonoBehaviour
             ownerUIElement.SetActive(false);  // Disable the UI element
         }
     }
-    
 
-    public void OnJoinedRoom()
+    public void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
     {
-        NotifyChatbox($"{PhotonNetwork.player.name} has joined the room.");
+        Debug.Log($"{newPlayer.NickName} has entered the room.");
         UpdatePlayersList();
     }
 
-    public void OnPlayerEnteredRoom(PhotonPlayer newPlayer)
+
+    public void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
     {
-        NotifyChatbox($"{newPlayer.name} has joined the room.");
-        playersInRoom.Add(newPlayer);
+        Debug.Log($"{otherPlayer.NickName} has left the room.");
         UpdatePlayersList();
     }
 
-    public void OnPlayerLeftRoom(PhotonPlayer otherPlayer)
-    {
-        NotifyChatbox($"{otherPlayer.name} has left the room.");
-        playersInRoom.Remove(otherPlayer);
-        UpdatePlayersList();
-    }
-
-    public void OnJoinRoomFailed(string roomName, bool isOffline, string error)
-    {
-        NotifyChatbox("Failed to join room: " + error);
-    }
 
     private void NotifyChatbox(string message)
     {
