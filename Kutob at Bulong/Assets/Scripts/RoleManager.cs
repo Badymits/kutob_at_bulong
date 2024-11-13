@@ -54,7 +54,11 @@ public class RoleManager : MonoBehaviour
 
     public void AssignRoles()
     {
-        
+
+        List<PhotonPlayer> shuffledPlayers = new List<PhotonPlayer>(PhotonNetwork.playerList);
+
+        ShuffleList(shuffledPlayers);
+
         Debug.Log(PhotonNetwork.playerList);
 
         System.Random random = new System.Random();
@@ -136,6 +140,23 @@ public class RoleManager : MonoBehaviour
             photonView.RPC("DistributeScene", PhotonTargets.All);
         }
         
+    }
+
+    // Fisher-Yates shuffle for list of PhotonPlayer
+    public static void ShuffleList(List<PhotonPlayer> list)
+    {
+        System.Random random = new System.Random();
+        int n = list.Count;
+
+        // Go through the list backwards and swap each element with a randomly selected element
+        while (n > 1)
+        {
+            n--;
+            int k = random.Next(n + 1);  // Generate random index from 0 to n-1
+            PhotonPlayer value = list[k];
+            list[k] = list[n];
+            list[n] = value;
+        }
     }
 
     public void AssignRoleToPlayer(PhotonPlayer player, string role)
