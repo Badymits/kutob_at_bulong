@@ -33,6 +33,7 @@ MonoBehaviour:
   - DestroyRpc
   - DoJump
   - Flash
+  - GetMessage
   - InstantiateRpc
   - Marco
   - PickupItemInit
