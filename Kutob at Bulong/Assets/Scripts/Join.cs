@@ -118,13 +118,13 @@ public class Join : Photon.MonoBehaviour
             RectTransform rectTransform = playerCard.GetComponent<RectTransform>();
             if (rectTransform != null)
             {
-                rectTransform.localScale = Vector3.one; // Ensure correct scaling
-                rectTransform.sizeDelta = new Vector2(300, 300); // Set fixed size for all cards
+                rectTransform.localScale = Vector3.one;
+                rectTransform.sizeDelta = new Vector2(200, cardHeight);
                 rectTransform.anchoredPosition = new Vector2(0, startYPosition - (i * (cardHeight + cardSpacing)));
             }
 
             // Set parent container for proper hierarchy management
-            playerCard.transform.SetParent(playerCardsContainer);
+            SetPlayerPosition(playerCard, i);
         }
     }
 
