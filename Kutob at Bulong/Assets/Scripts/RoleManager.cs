@@ -142,6 +142,14 @@ public class RoleManager : MonoBehaviour
         player.SetCustomProperties(playerProperties);
     }
 
+    public void LoadSceneBasedOnRole()
+    {
+        foreach(PhotonPlayer player in playersAssignedRoles)
+        {
+            
+        }
+    }
+
 
     // Start is called before the first frame update
     void Start()
