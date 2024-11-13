@@ -207,6 +207,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 31763645}
+  - component: {fileID: 31763646}
   m_Layer: 0
   m_Name: PlayerSlot8
   m_TagString: Untagged
@@ -229,6 +230,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 29804919}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &31763646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 31763644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 8
+  instantiationId: 8
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &42103602
 GameObject:
   m_ObjectHideFlags: 0
@@ -298,6 +326,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 48374002}
+  - component: {fileID: 48374003}
   m_Layer: 0
   m_Name: PlayerSlot4
   m_TagString: Untagged
@@ -320,6 +349,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1673078781}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &48374003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 48374001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 4
+  instantiationId: 4
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &151378370
 GameObject:
   m_ObjectHideFlags: 0
@@ -329,6 +385,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 151378371}
+  - component: {fileID: 151378372}
   m_Layer: 0
   m_Name: PlayerSlot3
   m_TagString: Untagged
@@ -351,6 +408,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2108058227}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &151378372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 151378370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 3
+  instantiationId: 3
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &158021593
 GameObject:
   m_ObjectHideFlags: 0
@@ -646,6 +730,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 289621499}
+  - component: {fileID: 289621500}
   m_Layer: 0
   m_Name: PlayerSlot7
   m_TagString: Untagged
@@ -668,6 +753,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 977569978}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &289621500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 289621498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 7
+  instantiationId: 7
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &300009768
 GameObject:
   m_ObjectHideFlags: 0
@@ -811,6 +923,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 344873719}
+  - component: {fileID: 344873720}
   m_Layer: 0
   m_Name: PlayerSlot2
   m_TagString: Untagged
@@ -833,6 +946,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 158021594}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &344873720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 344873718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 2
+  instantiationId: 2
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &355711669
 GameObject:
   m_ObjectHideFlags: 0
@@ -902,6 +1042,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 435402988}
+  - component: {fileID: 435402989}
   m_Layer: 0
   m_Name: PlayerSlot1
   m_TagString: Untagged
@@ -924,6 +1065,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1139392455}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &435402989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435402987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 1
+  instantiationId: 1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &445339706
 GameObject:
   m_ObjectHideFlags: 0
@@ -1296,6 +1464,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 650639834}
+  - component: {fileID: 650639835}
   m_Layer: 0
   m_Name: PlayerSlot5
   m_TagString: Untagged
@@ -1318,6 +1487,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1409538420}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &650639835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 650639833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 5
+  instantiationId: 5
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &660801364
 GameObject:
   m_ObjectHideFlags: 0
@@ -1387,6 +1583,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 699827217}
+  - component: {fileID: 699827218}
   m_Layer: 0
   m_Name: PlayerSlot6
   m_TagString: Untagged
@@ -1409,6 +1606,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1189497845}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &699827218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 699827216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 6
+  instantiationId: 6
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &714913131
 GameObject:
   m_ObjectHideFlags: 0
@@ -2208,6 +2432,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1166630634}
+  - component: {fileID: 1166630635}
   m_Layer: 0
   m_Name: PlayerSlot9
   m_TagString: Untagged
@@ -2230,6 +2455,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1679744311}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1166630635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1166630633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 9
+  instantiationId: 9
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &1189497844
 GameObject:
   m_ObjectHideFlags: 0
@@ -3237,6 +3489,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1731985117}
+  - component: {fileID: 1731985118}
   m_Layer: 0
   m_Name: PlayerSlot10
   m_TagString: Untagged
@@ -3259,6 +3512,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 198107680}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1731985118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1731985116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 10
+  instantiationId: 10
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &1774581376
 GameObject:
   m_ObjectHideFlags: 0
@@ -3299,10 +3579,10 @@ RectTransform:
   - {fileID: 714913132}
   m_Father: {fileID: 1095637057}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 4808.6045, y: 1751.2966}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 4262.1045, y: 2089.2966}
+  m_SizeDelta: {x: -993, y: -576}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1793949834
 GameObject:

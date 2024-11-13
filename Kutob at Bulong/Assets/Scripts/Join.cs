@@ -70,6 +70,10 @@ public class Join : Photon.MonoBehaviour
         Debug.Log($"{newPlayer.NickName} has entered the room.");
         playersInRoom.Add(newPlayer);
 
+        GameObject playerCard = Instantiate(playerCardPrefab, playerCardsContainer);
+        int playerIndex = playersInRoom.Count - 1; // Get the index of the new player
+        SetPlayerPosition(playerCard, playerIndex); // Set position based on index
+
         StartCoroutine(addDelay());
         UpdatePlayerList();
     }
