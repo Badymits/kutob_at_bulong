@@ -1,55 +1,87 @@
 using Photon;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Join : UnityEngine.MonoBehaviour
 {
-    public InputField roomCodeInput;
-    public Text chatbox;
+    //public InputField roomCodeInput;
+    //public Text chatbox;
     public GameObject playerCardPrefab;
     public Transform playerCardsContainer;
-    public Text playersCountText;
-    public Dropdown playersDropdown;
-    public Dropdown aswangDropdown;
+    //public Text playersCountText;
+    /*public Dropdown playersDropdown;
+    public Dropdown aswangDropdown;*/
+    public TMP_Text roomCode;
 
     private List<PhotonPlayer> playersInRoom = new List<PhotonPlayer>();
     private List<string> playerRoles = new List<string>();
 
+    public GameObject ownerUIElement;
+
+    // This method will be called when the player enters the room list lobby
+    public void OnRoomListUpdate(System.Collections.Generic.List<RoomInfo> roomList)
+    {
+        foreach (RoomInfo room in roomList)
+        {
+            // Check if the room has the "roomCode" custom property
+            if (room.CustomProperties.ContainsKey("RoomCode"))
+            {
+                string roomCode = room.CustomProperties["RoomCode"].ToString();
+                Debug.Log("Room Code from room proeprties" + roomCode);
+            }
+        }
+    }
+
     void Start()
     {
+        RoomInfo room = GetComponent<RoomInfo>();
+        Debug.Log(room.CustomProperties.ContainsKey("RoomCode"));
+        
         if (PhotonNetwork.connected)
         {
-            PhotonNetwork.player.name = "Player" + Random.Range(1000, 9999);
+            // Check if the current player is the master client (room owner)
+            if (PhotonNetwork.isMasterClient)
+            {
+                // Show UI element only if the current player is the room owner (master client)
+                ShowOwnerUI();
+            }
+            else
+            {
+                // Hide the UI element if the current player is not the room owner
+                HideOwnerUI();
+            }
+            PhotonNetwork.player.NickName = "Player" + Random.Range(1000, 9999);
         }
         else
         {
             PhotonNetwork.ConnectUsingSettings("1.0");
         }
 
-        playersDropdown.onValueChanged.AddListener(delegate { OnPlayerCountChanged(); });
-        aswangDropdown.onValueChanged.AddListener(delegate { OnAswangCountChanged(); });
+        /*playersDropdown.onValueChanged.AddListener(delegate { OnPlayerCountChanged(); });
+        aswangDropdown.onValueChanged.AddListener(delegate { OnAswangCountChanged(); });*/
+
 
         string savedRoomCode = PlayerPrefs.GetString("RoomCode");
-        if (!string.IsNullOrEmpty(savedRoomCode))
+        roomCode.text = savedRoomCode;
+    }
+
+    void ShowOwnerUI()
+    {
+        if (ownerUIElement != null)
         {
-            roomCodeInput.text = savedRoomCode;
+            ownerUIElement.SetActive(true);  // Enable the UI element
         }
     }
 
-    public void JoinRoomWithCode()
+    // Method to hide the UI element
+    void HideOwnerUI()
     {
-        string roomCode = roomCodeInput.text;
-        if (string.IsNullOrEmpty(roomCode))
+        if (ownerUIElement != null)
         {
-            NotifyChatbox("Please enter a valid room code.");
-            return;
+            ownerUIElement.SetActive(false);  // Disable the UI element
         }
-
-        RoomOptions roomOptions = new RoomOptions();
-        roomOptions.maxPlayers = 10;
-
-        PhotonNetwork.JoinOrCreateRoom(roomCode, roomOptions, TypedLobby.Default);
     }
 
     void OnConnectedToMaster()
@@ -84,10 +116,11 @@ public class Join : UnityEngine.MonoBehaviour
 
     private void NotifyChatbox(string message)
     {
-        if (chatbox != null)
+        /*if (chatbox != null)
         {
             chatbox.text += message + "\n";
-        }
+        }*/
+        Debug.Log(message);
     }
 
     private void UpdatePlayersList()
@@ -100,26 +133,10 @@ public class Join : UnityEngine.MonoBehaviour
         foreach (PhotonPlayer player in PhotonNetwork.playerList)
         {
             GameObject playerCard = Instantiate(playerCardPrefab, playerCardsContainer);
-            playerCard.GetComponentInChildren<Text>().text = player.name;
+            playerCard.GetComponentInChildren<Text>().text = player.NickName;
         }
 
-        playersCountText.text = $"Players: {PhotonNetwork.playerList.Length}/10";
-    }
-
-    public void OnPlayerCountChanged()
-    {
-        int selectedPlayers = playersDropdown.value + 5;
-        int selectedAswangs = DetermineAswangCount(selectedPlayers);
-        aswangDropdown.value = selectedAswangs - 1;
-
-        SetGameRoles(selectedPlayers, selectedAswangs);
-    }
-
-    public void OnAswangCountChanged()
-    {
-        int selectedPlayers = playersDropdown.value + 5;
-        int selectedAswangs = aswangDropdown.value + 1;
-        SetGameRoles(selectedPlayers, selectedAswangs);
+        //playersCountText.text = $"Players: {PhotonNetwork.playerList.Length}/10";
     }
 
     private void SetGameRoles(int selectedPlayers, int selectedAswangs)
