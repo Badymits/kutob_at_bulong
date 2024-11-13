@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static NightPhaseManager;
 
 public class Join : UnityEngine.MonoBehaviour
 {
@@ -49,14 +50,12 @@ public class Join : UnityEngine.MonoBehaviour
             //string savedRoomCode = PlayerPrefs.GetString("RoomCode");
             roomCodeTMP.text = roomCode;
             PhotonNetwork.player.NickName = PlayerPrefs.GetString("Username");
-            UpdatePlayersList();
+            UpdatePlayerList();
         }
 
         /*playersDropdown.onValueChanged.AddListener(delegate { OnPlayerCountChanged(); });
         aswangDropdown.onValueChanged.AddListener(delegate { OnAswangCountChanged(); });*/
 
-        
-    
     }
 
     void ShowOwnerUI()
@@ -80,7 +79,7 @@ public class Join : UnityEngine.MonoBehaviour
     {
         Debug.Log($"{newPlayer.NickName} has entered the room.");
         playersInRoom.Add(newPlayer);
-        UpdatePlayersList();
+        UpdatePlayerList();
     }
 
 
@@ -88,7 +87,7 @@ public class Join : UnityEngine.MonoBehaviour
     {
         Debug.Log($"{otherPlayer.NickName} has left the room.");
         playersInRoom.Remove(otherPlayer);
-        UpdatePlayersList();
+        UpdatePlayerList();
     }
 
 
@@ -103,20 +102,19 @@ public class Join : UnityEngine.MonoBehaviour
 
 
 
-    private void UpdatePlayersList()
+    private void UpdatePlayerList()
     {
-        foreach (Transform child in playerCardsContainer)
-        {
-            Destroy(child.gameObject);
-        }
-
+        // Iterate over each player in the room and instantiate their card
         foreach (PhotonPlayer player in PhotonNetwork.playerList)
         {
+            // Calculate the spawn position (optional, based on your layout)
+            Vector3 spawnPosition = playerCardsContainer.position; // Can be adjusted for spacing
+
+            // Instantiate the player card prefab
             GameObject playerCard = Instantiate(playerCardPrefab, playerCardsContainer);
-            playerCard.GetComponentInChildren<TextMeshProUGUI>().text = player.NickName;
 
+            // Set the player name on the card's TextMeshProUGUI component
             TextMeshProUGUI textComponent = playerCard.GetComponentInChildren<TextMeshProUGUI>();
-
             if (textComponent != null)
             {
                 textComponent.text = player.NickName;
@@ -127,22 +125,24 @@ public class Join : UnityEngine.MonoBehaviour
                 // Optionally, set the font size manually
                 textComponent.fontSize = 44;  // Example font size
             }
+
+            // Set the rectTransform properties if needed (e.g., size, scale, etc.)
             RectTransform rectTransform = playerCard.GetComponent<RectTransform>();
             if (rectTransform != null)
             {
                 rectTransform.localScale = Vector3.one; // Reset scale
                 rectTransform.sizeDelta = new Vector2(200, 300); // Set a specific size if needed
+
+                // If you want to space out the cards in a row, you can adjust the position:
+                rectTransform.anchoredPosition = new Vector2(0, 0);  // Adjust this based on your layout
             }
 
-            PhotonView pv = playerCard.GetComponent<PhotonView>();
-            if (pv == null)
+            // Optionally, make the player card a child of the playerCardsContainer
+            if (playerCardsContainer != null)
             {
-                pv = playerCard.AddComponent<PhotonView>();  // Add PhotonView if missing
+                playerCard.transform.SetParent(playerCardsContainer);
             }
-            pv.RPC("SetPlayerName", PhotonTargets.AllBuffered, player.NickName);
         }
-
-        //playersCountText.text = $"Players: {PhotonNetwork.playerList.Length}/10";
     }
 
     /*private void SetGameRoles(int selectedPlayers, int selectedAswangs)
