@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class Join : UnityEngine.MonoBehaviour
 {
@@ -13,32 +14,22 @@ public class Join : UnityEngine.MonoBehaviour
     //public Text playersCountText;
     /*public Dropdown playersDropdown;
     public Dropdown aswangDropdown;*/
-    public TMP_Text roomCode;
+    public TMP_Text roomCodeTMP;
 
     private List<PhotonPlayer> playersInRoom = new List<PhotonPlayer>();
     private List<string> playerRoles = new List<string>();
 
     public GameObject ownerUIElement;
 
-    // This method will be called when the player enters the room list lobby
-    public void OnRoomListUpdate(System.Collections.Generic.List<RoomInfo> roomList)
-    {
-        foreach (RoomInfo room in roomList)
-        {
-            // Check if the room has the "roomCode" custom property
-            if (room.CustomProperties.ContainsKey("RoomCode"))
-            {
-                string roomCode = room.CustomProperties["RoomCode"].ToString();
-                Debug.Log("Room Code from room proeprties" + roomCode);
-            }
-        }
-    }
 
     void Start()
     {
-        RoomInfo room = GetComponent<RoomInfo>();
-        Debug.Log(room.CustomProperties.ContainsKey("RoomCode"));
-        
+        string roomCode = "";
+
+        if (PhotonNetwork.inRoom && PhotonNetwork.room.CustomProperties.ContainsKey("RoomCode")){
+            roomCode = PhotonNetwork.room.CustomProperties["RoomCode"].ToString();
+            Debug.Log("The room code: " + roomCode);
+        }
         if (PhotonNetwork.connected)
         {
             // Check if the current player is the master client (room owner)
@@ -52,19 +43,17 @@ public class Join : UnityEngine.MonoBehaviour
                 // Hide the UI element if the current player is not the room owner
                 HideOwnerUI();
             }
-            PhotonNetwork.player.NickName = "Player" + Random.Range(1000, 9999);
-        }
-        else
-        {
-            PhotonNetwork.ConnectUsingSettings("1.0");
+            
         }
 
         /*playersDropdown.onValueChanged.AddListener(delegate { OnPlayerCountChanged(); });
         aswangDropdown.onValueChanged.AddListener(delegate { OnAswangCountChanged(); });*/
 
 
-        string savedRoomCode = PlayerPrefs.GetString("RoomCode");
-        roomCode.text = savedRoomCode;
+        //string savedRoomCode = PlayerPrefs.GetString("RoomCode");
+        roomCodeTMP.text = roomCode;
+        PhotonNetwork.player.NickName = PlayerPrefs.GetString("Username");
+        UpdatePlayersList();
     }
 
     void ShowOwnerUI()
@@ -133,7 +122,26 @@ public class Join : UnityEngine.MonoBehaviour
         foreach (PhotonPlayer player in PhotonNetwork.playerList)
         {
             GameObject playerCard = Instantiate(playerCardPrefab, playerCardsContainer);
-            playerCard.GetComponentInChildren<Text>().text = player.NickName;
+            playerCard.GetComponentInChildren<TextMeshProUGUI>().text = player.NickName;
+
+            TextMeshProUGUI textComponent = playerCard.GetComponentInChildren<TextMeshProUGUI>();
+
+            if (textComponent != null)
+            {
+                textComponent.text = player.NickName;
+
+                // Disable Auto Size (to prevent it from resizing the text)
+                textComponent.enableAutoSizing = false;
+
+                // Optionally, set the font size manually
+                textComponent.fontSize = 44;  // Example font size
+            }
+            RectTransform rectTransform = playerCard.GetComponent<RectTransform>();
+            if (rectTransform != null)
+            {
+                rectTransform.localScale = Vector3.one; // Reset scale
+                rectTransform.sizeDelta = new Vector2(200, 300); // Set a specific size if needed
+            }
         }
 
         //playersCountText.text = $"Players: {PhotonNetwork.playerList.Length}/10";

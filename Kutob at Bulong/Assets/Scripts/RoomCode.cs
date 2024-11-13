@@ -6,11 +6,7 @@ public class RoomCode : MonoBehaviour
 {
     //public InputField roomCodeInputField;
 
-    private void Start()
-    {
-        PhotonNetwork.ConnectUsingSettings("1.0");
-    }
-
+ 
     public void GenerateRandomRoomCode()
     {
         string roomCode = GenerateRoomCode(8);
@@ -23,7 +19,7 @@ public class RoomCode : MonoBehaviour
     public void OnConnectedToMaster()
     {
         Debug.Log("Connected to master server");
-        GoToGameScene(GenerateRoomCode(8));
+        //GoToGameScene(GenerateRoomCode(8));
     }
 
     private string GenerateRoomCode(int length)
@@ -53,7 +49,7 @@ public class RoomCode : MonoBehaviour
         PlayerPrefs.Save();
 
         RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = 5;
+        roomOptions.MaxPlayers = 10;
 
         roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable
         {
@@ -61,7 +57,9 @@ public class RoomCode : MonoBehaviour
         };
 
         roomOptions.IsVisible = false;
-        
+
+        roomOptions.CustomRoomPropertiesForLobby = new string[] { roomCode };
+
         PhotonNetwork.CreateRoom(roomCode, roomOptions, null);
 
         //SceneManager.LoadScene("CreateLobby");

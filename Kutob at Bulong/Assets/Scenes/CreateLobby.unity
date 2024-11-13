@@ -1029,7 +1029,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1083,7 +1083,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1774581377}
   m_Father: {fileID: 1091381602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1456,7 +1457,6 @@ RectTransform:
   m_Children:
   - {fileID: 579466253}
   - {fileID: 937410043}
-  - {fileID: 1774581377}
   - {fileID: 1837692232}
   - {fileID: 445339707}
   - {fileID: 1793949835}
@@ -1483,8 +1483,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCardPrefab: {fileID: 5232949141410952396, guid: 556265d611f83454580c521f7713b274, type: 3}
-  playerCardsContainer: {fileID: 0}
-  roomCode: {fileID: 300009770}
+  playerCardsContainer: {fileID: 937410043}
+  roomCodeTMP: {fileID: 300009770}
   ownerUIElement: {fileID: 809281492}
 --- !u!1 &1135810560
 GameObject:
@@ -1632,6 +1632,7 @@ GameObject:
   - component: {fileID: 1139392455}
   - component: {fileID: 1139392457}
   - component: {fileID: 1139392456}
+  - component: {fileID: 1139392458}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -1696,6 +1697,33 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1139392454}
   m_CullTransparentMesh: 1
+--- !u!114 &1139392458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1139392454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 3
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 1
+  instantiationId: 1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &1189497844
 GameObject:
   m_ObjectHideFlags: 0
@@ -2608,11 +2636,11 @@ RectTransform:
   - {fileID: 29804919}
   - {fileID: 1679744311}
   - {fileID: 198107680}
-  m_Father: {fileID: 1091381602}
+  m_Father: {fileID: 937410043}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 4876.19, y: 1665.742}
+  m_AnchoredPosition: {x: 4823.8145, y: 1748.9619}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1793949834

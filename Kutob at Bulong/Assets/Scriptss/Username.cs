@@ -25,8 +25,8 @@ public class Username : MonoBehaviour
         if (!string.IsNullOrEmpty(inputField.text))
         {
             PlayerPrefs.SetString("Username", inputField.text);
-           
-            SceneManager.LoadScene("HomeScene");
+            
+            SceneManager.LoadScene("Loading Screen");
         }
     }
 }

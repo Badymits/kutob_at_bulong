@@ -2522,6 +2522,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abb53b8e37ddb84d8a970902a03c44b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputField: {fileID: 1676459149}
   modal: {fileID: 1627279461}
 --- !u!1 &1676459147
 GameObject:

@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class JoinModalControl : MonoBehaviour
 {
-
+    public TMP_InputField inputField;
     public GameObject modal;
     // Start is called before the first frame update
     public void OpenModal()
@@ -17,9 +20,11 @@ public class JoinModalControl : MonoBehaviour
         if (modal != null) { modal.SetActive(false); }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void EnterRoomCode()
     {
-
+        if (!string.IsNullOrEmpty(inputField.text))
+        {
+            PhotonNetwork.JoinRoom(inputField.text.ToUpper());
+        }
     }
 }
