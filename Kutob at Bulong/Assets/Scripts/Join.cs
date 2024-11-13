@@ -12,6 +12,7 @@ public class Join : Photon.MonoBehaviour
     public Transform playerCardsContainer; // Parent container for player cards
     public TMP_Text roomCodeTMP; // Room code display
     public Transform[] spawnPoints; // Array of spawn points for player cards
+    public GameObject ownerUIElement;
 
     private List<PhotonPlayer> playersInRoom = new List<PhotonPlayer>(); // List of players in the room
     private PhotonView photonView;
@@ -57,11 +58,19 @@ public class Join : Photon.MonoBehaviour
     void ShowOwnerUI()
     {
         // Show UI elements for the lobby owner (if applicable)
+        if (ownerUIElement != null)
+        {
+            ownerUIElement.SetActive(true);
+        }
     }
 
     void HideOwnerUI()
     {
         // Hide UI elements for non-owners (if applicable)
+        if (ownerUIElement != null)
+        {
+            ownerUIElement.SetActive(false);
+        }
     }
 
     public void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
