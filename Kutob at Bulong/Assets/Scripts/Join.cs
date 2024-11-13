@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static NightPhaseManager;
 
 public class Join : Photon.MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class Join : Photon.MonoBehaviour
 
     private List<PhotonPlayer> playersInRoom = new List<PhotonPlayer>(); // List of players in the room
     private PhotonView photonView;
+
+
 
     void Start()
     {
@@ -75,7 +78,7 @@ public class Join : Photon.MonoBehaviour
         SetPlayerPosition(playerCard, playerIndex); // Set position based on index
 
         StartCoroutine(addDelay());
-        UpdatePlayerList();
+        //UpdatePlayerList();
     }
 
     public void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
@@ -84,16 +87,16 @@ public class Join : Photon.MonoBehaviour
         playersInRoom.Remove(otherPlayer);
 
         // Clear all existing cards and re-instantiate remaining players' cards
-        UpdatePlayerList();
+        //UpdatePlayerList();
     }
 
     private void UpdatePlayerList()
     {
         // Clear existing cards before updating
-        foreach (Transform child in playerCardsContainer)
+        /*foreach (Transform child in playerCardsContainer)
         {
             Destroy(child.gameObject);
-        }
+        }*/
 
         float cardHeight = 300f;
         float cardSpacing = 10f;
@@ -103,7 +106,11 @@ public class Join : Photon.MonoBehaviour
         for (int i = 0; i < PhotonNetwork.playerList.Length; i++)
         {
             PhotonPlayer player = PhotonNetwork.playerList[i];
+
+            // Instantiate player card at the spawn point
             GameObject playerCard = Instantiate(playerCardPrefab, playerCardsContainer);
+
+
 
             // Set player's nickname on the card
             TextMeshProUGUI textComponent = playerCard.GetComponentInChildren<TextMeshProUGUI>();
@@ -136,6 +143,7 @@ public class Join : Photon.MonoBehaviour
     {
         if (playerIndex < spawnPoints.Length && spawnPoints[playerIndex] != null)
         {
+
             Vector3 spawnPosition = spawnPoints[playerIndex].position;
 
             RectTransform rectTransform = playerCard.GetComponent<RectTransform>();
@@ -150,4 +158,7 @@ public class Join : Photon.MonoBehaviour
             Debug.LogError($"Spawn point for player index {playerIndex} is missing or out of bounds.");
         }
     }
+
+
+
 }
