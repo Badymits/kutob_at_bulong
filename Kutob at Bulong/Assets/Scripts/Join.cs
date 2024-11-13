@@ -79,6 +79,7 @@ public class Join : UnityEngine.MonoBehaviour
     public void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
     {
         Debug.Log($"{newPlayer.NickName} has entered the room.");
+        playersInRoom.Add(newPlayer);
         UpdatePlayersList();
     }
 
@@ -86,6 +87,7 @@ public class Join : UnityEngine.MonoBehaviour
     public void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
     {
         Debug.Log($"{otherPlayer.NickName} has left the room.");
+        playersInRoom.Remove(otherPlayer);
         UpdatePlayersList();
     }
 
@@ -131,6 +133,13 @@ public class Join : UnityEngine.MonoBehaviour
                 rectTransform.localScale = Vector3.one; // Reset scale
                 rectTransform.sizeDelta = new Vector2(200, 300); // Set a specific size if needed
             }
+
+            PhotonView pv = playerCard.GetComponent<PhotonView>();
+            if (pv == null)
+            {
+                pv = playerCard.AddComponent<PhotonView>();  // Add PhotonView if missing
+            }
+            pv.RPC("SetPlayerName", PhotonTargets.AllBuffered, player.NickName);
         }
 
         //playersCountText.text = $"Players: {PhotonNetwork.playerList.Length}/10";
