@@ -1,11 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
+using static NightPhaseManager;
+
+
+
 
 public class RoleAssignment : MonoBehaviour
 {
-    // Start is called before the first frame update
+
+
     void Start()
+    {
+    
+    }
+
+    public void OnMouseDown()
+    {
+        AssignRole();
+    }
+
+    public void AssignRole()
     {
         
     }
