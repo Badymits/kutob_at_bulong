@@ -31,7 +31,7 @@ public class RoleManager : MonoBehaviour
 
     //keep track of players who already got assigned roles to avoid duplicates.
     private List<PhotonPlayer> playersAssignedRoles = new List<PhotonPlayer>();
-
+    PhotonView photonView;
     private List<String> takenRole = new List<String>();
 
 
@@ -49,6 +49,8 @@ public class RoleManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+   
 
     public void AssignRoles()
     {
@@ -127,7 +129,13 @@ public class RoleManager : MonoBehaviour
             Debug.Log("Player Name: " + player.NickName);
         }
         Debug.Log(playersAssignedRoles);
-        DistributeScene();
+
+        if (PhotonNetwork.isMasterClient)
+        {
+            
+            photonView.RPC("DistributeScene", PhotonTargets.All);
+        }
+        
     }
 
     public void AssignRoleToPlayer(PhotonPlayer player, string role)
@@ -150,6 +158,7 @@ public class RoleManager : MonoBehaviour
         player.SetCustomProperties(playerProperties);
     }
 
+    [PunRPC]
     public void DistributeScene()
     {
         Debug.Log("Distribute Scene reaced");
