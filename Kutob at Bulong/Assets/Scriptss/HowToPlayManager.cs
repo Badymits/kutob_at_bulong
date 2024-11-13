@@ -3,11 +3,17 @@ using UnityEngine;
 public class HowToPlayManager : MonoBehaviour
 {
     public GameObject howToPlayPanel;
-    private bool isPanelActive = false;
+    private PanelManager panelManager;
+
+    void Start()
+    {
+        panelManager = GetComponent<PanelManager>();
+    }
 
     public void ToggleHowToPlay()
     {
-        isPanelActive = !isPanelActive;
-        howToPlayPanel.SetActive(isPanelActive);
+        panelManager.CloseAllPanels();
+        howToPlayPanel.SetActive(true);
     }
 }
+
