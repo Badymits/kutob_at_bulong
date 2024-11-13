@@ -747,7 +747,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1563824638}
         m_TargetAssemblyTypeName: HowToPlayManager, Assembly-CSharp
@@ -5792,8 +5792,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 507140d4e537be7429d629e3b2c83ee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  howToPlayPanel: {fileID: 218649667}
-  rolesPanel: {fileID: 439112877}
+  howToPlayPanel: {fileID: 1500111708}
+  rolesPanel: {fileID: 271304525}
   settingsPanel: {fileID: 731391374}
 --- !u!114 &1563824637
 MonoBehaviour:
@@ -5905,14 +5905,14 @@ RectTransform:
   m_Children:
   - {fileID: 1783987356}
   - {fileID: 1076497836}
-  - {fileID: 376815211}
-  - {fileID: 1500111711}
-  - {fileID: 271304528}
-  - {fileID: 1880252618}
   - {fileID: 1560298935}
   - {fileID: 218649668}
   - {fileID: 439112878}
   - {fileID: 731391375}
+  - {fileID: 376815211}
+  - {fileID: 1500111711}
+  - {fileID: 271304528}
+  - {fileID: 1880252618}
   - {fileID: 772355701}
   - {fileID: 275195280}
   m_Father: {fileID: 0}
