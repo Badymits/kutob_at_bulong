@@ -130,7 +130,7 @@ public class Join : Photon.MonoBehaviour
 
     private void SetPlayerPosition(GameObject playerCard, int playerIndex)
     {
-        if (playerIndex < spawnPoints.Length && spawnPoints[playerIndex] != null)
+        if (playerIndex < spawnPoints.Length)
         {
             Vector3 spawnPosition = spawnPoints[playerIndex].position;
 
@@ -140,10 +140,10 @@ public class Join : Photon.MonoBehaviour
                 rectTransform.position = spawnPosition;  // Set position based on predefined spawn point
                 rectTransform.localScale = Vector3.one;  // Ensure correct scaling
             }
-        }
-        else
-        {
-            Debug.LogError($"Spawn point for player index {playerIndex} is missing or out of bounds.");
+            else
+            {
+                Debug.LogError($"Spawn point for player index {playerIndex} is missing or out of bounds.");
+            }
         }
     }
 }
