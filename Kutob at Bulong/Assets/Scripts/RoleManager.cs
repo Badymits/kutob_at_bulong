@@ -121,7 +121,7 @@ public class RoleManager : MonoBehaviour
             Debug.Log("Player Name: " + player.NickName);
         }
 
-
+        DistributeScene();
     }
 
     public void AssignRoleToPlayer(PhotonPlayer player, string role)
@@ -142,13 +142,55 @@ public class RoleManager : MonoBehaviour
         player.SetCustomProperties(playerProperties);
     }
 
-    public void LoadSceneBasedOnRole()
+    public void DistributeScene()
     {
-        foreach(PhotonPlayer player in playersAssignedRoles)
+        foreach (PhotonPlayer player in playersAssignedRoles)
         {
+            if (player.CustomProperties.ContainsKey("Role"))
+            {
+                string playerRole = (string)player.CustomProperties["Role"];
+                LoadSceneBasedOnRole(playerRole);
+                Debug.Log(player.NickName + " has role: " + playerRole);
+            }
             
         }
     }
+
+    public void LoadSceneBasedOnRole(string role)
+    {
+        switch (role)
+        {
+            case "Mangangaso":
+                PhotonNetwork.LoadLevel("MangangasoReveal");
+                break;
+
+            case "Babaylan":
+                PhotonNetwork.LoadLevel("BabaylanReveal");
+                break;
+
+            case "Manghuhula":
+                PhotonNetwork.LoadLevel("ManghuhulaReveal");
+                break;
+
+            case "Mandurugo":
+                PhotonNetwork.LoadLevel("MnadurugoReveal");
+                break;
+
+            case "Manananggal":
+                PhotonNetwork.LoadLevel("ManananggalReveal");
+                break;
+
+            case "Berbalang":
+                PhotonNetwork.LoadLevel("BerbalangReveal");
+                break;
+
+            default:
+                PhotonNetwork.LoadLevel("TaumbayanReveal");
+                break;
+        }
+    }
+
+    
 
 
     // Start is called before the first frame update
