@@ -13,11 +13,7 @@ public class SceneTransition : MonoBehaviour
 
     void Start()
     {
-        // Optionally, start the timer immediately when the player enters the scene
-        if (PhotonNetwork.isMasterClient)
-        {
-            StartCoroutine(TimerToNextScene());
-        }
+        StartCoroutine(TimerToNextScene());
     }
 
     // Coroutine to handle the timer and transition to the next scene
