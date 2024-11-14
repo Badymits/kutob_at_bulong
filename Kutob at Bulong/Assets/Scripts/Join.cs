@@ -127,6 +127,12 @@ public class Join : Photon.MonoBehaviour
             if (player == null) continue;
 
             GameObject playerCard = Instantiate(playerCardPrefab, playerCardsContainer);
+
+            BoxCollider2D box = playerCard.GetComponent<BoxCollider2D>();
+            if (box != null)
+            {
+                Debug.Log("Has box collider");
+            }
             if (playerCard != null)
             {
                 SetupPlayerCard(playerCard, player, i, cardHeight, cardSpacing, startYPosition);
