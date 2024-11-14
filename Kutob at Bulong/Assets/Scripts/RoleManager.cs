@@ -37,27 +37,24 @@ public class RoleManager : MonoBehaviour
 
     /*int roleIndex = Random.Range(0, 3);  // 0 = Villager, 1 = Werewolf, 2 = Seer
     playerRole = (PlayerRole) roleIndex;*/
-    void Awake()
-    {
-        // Singleton pattern
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
+    
 
     void Start()
     {
         photonView = GetComponent<PhotonView>();
-        
+        if (photonView == null)
+        {
+            Debug.Log("No photon view");
+        }
+        else
+        {
+            Debug.Log("Photon view present");
+        }
+
     }
 
 
-    public void CheckOnClick()
+    public void Something()
     {
         photonView = GetComponent<PhotonView>();
         if (photonView == null)
@@ -67,14 +64,14 @@ public class RoleManager : MonoBehaviour
         else
         {
             Debug.Log("Calling assign roles");
-            AssignRoles();
+            //AssignRoles();
         }
     }
    
 
     public void AssignRoles()
     {
-
+        Debug.Log("adawdawd");
         List<PhotonPlayer> shuffledPlayers = new List<PhotonPlayer>(PhotonNetwork.playerList);
 
         ShuffleList(shuffledPlayers);
