@@ -6,8 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class CycleCount : MonoBehaviour
 {
-    // Start is called before the first frame update
-
     public TMP_Text count;
     private bool isTransitioning = false;
     public float roleSceneTimer = 5f;
@@ -19,7 +17,18 @@ public class CycleCount : MonoBehaviour
         Scene currentScene = SceneManager.GetActiveScene();
         Debug.Log(currentScene.name.ToString());
         StartCoroutine(TimerToNextScene(currentScene.name.ToString()));
-       
+<<<<<<< HEAD
+
+=======
+        if (name == "NightTransition")
+        {
+            night_counter++;
+        }
+        else
+        {
+            day_counter++;
+        }
+>>>>>>> 0fc2becbcb8b05442ea6c6360191c9bfcc4e8dc5
     }
 
     private IEnumerator TimerToNextScene(string name)
@@ -40,7 +49,7 @@ public class CycleCount : MonoBehaviour
             {
                 night_counter++;
                 Increment("Night");
-                
+
             }
             else
             {
@@ -60,29 +69,23 @@ public class CycleCount : MonoBehaviour
         }
         else
         {
-            
+
             count.text = day_counter.ToString();
             switchtoDayPhase();
         }
 
     }
 
-    
+
 
     void switchToNightPhase()
     {
-        
+
         PhotonNetwork.LoadLevel("NightPhase");
     }
 
     void switchtoDayPhase()
     {
         PhotonNetwork.LoadLevel("Discussion Phase");
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

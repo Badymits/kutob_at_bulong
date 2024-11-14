@@ -39,7 +39,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
 
     private void Start()
     {
-
+        // manually instantiate at start
         ui_manager = FindObjectOfType<UIManager>();
         foreach (PhotonPlayer photonPlayer in PhotonNetwork.playerList)
         {
@@ -296,6 +296,10 @@ public class NightPhaseManager : Photon.MonoBehaviour
         else if (aswangCount >= villagerCount)
         {
             EndGame("Aswangs");
+        }
+        else
+        {
+            PhotonNetwork.LoadLevel("Day Transition"); // continue game
         }
     }
 
