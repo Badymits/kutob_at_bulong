@@ -50,4 +50,5 @@ MonoBehaviour:
   - DistributeScene
   - PlayerEliminated
   - ReceiveVote
+  - ReceiveMessage
   DisableAutoOpenWizard: 1
