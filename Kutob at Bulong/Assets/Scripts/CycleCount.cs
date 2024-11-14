@@ -17,9 +17,7 @@ public class CycleCount : MonoBehaviour
         Scene currentScene = SceneManager.GetActiveScene();
         Debug.Log(currentScene.name.ToString());
         StartCoroutine(TimerToNextScene(currentScene.name.ToString()));
-<<<<<<< HEAD
 
-=======
         if (name == "NightTransition")
         {
             night_counter++;
@@ -28,7 +26,7 @@ public class CycleCount : MonoBehaviour
         {
             day_counter++;
         }
->>>>>>> 0fc2becbcb8b05442ea6c6360191c9bfcc4e8dc5
+
     }
 
     private IEnumerator TimerToNextScene(string name)
