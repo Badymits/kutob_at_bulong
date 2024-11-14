@@ -232,6 +232,7 @@ public class RoleManager : MonoBehaviour
     public void LoadSceneBasedOnRole(string role)
     {
         Debug.Log("LoadScenebasedOnRole Reached");
+        Debug.Log("Role: " + role);
         switch (role)
         {
             case "Mangangaso":
