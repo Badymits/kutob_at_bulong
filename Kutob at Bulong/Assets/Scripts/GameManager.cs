@@ -21,13 +21,6 @@ public class GameManager : MonoBehaviour
     // keep track of eliminated players
     private Dictionary<int, bool> playerEliminated = new Dictionary<int, bool>();
 
-    // fixed flow of the turns 
-    public string[] turnOrder = new string[] { "Mangangaso", "Aswang", "Babaylan", "Manghuhula" };
-    public int currentTurnIndex = 0;
-
-    public List<int> werewolves = new List<int>(); // List to hold the IDs of werewolves
-    public int werewolfTurnIndex = 0;  // Keep track of which werewolf's turn it is
-
 
 
     // Start is called before the first frame update
@@ -41,7 +34,7 @@ public class GameManager : MonoBehaviour
 
 
     // Coroutine that acts as the phase timer
-    IEnumerator PhaseTimer()
+    public IEnumerator PhaseTimer()
     {
         while (currentPhase != GamePhase.EndGame)
         {

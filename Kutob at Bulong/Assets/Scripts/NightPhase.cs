@@ -1,20 +1,21 @@
+using Photon;
 using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
 
-public class NightPhaseManager : MonoBehaviour
+public class NightPhaseManager : Photon.MonoBehaviour
 {
-
     public GameObject textBox;
     public TMP_Text moderatorLine;
+
     public enum NightRole
     {
-        Mangangaso,    // Hunter
-        AswangMandurugo,  // Vampire
-        AswangManananggal, // Flying monster
-        AswangBerbalang,  // Shape-shifter
-        Babaylan,      // Healer
-        Manghuhula     // Seer
+        Mangangaso,         // Hunter
+        AswangMandurugo,   // Vampire
+        AswangManananggal,  // Flying monster
+        AswangBerbalang,    // Shape-shifter
+        Babaylan,          // Healer
+        Manghuhula         // Seer
     }
 
     private Dictionary<string, Player> players = new Dictionary<string, Player>();
@@ -38,26 +39,28 @@ public class NightPhaseManager : MonoBehaviour
 
     private void Start()
     {
-        foreach(PhotonPlayer photonPlayer in PhotonNetwork.playerList) 
+        foreach (PhotonPlayer photonPlayer in PhotonNetwork.playerList)
         {
             Debug.Log("Populating players dictionary");
             string roleProperty = (string)photonPlayer.CustomProperties["Role"];
+            Debug.Log("Player's role is: " + roleProperty);
 
-            Debug.Log("Player's role is: " +  roleProperty);
-
-            Player newPlayer = new Player();
-            newPlayer.username = photonPlayer.NickName; newPlayer.role = roleProperty;
+            Player newPlayer = new Player
+            {
+                username = photonPlayer.NickName,
+                role = roleProperty
+            };
 
             string photonPlayerID = photonPlayer.ID.ToString();
-            players.Add(photonPlayerID ,newPlayer);
+            players.Add(photonPlayerID, newPlayer);
         }
 
         StartNightPhase();
     }
 
-    void ProcessNightAction(Player actor, Player target)
+    private void ProcessNightAction(Player actor, Player target)
     {
-        switch (actor.role)
+        switch (actor.role.ToLower())
         {
             case "mangangaso":
                 ResetUIState();
@@ -74,7 +77,6 @@ public class NightPhaseManager : MonoBehaviour
                 {
                     target.nightTarget = true;
                 }
-                
                 break;
 
             case "aswang - mandurugo":
@@ -101,7 +103,7 @@ public class NightPhaseManager : MonoBehaviour
                         if (mangangaso != null)
                         {
                             mangangaso.skipTurn = true;
-                            mangangaso.nightSkip = nightCount + 2;
+                            mangangaso.nightSkip = nightCount + 2; // Skip next two nights
                         }
                     }
                 }
@@ -121,14 +123,13 @@ public class NightPhaseManager : MonoBehaviour
                 ResetUIState();
                 if (target.nightTarget)
                 {
-                    target.nightTarget = false;
+                    target.nightTarget = false; // Cancel the target's night action
                 }
                 break;
 
             case "manghuhula":
                 ResetUIState();
-                // Seer just gets to know target's role
-                RevealRole(actor, target);
+                RevealRole(actor, target); // Seer gets to know target's role
                 break;
         }
 
@@ -145,30 +146,29 @@ public class NightPhaseManager : MonoBehaviour
     {
         if (nightTurnOrder.Count > 0)
         {
-            currentTurn = nightTurnOrder.Dequeue();
-            // Notify the current player it's their turn
+            currentTurn = nightTurnOrder.Dequeue(); // Get the next player's turn
             NotifyPlayerTurn(currentTurn);
         }
         else
         {
-            EndNightPhase();
+            EndNightPhase(); // No more turns left, end the night phase
         }
     }
 
     private void StartNightPhase()
     {
-        //nightCount++;
+        nightCount++;
         nightTurnOrder = new Queue<NightRole>();
 
-        // Set turn order
+        // Set turn order for Mangangaso and Aswang roles
         Player mangangaso = FindPlayerByRole("mangangaso");
+
         if (mangangaso != null && mangangaso.isAlive && !mangangaso.skipTurn)
         {
             ui_manager.ShowRoleUI("Mangangaso");
             nightTurnOrder.Enqueue(NightRole.Mangangaso);
         }
 
-        // Add alive Aswang roles
         foreach (var aswangRole in new[] { NightRole.AswangMandurugo, NightRole.AswangManananggal, NightRole.AswangBerbalang })
         {
             if (IsRoleAlive(aswangRole))
@@ -179,8 +179,17 @@ public class NightPhaseManager : MonoBehaviour
         }
 
         // Add support roles if alive
-        if (IsRoleAlive(NightRole.Babaylan)) ui_manager.ShowRoleUI("Babaylan"); nightTurnOrder.Enqueue(NightRole.Babaylan);
-        if (IsRoleAlive(NightRole.Manghuhula)) ui_manager.ShowRoleUI("Manghuhula"); nightTurnOrder.Enqueue(NightRole.Manghuhula);
+        if (IsRoleAlive(NightRole.Babaylan))
+        {
+            ui_manager.ShowRoleUI("Babaylan");
+            nightTurnOrder.Enqueue(NightRole.Babaylan);
+        }
+
+        if (IsRoleAlive(NightRole.Manghuhula))
+        {
+            ui_manager.ShowRoleUI("Manghuhula");
+            nightTurnOrder.Enqueue(NightRole.Manghuhula);
+        }
 
         if (nightTurnOrder.Count > 0)
         {
@@ -191,33 +200,32 @@ public class NightPhaseManager : MonoBehaviour
 
     private void EndNightPhase()
     {
-        // Process night actions
         foreach (var player in players.Values)
         {
             if (player.nightTarget && !player.isProtected)
             {
-                player.isAlive = false;
+                player.isAlive = false; // Mark player as dead if targeted and not protected
             }
-            // Reset night status
+
+            // Reset night status for all players at the end of the night phase
             player.nightTarget = false;
             player.isProtected = false;
             player.turnDone = false;
         }
 
-        // Check win conditions
-        CheckWinConditions();
+        CheckWinConditions(); // Check for win conditions after the night phase ends
     }
 
     private bool IsAswang(string role)
     {
-        return role.StartsWith("aswang");
+        return role.StartsWith("aswang", System.StringComparison.OrdinalIgnoreCase);
     }
 
     private Player FindPlayerByRole(string role)
     {
         foreach (var player in players.Values)
         {
-            if (player.role == role && player.isAlive)
+            if (player.role.Equals(role, System.StringComparison.OrdinalIgnoreCase) && player.isAlive)
             {
                 return player;
             }
@@ -229,7 +237,7 @@ public class NightPhaseManager : MonoBehaviour
     {
         foreach (var player in players.Values)
         {
-            if (player.role == role.ToString().ToLower() && player.isAlive)
+            if (player.role.Equals(role.ToString(), System.StringComparison.OrdinalIgnoreCase) && player.isAlive)
             {
                 return true;
             }
@@ -239,16 +247,14 @@ public class NightPhaseManager : MonoBehaviour
 
     private void NotifyPlayerTurn(NightRole role)
     {
-        // Implement UI notification for current player's turn
         Debug.Log($"It's {role}'s turn");
-
         ui_manager.ShowRoleUI(role.ToString());
     }
 
     private void RevealRole(Player seer, Player target)
     {
-        // Implement UI to show target's role to the seer
         Debug.Log($"Revealed {target.role} to {seer.username}");
+        // Implement UI to show target's role to the seer here.
     }
 
     private void CheckWinConditions()
@@ -260,10 +266,8 @@ public class NightPhaseManager : MonoBehaviour
         {
             if (player.isAlive)
             {
-                if (IsAswang(player.role))
-                    aswangCount++;
-                else
-                    villagerCount++;
+                if (IsAswang(player.role)) aswangCount++;
+                else villagerCount++;
             }
         }
 
@@ -280,6 +284,6 @@ public class NightPhaseManager : MonoBehaviour
     private void EndGame(string winners)
     {
         Debug.Log($"Game Over! {winners} win!");
-        // Implement game end logic
+        // Implement game end logic here.
     }
 }
