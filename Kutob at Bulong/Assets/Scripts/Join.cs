@@ -90,8 +90,6 @@ public class Join : Photon.MonoBehaviour
             if (textComponent != null)
             {
                 textComponent.text = player.NickName;
-                textComponent.enableAutoSizing = false;
-                textComponent.fontSize = 44;
             }
 
             SetPlayerPosition(playerCard, i);
@@ -108,7 +106,6 @@ public class Join : Photon.MonoBehaviour
             if (rectTransform != null)
             {
                 rectTransform.position = spawnPosition;
-                rectTransform.localScale = Vector3.one;
             }
         }
         else
