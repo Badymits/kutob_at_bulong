@@ -8,22 +8,19 @@ using UnityEngine.UI;
 
 public class Join : Photon.MonoBehaviour
 {
-    public GameObject playerCardPrefab; // Prefab for player cards
-    public Transform playerCardsContainer; // Parent container for player cards
-    public TMP_Text roomCodeTMP; // Room code display
-    public Transform[] spawnPoints; // Array of spawn points for player cards
+    public GameObject playerCardPrefab;
+    public Transform playerCardsContainer;
+    public TMP_Text roomCodeTMP;
+    public Transform[] spawnPoints;
 
-    private List<PhotonPlayer> playersInRoom = new List<PhotonPlayer>(); // List of players in the room
+    private List<PhotonPlayer> playersInRoom = new List<PhotonPlayer>();
     private PhotonView photonView;
-
-
 
     void Start()
     {
         photonView = GetComponent<PhotonView>();
-
-        // Display room code if available
         string roomCode = "";
+
         if (PhotonNetwork.inRoom && PhotonNetwork.room.CustomProperties.ContainsKey("RoomCode"))
         {
             roomCode = PhotonNetwork.room.CustomProperties["RoomCode"].ToString();
@@ -42,10 +39,7 @@ public class Join : Photon.MonoBehaviour
             }
 
             roomCodeTMP.text = roomCode;
-
-            // Set player's nickname from PlayerPrefs
             PhotonNetwork.player.NickName = PlayerPrefs.GetString("Username");
-
             UpdatePlayerList();
         }
     }
@@ -56,28 +50,15 @@ public class Join : Photon.MonoBehaviour
         UpdatePlayerList();
     }
 
-    void ShowOwnerUI()
-    {
-        // Show UI elements for the lobby owner (if applicable)
-    }
-
-    void HideOwnerUI()
-    {
-        // Hide UI elements for non-owners (if applicable)
-    }
+    void ShowOwnerUI() { }
+    void HideOwnerUI() { }
 
     public void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
     {
-        Debug.Log(newPlayer.NickName);
         Debug.Log($"{newPlayer.NickName} has entered the room.");
         playersInRoom.Add(newPlayer);
 
-        GameObject playerCard = Instantiate(playerCardPrefab, playerCardsContainer);
-        int playerIndex = playersInRoom.Count - 1; // Get the index of the new player
-        SetPlayerPosition(playerCard, playerIndex); // Set position based on index
-
         StartCoroutine(addDelay());
-        //UpdatePlayerList();
     }
 
     public void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
@@ -85,6 +66,7 @@ public class Join : Photon.MonoBehaviour
         Debug.Log($"{otherPlayer.NickName} has left the room.");
         playersInRoom.Remove(otherPlayer);
 
+<<<<<<< HEAD
         if (playerCardPrefab != null)
         {
             DestroyImmediate(playerCardPrefab);
@@ -92,28 +74,29 @@ public class Join : Photon.MonoBehaviour
 
         // Clear all existing cards and re-instantiate remaining players' cards
         UpdatePlayerList();
+=======
+        StartCoroutine(addDelay());
+    }
+
+    private void NotifyChatbox(string message)
+    {
+        Debug.Log(message);
+>>>>>>> 1ac26ceeb39734b8d1d3c1ba8d1a36df19e57f62
     }
 
     private void UpdatePlayerList()
     {
-        // Clear existing cards before updating
         foreach (Transform child in playerCardsContainer)
         {
             Destroy(child.gameObject);
         }
 
-        float cardHeight = 300f;
-        float cardSpacing = 10f;
-        float startYPosition = 0f;
-
-        // Loop through all players and instantiate a card for each one
         for (int i = 0; i < PhotonNetwork.playerList.Length; i++)
         {
             PhotonPlayer player = PhotonNetwork.playerList[i];
-
-            // Instantiate player card at the spawn point
             GameObject playerCard = Instantiate(playerCardPrefab, playerCardsContainer);
 
+<<<<<<< HEAD
 
 
             //// Set player's nickname on the card
@@ -130,17 +113,14 @@ public class Join : Photon.MonoBehaviour
             //{
             //    Debug.LogError("TextMeshProUGUI component not found in playerCardPrefab.");
             //}
-
-            // Set position and size of the player's card
-            RectTransform rectTransform = playerCard.GetComponent<RectTransform>();
-            if (rectTransform != null)
+=======
+            TextMeshProUGUI textComponent = playerCard.GetComponentInChildren<TextMeshProUGUI>();
+            if (textComponent != null)
             {
-                rectTransform.localScale = Vector3.one;
-                rectTransform.sizeDelta = new Vector2(200, cardHeight);
-                rectTransform.anchoredPosition = new Vector2(0, startYPosition - (i * (cardHeight + cardSpacing)));
+                textComponent.text = player.NickName;
             }
+>>>>>>> 1ac26ceeb39734b8d1d3c1ba8d1a36df19e57f62
 
-            // Set parent container for proper hierarchy management
             SetPlayerPosition(playerCard, i);
         }
     }
@@ -154,8 +134,7 @@ public class Join : Photon.MonoBehaviour
             RectTransform rectTransform = playerCard.GetComponent<RectTransform>();
             if (rectTransform != null)
             {
-                rectTransform.position = spawnPosition;  // Set position based on predefined spawn point
-                rectTransform.localScale = Vector3.one;  // Ensure correct scaling
+                rectTransform.position = spawnPosition;
             }
         }
         else
@@ -163,7 +142,4 @@ public class Join : Photon.MonoBehaviour
             Debug.LogError($"Spawn point for player index {playerIndex} is missing or out of bounds.");
         }
     }
-
-
-
 }
