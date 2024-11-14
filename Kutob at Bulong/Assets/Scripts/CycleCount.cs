@@ -12,15 +12,9 @@ public class CycleCount : MonoBehaviour
 
     void Start()
     {
-<<<<<<< HEAD
         Scene currentScene = SceneManager.GetActiveScene();
-
-        if (currentScene.ToString() == "NightTransition")
-=======
-       Scene currentScene = SceneManager.GetActiveScene();
         Debug.Log(currentScene.name.ToString());
-        if (currentScene.name.ToString() == "NightTransition") 
->>>>>>> e1c62be521cb3c3649b956f38f8331c1631bd6b9
+        if (currentScene.name.ToString() == "NightTransition")
         {
             Increment("Night");
         }
@@ -62,14 +56,5 @@ public class CycleCount : MonoBehaviour
     {
         StartCoroutine(addDelay());
         PhotonNetwork.LoadLevel("Discussion Phase");
-<<<<<<< HEAD
-=======
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
->>>>>>> e1c62be521cb3c3649b956f38f8331c1631bd6b9
     }
 }
