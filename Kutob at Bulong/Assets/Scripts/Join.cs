@@ -87,7 +87,7 @@ public class Join : Photon.MonoBehaviour
 
         if (playerCardPrefab != null)
         {
-            Destroy(playerCardPrefab);
+            DestroyImmediate(playerCardPrefab);
         }
 
         // Clear all existing cards and re-instantiate remaining players' cards
@@ -99,7 +99,7 @@ public class Join : Photon.MonoBehaviour
         // Clear existing cards before updating
         foreach (Transform child in playerCardsContainer)
         {
-            Destroy(child.gameObject);
+            DestroyImmediate(child.gameObject);
         }
 
         float cardHeight = 300f;
@@ -117,19 +117,18 @@ public class Join : Photon.MonoBehaviour
 
 
             //// Set player's nickname on the card
-            //TextMeshProUGUI textComponent = playerCard.GetComponentInChildren<TextMeshProUGUI>();
-            //if (textComponent != null)
-            //{
-            //    textComponent.text = player.NickName; // Set player's nickname on the card
-            //    textComponent.enableAutoSizing = false;
-            //    textComponent.fontSize = 100;
+            TextMeshProUGUI textComponent = playerCard.GetComponentInChildren<TextMeshProUGUI>();
+            if (textComponent != null)
+            {
+                textComponent.text = player.NickName; // Set player's nickname on the card
+                textComponent.enableAutoSizing = false;
 
 
-            //}
-            //else
-            //{
-            //    Debug.LogError("TextMeshProUGUI component not found in playerCardPrefab.");
-            //}
+            }
+            else
+            {
+                Debug.LogError("TextMeshProUGUI component not found in playerCardPrefab.");
+            }
 
             // Set position and size of the player's card
             RectTransform rectTransform = playerCard.GetComponent<RectTransform>();
