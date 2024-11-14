@@ -41,4 +41,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Introduction.unity
     guid: 23c635fdb5309b244a4b64da91bdbed0
+  - enabled: 1
+    path: Assets/Scenes/NightTransition.unity
+    guid: f720c062d934bd740a11abc90fa81b10
+  - enabled: 1
+    path: Assets/Scenes/NightPhase.unity
+    guid: 01f92633c05642042b1fb521c75b52b0
   m_configObjects: {}

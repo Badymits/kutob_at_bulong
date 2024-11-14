@@ -98,9 +98,6 @@ public class RoleManager : MonoBehaviour
                 {
 
                     AssignRoleToPlayer(player, "Taumbayan");
-
-                    // Log the assigned role
-                    Debug.Log($"Assigned Taumbayan role to player: {player.NickName}");
                     playersAssignedRoles.Add(player);
                     break;
                 }
@@ -119,7 +116,7 @@ public class RoleManager : MonoBehaviour
                         int aswangIndex = random.Next(0, 2);
                         RoleAswang role_aswang = aswangRoles[aswangIndex];
 
-                        Debug.Log($"Assigned {role_aswang.ToString()} role to player: {player.NickName}");
+                        
                         AssignAswangRoleToPlayer(player, role_aswang.ToString());
                         aswangCount--;
                         playersAssignedRoles.Add(player);

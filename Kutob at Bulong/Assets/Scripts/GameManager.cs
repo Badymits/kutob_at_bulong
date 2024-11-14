@@ -34,11 +34,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         //PhotonNetwork.ConnectUsingSettings();
-        if (PhotonNetwork.isMasterClient)
-        {
-            // Start phase timer only for the master client of this room
-            StartCoroutine(PhaseTimer());
-        }
+        StartCoroutine(PhaseTimer());
     }
 
     
@@ -52,7 +48,7 @@ public class GameManager : MonoBehaviour
             timer = phaseDuration; // Reset the timer at the start of each phase
 
             // Notify all players of the phase change
-            photonView.RPC("UpdatePhase", PhotonTargets.AllBuffered, currentPhase.ToString());
+            photonView.RPC("UpdatePhase", PhotonTargets.All, currentPhase.ToString());
 
             while (timer > 0)
             {
