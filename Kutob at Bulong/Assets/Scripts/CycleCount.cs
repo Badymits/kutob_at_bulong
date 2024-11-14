@@ -15,8 +15,8 @@ public class CycleCount : MonoBehaviour
     void Start()
     {
        Scene currentScene = SceneManager.GetActiveScene();
-
-        if (currentScene.ToString() == "NightTransition") 
+        Debug.Log(currentScene.name.ToString());
+        if (currentScene.name.ToString() == "NightTransition") 
         {
             Increment("Night");
         }
@@ -57,7 +57,7 @@ public class CycleCount : MonoBehaviour
     void switchtoDayPhase()
     {
         StartCoroutine(addDelay());
-        PhotonNetwork.LoadLevel("DiscussionPhase");
+        PhotonNetwork.LoadLevel("Discussion Phase");
     }
 
     // Update is called once per frame

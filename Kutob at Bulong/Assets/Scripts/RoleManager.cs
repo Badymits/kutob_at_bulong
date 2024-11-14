@@ -247,7 +247,7 @@ public class RoleManager : MonoBehaviour
                 break;
 
             case "aswang - mandurugo":
-                PhotonNetwork.LoadLevel("MnadurugoReveal");
+                PhotonNetwork.LoadLevel("MandurugoReveal");
                 break;
 
             case "aswang - manananggal":
