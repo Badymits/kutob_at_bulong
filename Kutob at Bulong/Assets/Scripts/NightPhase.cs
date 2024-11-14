@@ -10,18 +10,19 @@ public class NightPhaseManager : Photon.MonoBehaviour
 
     public enum NightRole
     {
-        Mangangaso,         // Hunter
-        AswangMandurugo,   // Vampire
-        AswangManananggal,  // Flying monster
-        AswangBerbalang,    // Shape-shifter
-        Babaylan,          // Healer
-        Manghuhula         // Seer
+        Mangangaso, // Hunter
+        AswangMandurugo, // Vampire
+        AswangManananggal, // Flying monster
+        AswangBerbalang, // Shape-shifter
+        Babaylan, // Healer
+        Manghuhula // Seer
     }
 
     private Dictionary<string, Player> players = new Dictionary<string, Player>();
     private Queue<NightRole> nightTurnOrder;
     private NightRole currentTurn;
     private int nightCount = 0;
+
     [SerializeField] private UIManager ui_manager;
 
     public class Player
@@ -41,6 +42,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
     {
         // manually instantiate at start
         ui_manager = FindObjectOfType<UIManager>();
+
         foreach (PhotonPlayer photonPlayer in PhotonNetwork.playerList)
         {
             Debug.Log("Populating players dictionary");
@@ -56,12 +58,14 @@ public class NightPhaseManager : Photon.MonoBehaviour
             string photonPlayerID = photonPlayer.ID.ToString();
             players.Add(photonPlayerID, newPlayer);
         }
-        Debug.Log("Calling NIght phase");
+
+        Debug.Log("Calling Night phase");
 
         if (ui_manager == null)
         {
             Debug.Log("Empty");
         }
+
         StartNightPhase();
     }
 
@@ -105,7 +109,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
                     }
                     else
                     {
-                        // Find and disable Mangangaso
+                        // Find and disable Mangangaso Player
                         Player mangangaso = FindPlayerByRole("mangangaso");
                         if (mangangaso != null)
                         {
@@ -164,7 +168,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
 
     private void StartNightPhase()
     {
-        //nightCount++;
+        nightCount++;
         nightTurnOrder = new Queue<NightRole>();
 
         Debug.Log("Called Night phase");
@@ -192,10 +196,6 @@ public class NightPhaseManager : Photon.MonoBehaviour
         // Add support roles if alive
         if (IsRoleAlive(NightRole.Babaylan))
         {
-            if (ui_manager == null)
-            {
-                Debug.Log("Empty");
-            }
             ui_manager.ShowRoleUI("Babaylan");
             nightTurnOrder.Enqueue(NightRole.Babaylan);
             Debug.Log("Babaylan Turn");
@@ -231,6 +231,15 @@ public class NightPhaseManager : Photon.MonoBehaviour
         }
 
         CheckWinConditions(); // Check for win conditions after the night phase ends
+
+        // Automatically transition to discussion phase
+        TransitionToDiscussionPhase();
+    }
+
+    private void TransitionToDiscussionPhase()
+    {
+        Debug.Log("Transitioning to Discussion Phase...");
+        // Implement your logic here to move to discussion phase
     }
 
     private bool IsAswang(string role)
@@ -248,6 +257,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
                 return player;
             }
         }
+
         return null;
     }
 
@@ -260,6 +270,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
                 return true;
             }
         }
+
         return false;
     }
 
@@ -284,8 +295,10 @@ public class NightPhaseManager : Photon.MonoBehaviour
         {
             if (player.isAlive)
             {
-                if (IsAswang(player.role)) aswangCount++;
-                else villagerCount++;
+                if (IsAswang(player.role))
+                    aswangCount++;
+                else
+                    villagerCount++;
             }
         }
 
@@ -299,13 +312,13 @@ public class NightPhaseManager : Photon.MonoBehaviour
         }
         else
         {
-            PhotonNetwork.LoadLevel("Day Transition"); // continue game
+            PhotonNetwork.LoadLevel("Day Transition"); // continue game 
         }
     }
 
     private void EndGame(string winners)
     {
         Debug.Log($"Game Over! {winners} win!");
-        // Implement game end logic here.
+        // Implement game end logic here. 
     }
 }
