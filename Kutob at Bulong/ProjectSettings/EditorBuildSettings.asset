@@ -33,7 +33,7 @@ EditorBuildSettings:
     path: Assets/Scenes/BabaylanReveal.unity
     guid: ffac433e65c638445acee094c66ae7a1
   - enabled: 1
-    path: Assets/Scenes/MnadurugoReveal.unity
+    path: Assets/Scenes/Mandurugo Reveal.unity
     guid: 68fbe8ed48b08a04092ab00f221f3c59
   - enabled: 1
     path: Assets/Scenes/ManghuhulaReveal.unity
@@ -47,4 +47,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/NightPhase.unity
     guid: 01f92633c05642042b1fb521c75b52b0
+  - enabled: 1
+    path: Assets/Scenes/Discussion Phase.unity
+    guid: c9f8666a9ef9be14184f6fb2dcd1a540
   m_configObjects: {}
