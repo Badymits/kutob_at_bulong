@@ -122,6 +122,65 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &229606607
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 229606608}
+  - component: {fileID: 229606609}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &229606608
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 229606607}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -4500}
+  m_LocalScale: {x: 45, y: 45, z: 45}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1243607865}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &229606609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 229606607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 11
+  instantiationId: 11
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &230326384
 GameObject:
   m_ObjectHideFlags: 0
@@ -1866,6 +1925,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 229606608}
   - {fileID: 2041202887}
   - {fileID: 2025165702}
   - {fileID: 1393220317}
@@ -1902,7 +1962,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textBox: {fileID: 2025165701}
   moderatorLine: {fileID: 432152766}
-  ui_manager: {fileID: 0}
 --- !u!114 &1243607867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1940,6 +1999,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c77a1a4686b08464ba88c62aa3f95242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  photonView: {fileID: 229606609}
   cardContainer: {fileID: 1572812467}
   spawnPoints:
   - {fileID: 1781693382}
