@@ -21,38 +21,27 @@ public class GameManager : MonoBehaviour
     // keep track of eliminated players
     private Dictionary<int, bool> playerEliminated = new Dictionary<int, bool>();
 
-    // fixed flow of the turns 
-    public string[] turnOrder = new string[] { "Mangangaso", "Aswang", "Babaylan", "Manghuhula" };
-    public int currentTurnIndex = 0;
-
-    public List<int> werewolves = new List<int>(); // List to hold the IDs of werewolves
-    public int werewolfTurnIndex = 0;  // Keep track of which werewolf's turn it is
-
 
 
     // Start is called before the first frame update
     void Start()
     {
         //PhotonNetwork.ConnectUsingSettings();
-        if (PhotonNetwork.isMasterClient)
-        {
-            // Start phase timer only for the master client of this room
-            StartCoroutine(PhaseTimer());
-        }
+        StartCoroutine(PhaseTimer());
     }
 
     
 
 
     // Coroutine that acts as the phase timer
-    IEnumerator PhaseTimer()
+    public IEnumerator PhaseTimer()
     {
         while (currentPhase != GamePhase.EndGame)
         {
             timer = phaseDuration; // Reset the timer at the start of each phase
 
             // Notify all players of the phase change
-            photonView.RPC("UpdatePhase", PhotonTargets.AllBuffered, currentPhase.ToString());
+            photonView.RPC("UpdatePhase", PhotonTargets.All, currentPhase.ToString());
 
             while (timer > 0)
             {

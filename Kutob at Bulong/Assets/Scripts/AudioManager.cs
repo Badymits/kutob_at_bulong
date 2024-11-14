@@ -11,9 +11,24 @@ public class AudioManager : MonoBehaviour
     [Header("---------- Audio Clip ----------")]
     public AudioClip background;
 
+    private static AudioManager instance;
+
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        // Check if there is already an instance of AudioManager
+        if (instance == null)
+        {
+            // Set the current instance if none exists
+            instance = this;
+
+            // Prevent this object from being destroyed when loading a new scene
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            // Destroy this new instance if one already exists
+            Destroy(gameObject);
+        }
     }
 
     private void Start()

@@ -15,9 +15,9 @@ public enum RoleNormal
 
 public enum RoleAswang
 {
-    Mandurugo,
-    Manananggal,
-    Berbalang,
+    AswangMandurugo,  // Vampire
+    AswangManananggal, // Flying monster
+    AswangBerbalang,  // Shape-shifter
 }
 public class RoleManager : MonoBehaviour
 {
@@ -27,7 +27,11 @@ public class RoleManager : MonoBehaviour
     // Store the roles for each player
 
     private RoleNormal[] normalRoles = new RoleNormal[] { RoleNormal.Mangangaso, RoleNormal.Aswang, RoleNormal.Babaylan, RoleNormal.Manghuhula };
+<<<<<<< HEAD
     private RoleAswang[] aswangRoles = new RoleAswang[] { RoleAswang.Mandurugo, RoleAswang.Manananggal, RoleAswang.Berbalang };
+=======
+    private RoleAswang[] aswangRoles = new RoleAswang[] { RoleAswang.AswangMandurugo, RoleAswang.AswangManananggal, RoleAswang.AswangBerbalang };
+>>>>>>> 700ad7a3e3246a10a4b8eb24a56a6fe50a7a00b0
 
     //keep track of players who already got assigned roles to avoid duplicates.
     private List<PhotonPlayer> playersAssignedRoles = new List<PhotonPlayer>();
@@ -37,27 +41,27 @@ public class RoleManager : MonoBehaviour
 
     /*int roleIndex = Random.Range(0, 3);  // 0 = Villager, 1 = Werewolf, 2 = Seer
     playerRole = (PlayerRole) roleIndex;*/
-    void Awake()
-    {
-        // Singleton pattern
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
+    
 
     void Start()
     {
         photonView = GetComponent<PhotonView>();
+<<<<<<< HEAD
+=======
+        if (photonView == null)
+        {
+            Debug.Log("No photon view");
+        }
+        else
+        {
+            Debug.Log("Photon view present");
+        }
+>>>>>>> 700ad7a3e3246a10a4b8eb24a56a6fe50a7a00b0
 
     }
 
 
-    public void CheckOnClick()
+    public void Something()
     {
         photonView = GetComponent<PhotonView>();
         if (photonView == null)
@@ -67,14 +71,14 @@ public class RoleManager : MonoBehaviour
         else
         {
             Debug.Log("Calling assign roles");
-            AssignRoles();
+            //AssignRoles();
         }
     }
 
 
     public void AssignRoles()
     {
-
+        Debug.Log("adawdawd");
         List<PhotonPlayer> shuffledPlayers = new List<PhotonPlayer>(PhotonNetwork.playerList);
 
         ShuffleList(shuffledPlayers);
@@ -101,9 +105,6 @@ public class RoleManager : MonoBehaviour
                 {
 
                     AssignRoleToPlayer(player, "Taumbayan");
-
-                    // Log the assigned role
-                    Debug.Log($"Assigned Taumbayan role to player: {player.NickName}");
                     playersAssignedRoles.Add(player);
                     break;
                 }
@@ -122,8 +123,8 @@ public class RoleManager : MonoBehaviour
                         int aswangIndex = random.Next(0, 2);
                         RoleAswang role_aswang = aswangRoles[aswangIndex];
 
-                        Debug.Log($"Assigned {role_aswang.ToString()} role to player: {player.NickName}");
-                        AssignAswangRoleToPlayer(player, role_aswang.ToString());
+                        string aswang_modified_role = StringModifyAswang(role_aswang.ToString());
+                        AssignAswangRoleToPlayer(player, aswang_modified_role);
                         aswangCount--;
                         playersAssignedRoles.Add(player);
                         break;
@@ -138,10 +139,15 @@ public class RoleManager : MonoBehaviour
 
                     Debug.Log(role_aswang.ToString());
 
+<<<<<<< HEAD
                     AssignAswangRoleToPlayer(player, role_aswang.ToString());
+=======
+                    string aswang_modified_role = StringModifyAswang(role_aswang.ToString());
+                    AssignAswangRoleToPlayer(player, aswang_modified_role);
+>>>>>>> 700ad7a3e3246a10a4b8eb24a56a6fe50a7a00b0
 
 
-                    Debug.Log($"Assigned {role_aswang.ToString()} role to player: {player.NickName}");
+                    Debug.Log($"Assigned {aswang_modified_role} role to player: {player.NickName}");
                     aswangCount -= 1;
 
                     playersAssignedRoles.Add(player);
@@ -176,6 +182,23 @@ public class RoleManager : MonoBehaviour
             PhotonPlayer value = list[k];
             list[k] = list[n];
             list[n] = value;
+        }
+    }
+
+    public string StringModifyAswang(string str)
+    {
+        switch (str) 
+        {
+            case "AswangMandurugo":
+                return "aswang - mandurugo";
+            case "AswangManananggal":
+                return "aswang - manananggal";
+            case "AswangBerbalang":
+                return "aswang - berbalang";
+
+            default:
+                return "";
+
         }
     }
 
@@ -234,15 +257,15 @@ public class RoleManager : MonoBehaviour
                 PhotonNetwork.LoadLevel("ManghuhulaReveal");
                 break;
 
-            case "Mandurugo":
-                PhotonNetwork.LoadLevel("MnadurugoReveal");
+            case "aswang - mandurugo":
+                PhotonNetwork.LoadLevel("Mandurugo Reveal");
                 break;
 
-            case "Manananggal":
+            case "aswang - manananggal":
                 PhotonNetwork.LoadLevel("ManananggalReveal");
                 break;
 
-            case "Berbalang":
+            case "aswang - berbalang":
                 PhotonNetwork.LoadLevel("BerbalangReveal");
                 break;
 

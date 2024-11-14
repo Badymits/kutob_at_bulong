@@ -66,6 +66,6 @@ public class Dialogue : MonoBehaviour
     {
         textComponent.text = string.Empty;
         gameObject.SetActive(false);
-        PhotonNetwork.LoadLevel("NightPhase");
+        PhotonNetwork.LoadLevel("NightTransition");
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class CycleCount : MonoBehaviour
 {
@@ -13,7 +14,18 @@ public class CycleCount : MonoBehaviour
 
     void Start()
     {
-            
+       Scene currentScene = SceneManager.GetActiveScene();
+        Debug.Log(currentScene.name.ToString());
+        if (currentScene.name.ToString() == "NightTransition") 
+        {
+            StartCoroutine(addDelay());
+            Increment("Night");
+        }
+        else
+        {
+            StartCoroutine(addDelay());
+            Increment("Day");
+        }
     }
 
     public void Increment(string time)
@@ -22,14 +34,12 @@ public class CycleCount : MonoBehaviour
         {
             night_counter++;
             count.text = night_counter.ToString();
-            StartCoroutine(addDelay());
             switchToNightPhase();
         }
         else
         {
             day_counter++;
             count.text = day_counter.ToString();
-            StartCoroutine(addDelay());
             switchtoDayPhase();
         }
 
@@ -42,12 +52,13 @@ public class CycleCount : MonoBehaviour
 
     void switchToNightPhase()
     {
+        
         PhotonNetwork.LoadLevel("NightPhase");
     }
 
     void switchtoDayPhase()
     {
-        PhotonNetwork.LoadLevel("DiscussionPhase");
+        PhotonNetwork.LoadLevel("Discussion Phase");
     }
 
     // Update is called once per frame
