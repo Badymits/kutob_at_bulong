@@ -47,6 +47,9 @@ MonoBehaviour:
   - UpdatePhase
   - AssignRoleToPlayer
   - SetPositionRPC
+<<<<<<< HEAD
   - SyncPlayerList
+=======
+>>>>>>> b66cadc555db7e5e2f06364b480a3fe3ee65cd0f
   - DistributeScene
   DisableAutoOpenWizard: 1

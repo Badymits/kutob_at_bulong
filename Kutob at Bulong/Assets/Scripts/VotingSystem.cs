@@ -28,8 +28,7 @@ public class VotingSystem : MonoBehaviour
             // This example assumes all votes go to the same player
             Debug.Log("Voting to eliminate a player");
 
-            // After the vote, switch the game phase
-            gameManager.SwitchPhase();
+            
         }
     }
 

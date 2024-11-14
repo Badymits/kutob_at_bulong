@@ -5,12 +5,13 @@ using Photon.Chat;
 using Photon.Realtime;
 using Unity.Mathematics;
 
-
+public enum GamePhase { RoleReveal, Introduction, Night, Day, Discussion, Voting, EndGame }
 
 public class GameManager : MonoBehaviour
 {
-    public enum GamePhase { RoleReveal, Introduction, Night, Day, Discussion, Voting, EndGame }
+    
     public GamePhase currentPhase;
+    CycleCount cycleCount;
 
     private float phaseDuration = 10f; // Set the phase duration (in seconds)
     private float timer;
@@ -21,11 +22,11 @@ public class GameManager : MonoBehaviour
     private Dictionary<int, bool> playerEliminated = new Dictionary<int, bool>();
 
     // fixed flow of the turns 
-    private string[] turnOrder = new string[] { "Mangangaso", "Aswang", "Babaylan", "Manghuhula" };
-    private int currentTurnIndex = 0;
+    public string[] turnOrder = new string[] { "Mangangaso", "Aswang", "Babaylan", "Manghuhula" };
+    public int currentTurnIndex = 0;
 
-    private List<int> werewolves = new List<int>(); // List to hold the IDs of werewolves
-    private int werewolfTurnIndex = 0;  // Keep track of which werewolf's turn it is
+    public List<int> werewolves = new List<int>(); // List to hold the IDs of werewolves
+    public int werewolfTurnIndex = 0;  // Keep track of which werewolf's turn it is
 
 
 
@@ -73,8 +74,8 @@ public class GameManager : MonoBehaviour
         // Transition to next phase (independently for each room)
         currentPhase = currentPhase switch
         {
-            GamePhase.Night => GamePhase.Discussion,
-            GamePhase.Discussion => GamePhase.Voting,
+            GamePhase.Night => GamePhase.Day,
+            GamePhase.Day => GamePhase.Voting,
             GamePhase.Voting => GamePhase.EndGame,
             _ => currentPhase
         };
@@ -83,10 +84,12 @@ public class GameManager : MonoBehaviour
         switch (currentPhase)
         {
             case GamePhase.Night:
-                PhotonNetwork.LoadLevel("NightScene"); // Scene specific to current phase
+                cycleCount.Increment("Night");
+                PhotonNetwork.LoadLevel("NightTransition"); // Scene specific to current phase
                 break;
-            case GamePhase.Discussion:
-                PhotonNetwork.LoadLevel("DiscussionScene"); // Scene specific to current phase
+            case GamePhase.Day:
+                cycleCount.Increment("Day");
+                PhotonNetwork.LoadLevel("DayTransition"); // Scene specific to current phase
                 break;
             case GamePhase.Voting:
                 PhotonNetwork.LoadLevel("VotingScene"); // Scene specific to current phase

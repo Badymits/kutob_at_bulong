@@ -31,7 +31,11 @@ public class RoleManager : MonoBehaviour
 
     //keep track of players who already got assigned roles to avoid duplicates.
     private List<PhotonPlayer> playersAssignedRoles = new List<PhotonPlayer>();
+<<<<<<< HEAD
    private PhotonView photonView;
+=======
+    public PhotonView photonView;
+>>>>>>> b66cadc555db7e5e2f06364b480a3fe3ee65cd0f
     private List<String> takenRole = new List<String>();
 
 
@@ -50,6 +54,26 @@ public class RoleManager : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        photonView = GetComponent<PhotonView>();
+        
+    }
+
+
+    public void CheckOnClick()
+    {
+        photonView = GetComponent<PhotonView>();
+        if (photonView == null)
+        {
+            Debug.Log("Null");
+        }
+        else
+        {
+            Debug.Log("Calling assign roles");
+            AssignRoles();
+        }
+    }
    
 
     public void AssignRoles()
@@ -230,15 +254,6 @@ public class RoleManager : MonoBehaviour
                 PhotonNetwork.LoadLevel("TaumbayanReveal");
                 break;
         }
-    }
-
-    
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 
     // Update is called once per frame
