@@ -1,8 +1,12 @@
 using UnityEngine;
 using System.Collections.Generic;
+using TMPro;
 
 public class NightPhaseManager : MonoBehaviour
 {
+
+    public GameObject textBox;
+    public TMP_Text moderatorLine;
     public enum NightRole
     {
         Mangangaso,    // Hunter
@@ -17,6 +21,7 @@ public class NightPhaseManager : MonoBehaviour
     private Queue<NightRole> nightTurnOrder;
     private NightRole currentTurn;
     private int nightCount = 0;
+    public UIManager ui_manager;
 
     public class Player
     {
@@ -31,11 +36,31 @@ public class NightPhaseManager : MonoBehaviour
         public bool turnDone;
     }
 
+    private void Start()
+    {
+        foreach(PhotonPlayer photonPlayer in PhotonNetwork.playerList) 
+        {
+            Debug.Log("Populating players dictionary");
+            string roleProperty = (string)photonPlayer.CustomProperties["Role"];
+
+            Debug.Log("Player's role is: " +  roleProperty);
+
+            Player newPlayer = new Player();
+            newPlayer.username = photonPlayer.NickName; newPlayer.role = roleProperty;
+
+            string photonPlayerID = photonPlayer.ID.ToString();
+            players.Add(photonPlayerID ,newPlayer);
+        }
+
+        StartNightPhase();
+    }
+
     void ProcessNightAction(Player actor, Player target)
     {
         switch (actor.role)
         {
             case "mangangaso":
+                ResetUIState();
                 if (!actor.canExecute)
                 {
                     target.isProtected = true;
@@ -49,9 +74,11 @@ public class NightPhaseManager : MonoBehaviour
                 {
                     target.nightTarget = true;
                 }
+                
                 break;
 
             case "aswang - mandurugo":
+                ResetUIState();
                 if (!IsAswang(target.role))
                 {
                     target.nightTarget = true;
@@ -60,6 +87,7 @@ public class NightPhaseManager : MonoBehaviour
                 break;
 
             case "aswang - manananggal":
+                ResetUIState();
                 if (!IsAswang(target.role))
                 {
                     if (!target.isProtected)
@@ -81,6 +109,7 @@ public class NightPhaseManager : MonoBehaviour
                 break;
 
             case "aswang - berbalang":
+                ResetUIState();
                 if (!IsAswang(target.role) && !target.isProtected)
                 {
                     target.nightTarget = true;
@@ -89,6 +118,7 @@ public class NightPhaseManager : MonoBehaviour
                 break;
 
             case "babaylan":
+                ResetUIState();
                 if (target.nightTarget)
                 {
                     target.nightTarget = false;
@@ -96,12 +126,19 @@ public class NightPhaseManager : MonoBehaviour
                 break;
 
             case "manghuhula":
+                ResetUIState();
                 // Seer just gets to know target's role
                 RevealRole(actor, target);
                 break;
         }
 
         MoveToNextTurn();
+    }
+
+    private void ResetUIState()
+    {
+        ui_manager.SetFalseSpawnPoints();
+        ui_manager.cardContainer.SetActive(false);
     }
 
     private void MoveToNextTurn()
@@ -120,13 +157,14 @@ public class NightPhaseManager : MonoBehaviour
 
     private void StartNightPhase()
     {
-        nightCount++;
+        //nightCount++;
         nightTurnOrder = new Queue<NightRole>();
 
         // Set turn order
         Player mangangaso = FindPlayerByRole("mangangaso");
         if (mangangaso != null && mangangaso.isAlive && !mangangaso.skipTurn)
         {
+            ui_manager.ShowRoleUI("Mangangaso");
             nightTurnOrder.Enqueue(NightRole.Mangangaso);
         }
 
@@ -135,13 +173,14 @@ public class NightPhaseManager : MonoBehaviour
         {
             if (IsRoleAlive(aswangRole))
             {
+                ui_manager.ShowRoleUI(aswangRole.ToString());
                 nightTurnOrder.Enqueue(aswangRole);
             }
         }
 
         // Add support roles if alive
-        if (IsRoleAlive(NightRole.Babaylan)) nightTurnOrder.Enqueue(NightRole.Babaylan);
-        if (IsRoleAlive(NightRole.Manghuhula)) nightTurnOrder.Enqueue(NightRole.Manghuhula);
+        if (IsRoleAlive(NightRole.Babaylan)) ui_manager.ShowRoleUI("Babaylan"); nightTurnOrder.Enqueue(NightRole.Babaylan);
+        if (IsRoleAlive(NightRole.Manghuhula)) ui_manager.ShowRoleUI("Manghuhula"); nightTurnOrder.Enqueue(NightRole.Manghuhula);
 
         if (nightTurnOrder.Count > 0)
         {
@@ -202,6 +241,8 @@ public class NightPhaseManager : MonoBehaviour
     {
         // Implement UI notification for current player's turn
         Debug.Log($"It's {role}'s turn");
+
+        ui_manager.ShowRoleUI(role.ToString());
     }
 
     private void RevealRole(Player seer, Player target)

@@ -17,6 +17,6 @@ public class ConnectOnline : MonoBehaviour
     {
         Debug.Log("Invoked");
         PhotonNetwork.ConnectUsingSettings("1.0");
-        SceneManager.LoadScene("HomeScene");
+        SceneManager.LoadScene("VotingPhase");
     }
 }

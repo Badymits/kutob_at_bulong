@@ -48,4 +48,6 @@ MonoBehaviour:
   - AssignRoleToPlayer
   - SetPositionRPC
   - DistributeScene
+  - PlayerEliminated
+  - ReceiveVote
   DisableAutoOpenWizard: 1
