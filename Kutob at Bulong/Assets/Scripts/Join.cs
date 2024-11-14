@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static NightPhaseManager;
 
 public class Join : Photon.MonoBehaviour
 {
@@ -93,10 +92,10 @@ public class Join : Photon.MonoBehaviour
     private void UpdatePlayerList()
     {
         // Clear existing cards before updating
-        /*foreach (Transform child in playerCardsContainer)
+        foreach (Transform child in playerCardsContainer)
         {
             Destroy(child.gameObject);
-        }*/
+        }
 
         float cardHeight = 300f;
         float cardSpacing = 10f;
