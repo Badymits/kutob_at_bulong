@@ -47,4 +47,5 @@ MonoBehaviour:
   - UpdatePhase
   - AssignRoleToPlayer
   - SetPositionRPC
+  - DistributeScene
   DisableAutoOpenWizard: 1

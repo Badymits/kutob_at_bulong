@@ -31,7 +31,7 @@ public class RoleManager : MonoBehaviour
 
     //keep track of players who already got assigned roles to avoid duplicates.
     private List<PhotonPlayer> playersAssignedRoles = new List<PhotonPlayer>();
-    PhotonView photonView;
+    private PhotonView photonView;
     private List<String> takenRole = new List<String>();
 
 
