@@ -22,20 +22,16 @@ public enum RoleAswang
 public class RoleManager : MonoBehaviour
 {
     public static RoleManager Instance;
-    
+
 
     // Store the roles for each player
 
     private RoleNormal[] normalRoles = new RoleNormal[] { RoleNormal.Mangangaso, RoleNormal.Aswang, RoleNormal.Babaylan, RoleNormal.Manghuhula };
-    private RoleAswang[] aswangRoles = new RoleAswang[] { RoleAswang.Mandurugo, RoleAswang.Manananggal, RoleAswang.Berbalang};
+    private RoleAswang[] aswangRoles = new RoleAswang[] { RoleAswang.Mandurugo, RoleAswang.Manananggal, RoleAswang.Berbalang };
 
     //keep track of players who already got assigned roles to avoid duplicates.
     private List<PhotonPlayer> playersAssignedRoles = new List<PhotonPlayer>();
-<<<<<<< HEAD
-   private PhotonView photonView;
-=======
     public PhotonView photonView;
->>>>>>> b66cadc555db7e5e2f06364b480a3fe3ee65cd0f
     private List<String> takenRole = new List<String>();
 
 
@@ -57,7 +53,7 @@ public class RoleManager : MonoBehaviour
     void Start()
     {
         photonView = GetComponent<PhotonView>();
-        
+
     }
 
 
@@ -74,7 +70,7 @@ public class RoleManager : MonoBehaviour
             AssignRoles();
         }
     }
-   
+
 
     public void AssignRoles()
     {
@@ -142,7 +138,7 @@ public class RoleManager : MonoBehaviour
 
                     Debug.Log(role_aswang.ToString());
 
-                    AssignAswangRoleToPlayer(player, role_aswang.ToString() );
+                    AssignAswangRoleToPlayer(player, role_aswang.ToString());
 
 
                     Debug.Log($"Assigned {role_aswang.ToString()} role to player: {player.NickName}");
@@ -160,10 +156,10 @@ public class RoleManager : MonoBehaviour
 
         if (PhotonNetwork.isMasterClient)
         {
-            
+
             photonView.RPC("DistributeScene", PhotonTargets.All);
         }
-        
+
     }
 
     // Fisher-Yates shuffle for list of PhotonPlayer
@@ -212,12 +208,12 @@ public class RoleManager : MonoBehaviour
             if (player.CustomProperties.ContainsKey("Role"))
             {
                 string playerRole = (string)player.CustomProperties["Role"];
-                
+
                 Debug.Log(player.NickName + " has role: " + playerRole);
 
                 LoadSceneBasedOnRole(playerRole);
             }
-            
+
         }
     }
 
@@ -259,6 +255,6 @@ public class RoleManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
