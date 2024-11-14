@@ -22,7 +22,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
     private Queue<NightRole> nightTurnOrder;
     private NightRole currentTurn;
     private int nightCount = 0;
-    public UIManager ui_manager;
+    private UIManager ui_manager;
 
     public class Player
     {
@@ -54,7 +54,12 @@ public class NightPhaseManager : Photon.MonoBehaviour
             string photonPlayerID = photonPlayer.ID.ToString();
             players.Add(photonPlayerID, newPlayer);
         }
+        Debug.Log("Calling NIght phase");
 
+        if (ui_manager == null)
+        {
+            Debug.Log("Empty");
+        }
         StartNightPhase();
     }
 
@@ -157,8 +162,10 @@ public class NightPhaseManager : Photon.MonoBehaviour
 
     private void StartNightPhase()
     {
-        nightCount++;
+        //nightCount++;
         nightTurnOrder = new Queue<NightRole>();
+
+        Debug.Log("Called Night phase");
 
         // Set turn order for Mangangaso and Aswang roles
         Player mangangaso = FindPlayerByRole("mangangaso");
@@ -166,6 +173,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
         if (mangangaso != null && mangangaso.isAlive && !mangangaso.skipTurn)
         {
             ui_manager.ShowRoleUI("Mangangaso");
+            Debug.Log("Mangangaso First Turn");
             nightTurnOrder.Enqueue(NightRole.Mangangaso);
         }
 
@@ -173,6 +181,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
         {
             if (IsRoleAlive(aswangRole))
             {
+                Debug.Log("Aswang Turn");
                 ui_manager.ShowRoleUI(aswangRole.ToString());
                 nightTurnOrder.Enqueue(aswangRole);
             }
@@ -181,14 +190,20 @@ public class NightPhaseManager : Photon.MonoBehaviour
         // Add support roles if alive
         if (IsRoleAlive(NightRole.Babaylan))
         {
+            if (ui_manager == null)
+            {
+                Debug.Log("Empty");
+            }
             ui_manager.ShowRoleUI("Babaylan");
             nightTurnOrder.Enqueue(NightRole.Babaylan);
+            Debug.Log("Babaylan Turn");
         }
 
         if (IsRoleAlive(NightRole.Manghuhula))
         {
             ui_manager.ShowRoleUI("Manghuhula");
             nightTurnOrder.Enqueue(NightRole.Manghuhula);
+            Debug.Log("Manghuhula Turn");
         }
 
         if (nightTurnOrder.Count > 0)

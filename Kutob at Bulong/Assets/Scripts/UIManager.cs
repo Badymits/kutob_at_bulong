@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
     // Start is called before the first frame update
-    public PhotonView photonView;
+    private PhotonView photonView;
     public GameObject cardContainer;
     public Transform[] spawnPoints;
+    public TMP_Text tMP;
 
     void Start()
     {
@@ -22,25 +24,31 @@ public class UIManager : MonoBehaviour
             {
                 case "Mangangaso":
                     cardContainer.SetActive(true);
+                    tMP.text = "Choose who you'll Protect";
                     break;
 
                 case "Babaylan":
                     cardContainer.SetActive(true);
+                    tMP.text = "Choose who you'll SAVE";
                     break;
 
                 case "Manghuhula":
                     cardContainer.SetActive(true);
+                    tMP.text = "Choose who you'll Guess";
                     break;
 
                 case "aswang - mandurugo":
+                    tMP.text = "Choose who you'll KILL";
                     cardContainer.SetActive(true);
                     break;
 
                 case "aswang - manananggal":
+                    tMP.text = "Choose who you'll KILL";
                     cardContainer.SetActive(true);
                     break;
 
                 case "aswang - berbalang":
+                    tMP.text = "Choose who you'll KILL";
                     cardContainer.SetActive(true);
                     break;
 

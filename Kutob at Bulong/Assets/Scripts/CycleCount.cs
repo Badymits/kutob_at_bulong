@@ -16,10 +16,12 @@ public class CycleCount : MonoBehaviour
         Debug.Log(currentScene.name.ToString());
         if (currentScene.name.ToString() == "NightTransition")
         {
+            StartCoroutine(addDelay());
             Increment("Night");
         }
         else
         {
+            StartCoroutine(addDelay());
             Increment("Day");
         }
     }
@@ -48,13 +50,12 @@ public class CycleCount : MonoBehaviour
 
     void switchToNightPhase()
     {
-        StartCoroutine(addDelay());
+        
         PhotonNetwork.LoadLevel("NightPhase");
     }
 
     void switchtoDayPhase()
     {
-        StartCoroutine(addDelay());
         PhotonNetwork.LoadLevel("Discussion Phase");
     }
 }
