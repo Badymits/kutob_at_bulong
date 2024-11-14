@@ -1,3 +1,4 @@
+using Photon;
 using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
