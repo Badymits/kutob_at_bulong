@@ -22,7 +22,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
     private Queue<NightRole> nightTurnOrder;
     private NightRole currentTurn;
     private int nightCount = 0;
-    private UIManager ui_manager;
+    [SerializeField] private UIManager ui_manager;
 
     public class Player
     {
@@ -39,6 +39,8 @@ public class NightPhaseManager : Photon.MonoBehaviour
 
     private void Start()
     {
+
+        ui_manager = FindObjectOfType<UIManager>();
         foreach (PhotonPlayer photonPlayer in PhotonNetwork.playerList)
         {
             Debug.Log("Populating players dictionary");
@@ -233,6 +235,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
 
     private bool IsAswang(string role)
     {
+        Debug.Log("Aswang detected");
         return role.StartsWith("aswang", System.StringComparison.OrdinalIgnoreCase);
     }
 

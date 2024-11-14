@@ -9,22 +9,44 @@ public class CycleCount : MonoBehaviour
     // Start is called before the first frame update
 
     public TMP_Text count;
+    private bool isTransitioning = false;
+    public float roleSceneTimer = 5f;
     int night_counter = 0;
     int day_counter = 0;
 
     void Start()
     {
-       Scene currentScene = SceneManager.GetActiveScene();
+        Scene currentScene = SceneManager.GetActiveScene();
         Debug.Log(currentScene.name.ToString());
-        if (currentScene.name.ToString() == "NightTransition") 
+        StartCoroutine(TimerToNextScene(currentScene.name.ToString()));
+       
+    }
+
+    private IEnumerator TimerToNextScene(string name)
+    {
+        Debug.Log("Starting timer for scene transition...");
+
+        // Wait for the specified time in seconds
+        yield return new WaitForSeconds(roleSceneTimer);
+
+        // After the timer expires, load the introduction scene
+        if (!isTransitioning)
         {
-            StartCoroutine(addDelay());
-            Increment("Night");
-        }
-        else
-        {
-            StartCoroutine(addDelay());
-            Increment("Day");
+            isTransitioning = true;
+            Debug.Log("Timer expired. Transitioning to the Introduction Scene.");
+
+            // Transition to the introduction scene for all players
+            if (name == "NightTransition")
+            {
+                night_counter++;
+                Increment("Night");
+                
+            }
+            else
+            {
+                day_counter++;
+                Increment("Day");
+            }
         }
     }
 
@@ -32,23 +54,20 @@ public class CycleCount : MonoBehaviour
     {
         if (time == "Night")
         {
-            night_counter++;
+            Debug.Log("Increment count of night");
             count.text = night_counter.ToString();
             switchToNightPhase();
         }
         else
         {
-            day_counter++;
+            
             count.text = day_counter.ToString();
             switchtoDayPhase();
         }
 
     }
 
-    IEnumerator addDelay()
-    {
-        yield return new WaitForSecondsRealtime(5f);
-    }
+    
 
     void switchToNightPhase()
     {
