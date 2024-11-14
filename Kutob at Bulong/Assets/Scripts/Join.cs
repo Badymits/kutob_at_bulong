@@ -85,8 +85,13 @@ public class Join : Photon.MonoBehaviour
         Debug.Log($"{otherPlayer.NickName} has left the room.");
         playersInRoom.Remove(otherPlayer);
 
+        if (playerCardPrefab != null)
+        {
+            Destroy(playerCardPrefab);
+        }
+
         // Clear all existing cards and re-instantiate remaining players' cards
-        //UpdatePlayerList();
+        UpdatePlayerList();
     }
 
     private void UpdatePlayerList()
@@ -111,18 +116,20 @@ public class Join : Photon.MonoBehaviour
 
 
 
-            // Set player's nickname on the card
-            TextMeshProUGUI textComponent = playerCard.GetComponentInChildren<TextMeshProUGUI>();
-            if (textComponent != null)
-            {
-                textComponent.text = player.NickName; // Set player's nickname on the card
-                textComponent.enableAutoSizing = false;
-                textComponent.fontSize = 44;
-            }
-            else
-            {
-                Debug.LogError("TextMeshProUGUI component not found in playerCardPrefab.");
-            }
+            //// Set player's nickname on the card
+            //TextMeshProUGUI textComponent = playerCard.GetComponentInChildren<TextMeshProUGUI>();
+            //if (textComponent != null)
+            //{
+            //    textComponent.text = player.NickName; // Set player's nickname on the card
+            //    textComponent.enableAutoSizing = false;
+            //    textComponent.fontSize = 100;
+
+
+            //}
+            //else
+            //{
+            //    Debug.LogError("TextMeshProUGUI component not found in playerCardPrefab.");
+            //}
 
             // Set position and size of the player's card
             RectTransform rectTransform = playerCard.GetComponent<RectTransform>();
@@ -142,7 +149,6 @@ public class Join : Photon.MonoBehaviour
     {
         if (playerIndex < spawnPoints.Length && spawnPoints[playerIndex] != null)
         {
-
             Vector3 spawnPosition = spawnPoints[playerIndex].position;
 
             RectTransform rectTransform = playerCard.GetComponent<RectTransform>();
