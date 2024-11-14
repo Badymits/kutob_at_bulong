@@ -48,4 +48,5 @@ MonoBehaviour:
   - AssignRoleToPlayer
   - SetPositionRPC
   - SyncPlayerList
+  - DistributeScene
   DisableAutoOpenWizard: 1
