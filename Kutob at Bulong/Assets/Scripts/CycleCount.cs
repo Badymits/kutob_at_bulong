@@ -16,11 +16,8 @@ public class CycleCount : MonoBehaviour
     {
         Scene currentScene = SceneManager.GetActiveScene();
         Debug.Log(currentScene.name.ToString());
-<<<<<<< HEAD
-        if (currentScene.name.ToString() == "NightTransition")
-=======
         StartCoroutine(TimerToNextScene(currentScene.name.ToString()));
-       
+
     }
 
     private IEnumerator TimerToNextScene(string name)
@@ -32,7 +29,6 @@ public class CycleCount : MonoBehaviour
 
         // After the timer expires, load the introduction scene
         if (!isTransitioning)
->>>>>>> f3de5c38b9a5e060fe0a8efa24df96d9bc8a4d10
         {
             isTransitioning = true;
             Debug.Log("Timer expired. Transitioning to the Introduction Scene.");
@@ -42,7 +38,7 @@ public class CycleCount : MonoBehaviour
             {
                 night_counter++;
                 Increment("Night");
-                
+
             }
             else
             {
@@ -62,18 +58,18 @@ public class CycleCount : MonoBehaviour
         }
         else
         {
-            
+
             count.text = day_counter.ToString();
             switchtoDayPhase();
         }
 
     }
 
-    
+
 
     void switchToNightPhase()
     {
-        
+
         PhotonNetwork.LoadLevel("NightPhase");
     }
 
