@@ -133,6 +133,25 @@ public class Join : Photon.MonoBehaviour
             {
                 Debug.Log("Has box collider");
             }
+
+            SpriteRenderer sprite =playerCard.GetComponent<SpriteRenderer>();
+            if (sprite != null) { 
+                Debug.Log("Has sprite renderer"); 
+            } else
+            {
+                
+                Debug.Log("No sprite");
+            }
+
+            PrefabClickTest check = playerCard.GetComponent<PrefabClickTest>();
+            if (check != null)
+            {
+                Debug.Log("Script attached");
+            }
+            else
+            {
+                Debug.Log("No Script attached");
+            }
             if (playerCard != null)
             {
                 SetupPlayerCard(playerCard, player, i, cardHeight, cardSpacing, startYPosition);
