@@ -27,11 +27,7 @@ public class RoleManager : MonoBehaviour
     // Store the roles for each player
 
     private RoleNormal[] normalRoles = new RoleNormal[] { RoleNormal.Mangangaso, RoleNormal.Aswang, RoleNormal.Babaylan, RoleNormal.Manghuhula };
-<<<<<<< HEAD
-    private RoleAswang[] aswangRoles = new RoleAswang[] { RoleAswang.Mandurugo, RoleAswang.Manananggal, RoleAswang.Berbalang };
-=======
     private RoleAswang[] aswangRoles = new RoleAswang[] { RoleAswang.AswangMandurugo, RoleAswang.AswangManananggal, RoleAswang.AswangBerbalang };
->>>>>>> 700ad7a3e3246a10a4b8eb24a56a6fe50a7a00b0
 
     //keep track of players who already got assigned roles to avoid duplicates.
     private List<PhotonPlayer> playersAssignedRoles = new List<PhotonPlayer>();
@@ -41,13 +37,11 @@ public class RoleManager : MonoBehaviour
 
     /*int roleIndex = Random.Range(0, 3);  // 0 = Villager, 1 = Werewolf, 2 = Seer
     playerRole = (PlayerRole) roleIndex;*/
-    
+
 
     void Start()
     {
         photonView = GetComponent<PhotonView>();
-<<<<<<< HEAD
-=======
         if (photonView == null)
         {
             Debug.Log("No photon view");
@@ -56,7 +50,6 @@ public class RoleManager : MonoBehaviour
         {
             Debug.Log("Photon view present");
         }
->>>>>>> 700ad7a3e3246a10a4b8eb24a56a6fe50a7a00b0
 
     }
 
@@ -139,12 +132,8 @@ public class RoleManager : MonoBehaviour
 
                     Debug.Log(role_aswang.ToString());
 
-<<<<<<< HEAD
-                    AssignAswangRoleToPlayer(player, role_aswang.ToString());
-=======
                     string aswang_modified_role = StringModifyAswang(role_aswang.ToString());
                     AssignAswangRoleToPlayer(player, aswang_modified_role);
->>>>>>> 700ad7a3e3246a10a4b8eb24a56a6fe50a7a00b0
 
 
                     Debug.Log($"Assigned {aswang_modified_role} role to player: {player.NickName}");
@@ -187,7 +176,7 @@ public class RoleManager : MonoBehaviour
 
     public string StringModifyAswang(string str)
     {
-        switch (str) 
+        switch (str)
         {
             case "AswangMandurugo":
                 return "aswang - mandurugo";
