@@ -6,7 +6,6 @@ using TMPro;
 public class UIManager : MonoBehaviour
 {
     // Start is called before the first frame update
-    private PhotonView photonView;
     public GameObject cardContainer;
     public Transform[] spawnPoints;
     public TMP_Text tMP;
@@ -18,43 +17,40 @@ public class UIManager : MonoBehaviour
 
     public void ShowRoleUI(string role)
     {
-        if (photonView.isMine)
+        switch (role)
         {
-            switch (role)
-            {
-                case "Mangangaso":
-                    cardContainer.SetActive(true);
-                    tMP.text = "Choose who you'll Protect";
-                    break;
+            case "Mangangaso":
+                cardContainer.SetActive(true);
+                tMP.text = "Choose who you'll Protect";
+                break;
 
-                case "Babaylan":
-                    cardContainer.SetActive(true);
-                    tMP.text = "Choose who you'll SAVE";
-                    break;
+            case "Babaylan":
+                cardContainer.SetActive(true);
+                tMP.text = "Choose who you'll SAVE";
+                break;
 
-                case "Manghuhula":
-                    cardContainer.SetActive(true);
-                    tMP.text = "Choose who you'll Guess";
-                    break;
+            case "Manghuhula":
+                cardContainer.SetActive(true);
+                tMP.text = "Choose who you'll Guess";
+                break;
 
-                case "aswang - mandurugo":
-                    tMP.text = "Choose who you'll KILL";
-                    cardContainer.SetActive(true);
-                    break;
+            case "aswang - mandurugo":
+                tMP.text = "Choose who you'll KILL";
+                cardContainer.SetActive(true);
+                break;
 
-                case "aswang - manananggal":
-                    tMP.text = "Choose who you'll KILL";
-                    cardContainer.SetActive(true);
-                    break;
+            case "aswang - manananggal":
+                tMP.text = "Choose who you'll KILL";
+                cardContainer.SetActive(true);
+                break;
 
-                case "aswang - berbalang":
-                    tMP.text = "Choose who you'll KILL";
-                    cardContainer.SetActive(true);
-                    break;
+            case "aswang - berbalang":
+                tMP.text = "Choose who you'll KILL";
+                cardContainer.SetActive(true);
+                break;
 
-                default:
-                    break;
-            }
+            default:
+                break;
         }
     }
 
