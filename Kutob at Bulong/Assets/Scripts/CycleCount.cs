@@ -13,7 +13,7 @@ public class CycleCount : MonoBehaviour
 
     void Start()
     {
-            
+
     }
 
     public void Increment(string time)
@@ -22,37 +22,38 @@ public class CycleCount : MonoBehaviour
         {
             night_counter++;
             count.text = night_counter.ToString();
-            StartCoroutine(addDelay());
             switchToNightPhase();
         }
         else
         {
             day_counter++;
             count.text = day_counter.ToString();
-            StartCoroutine(addDelay());
             switchtoDayPhase();
         }
 
     }
-
     IEnumerator addDelay()
     {
         yield return new WaitForSecondsRealtime(5f);
+        PhotonNetwork.LoadLevel("NightPhase");
     }
 
     void switchToNightPhase()
     {
+        Debug.Log("Switching to Night");
+        StartCoroutine(addDelay());
         PhotonNetwork.LoadLevel("NightPhase");
     }
 
     void switchtoDayPhase()
     {
+        StartCoroutine(addDelay());
         PhotonNetwork.LoadLevel("DiscussionPhase");
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
