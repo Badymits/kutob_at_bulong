@@ -182,12 +182,16 @@ public class NightPhaseManager : Photon.MonoBehaviour
             Debug.Log("Mangangaso First Turn");
             nightTurnOrder.Enqueue(NightRole.Mangangaso);
         }
+        else
+        {
+            Debug.Log("Mangangaso not found or not alive.");
+        }
 
         foreach (var aswangRole in new[] { NightRole.AswangMandurugo, NightRole.AswangManananggal, NightRole.AswangBerbalang })
         {
             if (IsRoleAlive(aswangRole))
             {
-                Debug.Log("Aswang Turn");
+                Debug.Log($"{aswangRole} Turn");
                 ui_manager.ShowRoleUI(aswangRole.ToString());
                 nightTurnOrder.Enqueue(aswangRole);
             }
@@ -208,10 +212,15 @@ public class NightPhaseManager : Photon.MonoBehaviour
             Debug.Log("Manghuhula Turn");
         }
 
+        // Only notify turn if there are players in the queue
         if (nightTurnOrder.Count > 0)
         {
             currentTurn = nightTurnOrder.Dequeue();
             NotifyPlayerTurn(currentTurn);
+        }
+        else
+        {
+            Debug.Log("No players available for night phase.");
         }
     }
 
