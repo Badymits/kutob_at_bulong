@@ -48,11 +48,9 @@ EditorBuildSettings:
     path: Assets/Scenes/NightPhase.unity
     guid: 01f92633c05642042b1fb521c75b52b0
   - enabled: 1
-<<<<<<< HEAD
     path: Assets/Scenes/VotingPhase.unity
     guid: 1d050b208ebc56440bbb91621ccbec2c
-=======
+  - enabled: 1
     path: Assets/Scenes/Discussion Phase.unity
     guid: c9f8666a9ef9be14184f6fb2dcd1a540
->>>>>>> 39074c70a0242a1be549279a47080b101776169c
   m_configObjects: {}
