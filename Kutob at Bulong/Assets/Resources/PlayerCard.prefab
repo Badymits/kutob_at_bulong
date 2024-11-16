@@ -150,6 +150,7 @@ GameObject:
   - component: {fileID: 2034648148651782767}
   - component: {fileID: 7551115480702700222}
   - component: {fileID: 3967019363128938301}
+  - component: {fileID: 1259045689594241098}
   m_Layer: 5
   m_Name: PlayerCard
   m_TagString: Untagged
@@ -415,7 +416,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.0001, y: 0.0001}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &3967019363128938301
 MonoBehaviour:
@@ -429,3 +430,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4562fa8861a845f42b4d245d6bb790ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  modal: {fileID: 0}
+  currentScene:
+    m_Handle: 0
+--- !u!114 &1259045689594241098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232949141410952396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 5232949141410952396}
+          m_TargetAssemblyTypeName: 
+          m_MethodName: 
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
