@@ -240,6 +240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   count: {fileID: 2062922906}
+  roleSceneTimer: 5
 --- !u!1 &600006897
 GameObject:
   m_ObjectHideFlags: 0
@@ -524,7 +525,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -69.6, y: -16.199}
+  m_AnchoredPosition: {x: -41, y: 1.6}
   m_SizeDelta: {x: 129.7, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &766464850
@@ -658,7 +659,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 33.2, y: -16.199}
+  m_AnchoredPosition: {x: 61.8, y: 1.6000004}
   m_SizeDelta: {x: 91.21, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2062922906
