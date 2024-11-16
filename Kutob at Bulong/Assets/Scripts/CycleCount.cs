@@ -21,10 +21,12 @@ public class CycleCount : MonoBehaviour
         if (name == "NightTransition")
         {
             night_counter++;
+            count.text = night_counter.ToString();
         }
         else
         {
             day_counter++;
+            count.text = day_counter.ToString();
         }
 
     }
@@ -45,13 +47,11 @@ public class CycleCount : MonoBehaviour
             // Transition to the introduction scene for all players
             if (name == "NightTransition")
             {
-                night_counter++;
                 Increment("Night");
 
             }
             else
             {
-                day_counter++;
                 Increment("Day");
             }
         }
@@ -62,13 +62,10 @@ public class CycleCount : MonoBehaviour
         if (time == "Night")
         {
             Debug.Log("Increment count of night");
-            count.text = night_counter.ToString();
             switchToNightPhase();
         }
         else
         {
-
-            count.text = day_counter.ToString();
             switchtoDayPhase();
         }
 
