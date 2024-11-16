@@ -181,6 +181,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
             ui_manager.ShowRoleUI("mangangaso");
             Debug.Log("Mangangaso First Turn");
             nightTurnOrder.Enqueue(NightRole.Mangangaso);
+            return;
         }
         else
         {
@@ -189,11 +190,16 @@ public class NightPhaseManager : Photon.MonoBehaviour
 
         foreach (var aswangRole in new[] { NightRole.AswangMandurugo, NightRole.AswangManananggal, NightRole.AswangBerbalang })
         {
-            if (IsRoleAlive(aswangRole))
+            if (isAswangAlive(aswangRole))
             {
                 Debug.Log($"{aswangRole} Turn");
                 ui_manager.ShowRoleUI(aswangRole.ToString().ToLower());
                 nightTurnOrder.Enqueue(aswangRole);
+                return;
+            }
+            else
+            {
+                Debug.Log("Role: " + aswangRole + " Not found for some reason. ");
             }
         }
 
@@ -203,6 +209,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
             ui_manager.ShowRoleUI("babaylan");
             nightTurnOrder.Enqueue(NightRole.Babaylan);
             Debug.Log("Babaylan Turn");
+            return;
         }
 
         if (IsRoleAlive(NightRole.Manghuhula))
@@ -210,6 +217,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
             ui_manager.ShowRoleUI("manghuhula");
             nightTurnOrder.Enqueue(NightRole.Manghuhula);
             Debug.Log("Manghuhula Turn");
+            return;
         }
 
         // Only notify turn if there are players in the queue
@@ -270,10 +278,49 @@ public class NightPhaseManager : Photon.MonoBehaviour
         return null;
     }
 
-    private bool IsRoleAlive(NightRole role)
+    // I know, its a few extra steps...
+    private string StringModifyAswang(string role)
+    {
+        switch (role)
+        {
+
+            case "aswang - mandurugo":
+                return "AswangMandurugo";
+
+            case "aswang - manananggal":
+                return "AswangManananggal";
+
+            case "aswang - berbalang":
+                return "AswangBerbalang";
+
+            default:
+                return "";
+
+        }
+    }
+
+    private bool isAswangAlive(NightRole role)
     {
         foreach (var player in players.Values)
         {
+            Debug.Log("Finding role: " + player.role);
+            string modifiedString = StringModifyAswang(player.role);
+            Debug.Log("Modified String: " + modifiedString);
+            Debug.Log("Player role: " + role);
+            if (modifiedString.Equals(role.ToString(), System.StringComparison.OrdinalIgnoreCase) && player.isAlive)
+            {
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    private bool IsRoleAlive(NightRole role)
+    {
+        foreach (var player in players.Values)
+        {   
+            Debug.Log("Finding role: " + player.role);
             if (player.role.Equals(role.ToString(), System.StringComparison.OrdinalIgnoreCase) && player.isAlive)
             {
                 return true;
