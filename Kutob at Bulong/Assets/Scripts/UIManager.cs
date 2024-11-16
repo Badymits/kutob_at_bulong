@@ -25,12 +25,13 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void ShowRoleUI(string role)
+    public void ShowRoleUI(string role) // for cases such as aswang, the value returned here is AswangMandurugo, AswangManananggal, AswangBerbalang
     {
         // get local player
-        PhotonPlayer player = PhotonNetwork.player;
+        PhotonPlayer localPlayer = PhotonNetwork.player;
 
-        string playerRole = GetPlayerRole(player, role);
+        string playerRole = GetPlayerRole(localPlayer, role);
+        Debug.Log("Player role in UI manager: " + playerRole);
         
 
         if (photonView.isMine)
@@ -52,9 +53,9 @@ public class UIManager : MonoBehaviour
                     tMP.text = "Choose who you'll Guess";
                     break;
 
-                case "aswang - mandurugo":
-                case "aswang - manananggal":
-                case "aswang - berbalang":
+                case "AswangMandurugo":
+                case "AswangManananggal":
+                case "AswangBerbalang":
                     tMP.text = "Choose who you'll KILL";
                     cardContainer.SetActive(true);
                     break;
@@ -66,18 +67,53 @@ public class UIManager : MonoBehaviour
         
     }
 
-    public string GetPlayerRole(PhotonPlayer photonPlayer, string role)
+    public string StringModifyAswang(string str)
+    {
+        switch (str)
+        {
+            case "AswangMandurugo":
+                return "aswang - mandurugo";
+            case "AswangManananggal":
+                return "aswang - manananggal";
+            case "AswangBerbalang":
+                return "aswang - berbalang";
+
+            default:
+                return "";
+
+        }
+    }
+
+    public string GetPlayerRole(PhotonPlayer localPlayer, string role)
     {
         
-        if (photonPlayer.CustomProperties.ContainsKey("Role"))
+        if (localPlayer.CustomProperties.ContainsKey("Role"))
         {
-            string playerRole = (string)photonPlayer.CustomProperties["Role"];
-            Debug.Log("Current turn in night phse" + playerRole);
-            return playerRole;
+            string asawngRole = StringModifyAswang(role);
+
+            // the aswang roles that were set in RoleManager are: aswang - mandurugo, aswang - manananggal, and aswang - berbalang
+            string localPlayerRole = (string)localPlayer.CustomProperties["Role"]; 
+
+            if (localPlayerRole == asawngRole)
+            {
+                return role; // just return the role
+            }
+
+            else if (localPlayerRole != asawngRole && localPlayerRole == role)
+            {
+                Debug.Log("Current turn in night phse" + localPlayerRole);
+                return localPlayerRole;
+            }
+
+            else
+            {
+                return "";
+            }
+
         }
         else
         {
-            Debug.Log("Wala tsong");
+            Debug.Log("No Role");
         }
         return "";
     }
