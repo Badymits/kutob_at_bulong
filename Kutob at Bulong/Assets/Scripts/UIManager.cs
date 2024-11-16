@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using static NightPhaseManager;
 
 public class UIManager : MonoBehaviour
 {
@@ -26,36 +27,33 @@ public class UIManager : MonoBehaviour
 
     public void ShowRoleUI(string role)
     {
+        // get local player
+        PhotonPlayer player = PhotonNetwork.player;
+
+        string playerRole = GetPlayerRole(player, role);
+        
 
         if (photonView.isMine)
         {
-            switch (role)
+            switch (playerRole)
             {
-                case "Mangangaso":
+                case "mangangaso":
                     cardContainer.SetActive(true);
                     tMP.text = "Choose who you'll Protect";
                     break;
 
-                case "Babaylan":
+                case "babaylan":
                     cardContainer.SetActive(true);
                     tMP.text = "Choose who you'll SAVE";
                     break;
 
-                case "Manghuhula":
+                case "manghuhula":
                     cardContainer.SetActive(true);
                     tMP.text = "Choose who you'll Guess";
                     break;
 
                 case "aswang - mandurugo":
-                    tMP.text = "Choose who you'll KILL";
-                    cardContainer.SetActive(true);
-                    break;
-
                 case "aswang - manananggal":
-                    tMP.text = "Choose who you'll KILL";
-                    cardContainer.SetActive(true);
-                    break;
-
                 case "aswang - berbalang":
                     tMP.text = "Choose who you'll KILL";
                     cardContainer.SetActive(true);
@@ -66,6 +64,22 @@ public class UIManager : MonoBehaviour
             }
         }
         
+    }
+
+    public string GetPlayerRole(PhotonPlayer photonPlayer, string role)
+    {
+        
+        if (photonPlayer.CustomProperties.ContainsKey("Role"))
+        {
+            string playerRole = (string)photonPlayer.CustomProperties["Role"];
+            Debug.Log("Current turn in night phse" + playerRole);
+            return playerRole;
+        }
+        else
+        {
+            Debug.Log("Wala tsong");
+        }
+        return "";
     }
 
     public void SetFalseSpawnPoints()
