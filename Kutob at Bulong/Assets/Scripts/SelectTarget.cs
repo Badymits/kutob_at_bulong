@@ -13,6 +13,8 @@ public class SelectTarget : MonoBehaviour
     ModalControl modalControl;
     public GameObject nightSelectTargetModal;
     public GameObject playerCardPrefab;
+    public string playerCardName;
+    public int playerCardID;
 
 
     public void OnPointerClick(PointerEventData eventData)
@@ -20,19 +22,43 @@ public class SelectTarget : MonoBehaviour
         Debug.Log("Clicked on prefab");
         Debug.Log("Player Name: " + playerCardPrefab.GetComponentInChildren<TMP_Text>().text);
 
-        nightSelectTargetModal.SetActive(true);
+        
         Debug.Log(nightSelectTargetModal);
+    }
+
+    public void OpenSelectTargetModal(string username, int id)
+    {
+        GetPhotonPlayer(username);
+        playerCardID = id;
+        Debug.Log("playercard name: " + username);
+        if (nightSelectTargetModal != null)
+        {
+            nightSelectTargetModal.SetActive(true);
+        }
+        
+    }
+
+    public void GetPhotonPlayer(string name)
+    {
+        foreach (PhotonPlayer player in PhotonNetwork.playerList)
+        {
+            
+            if (player.NickName == name)
+            {
+                
+                playerCardName = player.NickName;
+                break;
+            }
+        }
     }
 
     public void CloseSelectTargetModal()
     {
+        playerCardName = "";
+        playerCardID = 1111;
         nightSelectTargetModal.SetActive(!gameObject.activeSelf);
     }
 
-    public void Test()
-    {
-
-    }
 
     // Detect mouse click on this object
     void OnMouseDown()
@@ -48,6 +74,8 @@ public class SelectTarget : MonoBehaviour
     {
 
         Debug.Log("Target Selected");
+        Debug.Log("Player ID: " + playerCardID);
+        Debug.Log("Player Name: " + playerCardName);
         //SceneManager.LoadScene("");
     }
 

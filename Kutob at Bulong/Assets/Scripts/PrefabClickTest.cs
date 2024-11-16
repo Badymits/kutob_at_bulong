@@ -8,10 +8,10 @@ using UnityEngine.SceneManagement;
 
 public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
 {
-    // Start is called before the first frame update
-
-    public GameObject modal;
+    
     public Scene currentScene;
+    [SerializeField] private SelectTarget selectTargetScript;
+
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -22,17 +22,23 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
         Debug.Log(playerCard.GetPhotonView().viewID);
         Debug.Log(gameObject.name);
 
-        Debug.Log(SceneManager.GetActiveScene().name);
+        string sceneName = SceneManager.GetActiveScene().name;
 
-        if (modal != null)
+        if ( sceneName == "NightPhase")
         {
-            modal.SetActive(true);
+            selectTargetScript.OpenSelectTargetModal(playerCard.GetComponentInChildren<TMP_Text>().text, playerCard.GetPhotonView().viewID);
         }
     }
 
-    void Start()
+    public void ConfirmTarget(string name)
     {
         
+    }
+    
+
+    void Start()
+    {
+        selectTargetScript = FindAnyObjectByType<SelectTarget>();
     }
 
     // Update is called once per frame
