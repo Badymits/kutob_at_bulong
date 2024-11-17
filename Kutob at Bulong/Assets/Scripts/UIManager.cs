@@ -31,12 +31,13 @@ public class UIManager : MonoBehaviour
         PhotonPlayer localPlayer = PhotonNetwork.player;
 
         string playerRole = GetPlayerRole(localPlayer, role);
+        Debug.Log("Parameter role: " + role);
         Debug.Log("Player role in UI manager: " + playerRole);
         
 
         if (photonView.isMine)
         {
-            switch (playerRole)
+            switch (playerRole.ToLower())
             {
                 case "mangangaso":
                     cardContainer.SetActive(true);
@@ -53,9 +54,9 @@ public class UIManager : MonoBehaviour
                     tMP.text = "Choose who you'll Guess";
                     break;
 
-                case "AswangMandurugo":
-                case "AswangManananggal":
-                case "AswangBerbalang":
+                case "aswangmandurugo":
+                case "aswangmanananggal":
+                case "aswangberbalang":
                     tMP.text = "Choose who you'll KILL";
                     cardContainer.SetActive(true);
                     break;
