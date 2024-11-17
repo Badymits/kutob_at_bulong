@@ -9,13 +9,18 @@ using TMPro;
 public class SelectTarget : MonoBehaviour
 {
 
-    PhotonView photonView;
-    ModalControl modalControl;
     public GameObject nightSelectTargetModal;
     public GameObject playerCardPrefab;
     public string playerCardName;
-    public int playerCardID;
+    private int playerIDSelf;
+    private int playerIDOther;
 
+    public NightPhaseManager nightPhaseManager;
+
+    private void Start()
+    {
+        nightPhaseManager = FindAnyObjectByType<NightPhaseManager>();
+    }
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -26,11 +31,17 @@ public class SelectTarget : MonoBehaviour
         Debug.Log(nightSelectTargetModal);
     }
 
-    public void OpenSelectTargetModal(string username, int id)
+    public void OpenSelectTargetModal(string username, int selfID, int targetID)
     {
+        Debug.Log("Received self ID: " + selfID);
+        Debug.Log("Received target ID: " + targetID);
+        // assign ID's to public vars to be accessed by other methods.
         GetPhotonPlayer(username);
-        playerCardID = id;
-        Debug.Log("playercard name: " + username);
+        playerIDSelf = selfID;
+        playerIDOther = targetID;
+        playerCardName = username;
+
+       
         if (nightSelectTargetModal != null)
         {
             nightSelectTargetModal.SetActive(true);
@@ -54,29 +65,23 @@ public class SelectTarget : MonoBehaviour
 
     public void CloseSelectTargetModal()
     {
+        // reset state
         playerCardName = "";
-        playerCardID = 1111;
+        playerIDSelf = 1111;
+        playerIDOther = 2222; 
         nightSelectTargetModal.SetActive(!gameObject.activeSelf);
-    }
-
-
-    // Detect mouse click on this object
-    void OnMouseDown()
-    {
-        Debug.Log("Image clicked!");
-        modalControl = GetComponent<ModalControl>();
-        modalControl.OpenModal();   
-
-        // Additional logic here (e.g., change image, trigger event, etc.)
     }
 
     public void TargetConfirmed()
     {
+        // self and then target
+        nightPhaseManager.ProcessNightAction(playerIDSelf, playerIDOther);
 
         Debug.Log("Target Selected");
-        Debug.Log("Player ID: " + playerCardID);
+        Debug.Log("Player ID: " + playerIDSelf);
+        Debug.Log("Player target ID: " + playerIDSelf);
         Debug.Log("Player Name: " + playerCardName);
-        //SceneManager.LoadScene("");
+        //CloseSelectTargetModal();
     }
 
     public string CheckRole()
