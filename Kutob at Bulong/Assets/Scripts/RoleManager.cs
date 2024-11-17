@@ -100,7 +100,7 @@ public class RoleManager : MonoBehaviour
                     }
                     else if (role.ToString() == "Aswang" && aswangCount != 0)
                     {
-                        int aswangIndex = random.Next(0, 2);
+                        int aswangIndex = random.Next(0, 3);
                         RoleAswang role_aswang = aswangRoles[aswangIndex];
 
                         string aswang_modified_role = StringModifyAswang(role_aswang.ToString());
