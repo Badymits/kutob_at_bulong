@@ -18,7 +18,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
         Manghuhula // Seer
     }
 
-    private Dictionary<PhotonPlayer, Player> players = new Dictionary<PhotonPlayer, Player>();
+    private Dictionary<int, Player> players = new Dictionary<int, Player>();
     private Queue<NightRole> nightTurnOrder;
     private NightRole currentTurn;
     private int nightCount = 0;
@@ -47,16 +47,20 @@ public class NightPhaseManager : Photon.MonoBehaviour
         {
             Debug.Log("Populating players dictionary");
             string roleProperty = (string)photonPlayer.CustomProperties["Role"];
+
             Debug.Log("Player's role is: " + roleProperty);
 
+            // instantiate player class obj
             Player newPlayer = new Player
             {
                 username = photonPlayer.NickName,
                 role = roleProperty
             };
 
-            //string photonPlayerID = photonPlayer.ID.ToString();
-            players.Add(photonPlayer, newPlayer);
+            Debug.Log("The PhotonPlayer ID: " + photonPlayer.ID);
+
+            
+            players.Add(photonPlayer.ID, newPlayer);
         }
 
         Debug.Log("Calling Night phase");
@@ -69,8 +73,15 @@ public class NightPhaseManager : Photon.MonoBehaviour
         StartNightPhase();
     }
 
-    private void ProcessNightAction(Player actor, Player target)
+    public void ProcessNightAction(int selfID, int targetID) // receieves photon player id for self and for target
     {
+        Player actor = GetActor(selfID);
+        Player target = GetActor(targetID);
+
+        Debug.Log("The actor: " + actor);
+        Debug.Log("The target: " + target);
+
+
         switch (actor.role.ToLower())
         {
             case "mangangaso":
@@ -142,6 +153,9 @@ public class NightPhaseManager : Photon.MonoBehaviour
                 ResetUIState();
                 RevealRole(actor, target); // Seer gets to know target's role
                 break;
+
+            default:
+                break;
         }
 
         MoveToNextTurn();
@@ -153,12 +167,37 @@ public class NightPhaseManager : Photon.MonoBehaviour
         ui_manager.cardContainer.SetActive(false);
     }
 
+    public Player GetActor(int actorID)
+    {
+        Debug.Log("Called Get actor method");
+        foreach (KeyValuePair<int, Player> player in players)
+        {
+            int photonPlayerID = player.Key;
+            Debug.Log("The player key: " + player.Key);
+            Debug.Log("The actor ID: " + actorID);
+            Player classPlayer = player.Value;
+
+            Debug.Log("The class player: " + classPlayer);
+            if (actorID == photonPlayerID)
+            {
+                Debug.Log("The returned value: " + classPlayer);
+                return classPlayer;
+            }       
+            else
+            {
+                Debug.Log("No player found");
+            }
+        }
+        return null;
+    }
+
     private void MoveToNextTurn()
     {
         if (nightTurnOrder.Count > 0)
         {
             currentTurn = nightTurnOrder.Dequeue(); // Get the next player's turn
             NotifyPlayerTurn(currentTurn);
+            ui_manager.ShowRoleUI(currentTurn.ToString());
         }
         else
         {
@@ -193,7 +232,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
             if (isAswangAlive(aswangRole))
             {
                 Debug.Log($"{aswangRole} Turn");
-                ui_manager.ShowRoleUI(aswangRole.ToString().ToLower());
+                ui_manager.ShowRoleUI(aswangRole.ToString());
                 nightTurnOrder.Enqueue(aswangRole);
                 return;
             }
