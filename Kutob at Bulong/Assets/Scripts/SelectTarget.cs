@@ -16,10 +16,12 @@ public class SelectTarget : MonoBehaviour
     private int playerIDOther;
 
     public NightPhaseManager nightPhaseManager;
+    public PrefabClickTest prefabScript;
+
 
     private void Start()
     {
-        nightPhaseManager = FindAnyObjectByType<NightPhaseManager>();
+        prefabScript = FindAnyObjectByType<PrefabClickTest>();
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -33,15 +35,7 @@ public class SelectTarget : MonoBehaviour
 
     public void OpenSelectTargetModal(string username, int selfID, int targetID)
     {
-        Debug.Log("Received self ID: " + selfID);
-        Debug.Log("Received target ID: " + targetID);
-        // assign ID's to public vars to be accessed by other methods.
-        GetPhotonPlayer(username);
-        playerIDSelf = selfID;
-        playerIDOther = targetID;
-        playerCardName = username;
 
-       
         if (nightSelectTargetModal != null)
         {
             nightSelectTargetModal.SetActive(true);
@@ -49,39 +43,16 @@ public class SelectTarget : MonoBehaviour
         
     }
 
-    public void GetPhotonPlayer(string name)
-    {
-        foreach (PhotonPlayer player in PhotonNetwork.playerList)
-        {
-            
-            if (player.NickName == name)
-            {
-                
-                playerCardName = player.NickName;
-                break;
-            }
-        }
-    }
-
     public void CloseSelectTargetModal()
     {
         // reset state
         playerCardName = "";
-        playerIDSelf = 1111;
-        playerIDOther = 2222; 
         nightSelectTargetModal.SetActive(!gameObject.activeSelf);
     }
 
     public void TargetConfirmed()
     {
-        // self and then target
-        nightPhaseManager.ProcessNightAction(playerIDSelf, playerIDOther);
-
-        Debug.Log("Target Selected");
-        Debug.Log("Player ID: " + playerIDSelf);
-        Debug.Log("Player target ID: " + playerIDSelf);
-        Debug.Log("Player Name: " + playerCardName);
-        //CloseSelectTargetModal();
+        prefabScript.TestTargetConfirmed();
     }
 
     public string CheckRole()
