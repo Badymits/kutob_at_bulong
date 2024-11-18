@@ -127,6 +127,9 @@ public class Join : Photon.MonoBehaviour
             if (player == null) continue;
 
             GameObject playerCard = Instantiate(playerCardPrefab, playerCardsContainer);
+            PhotonView playerPhotonView = playerCard.GetComponent<PhotonView>();
+
+            playerPhotonView.TransferOwnership(player);
 
             if (playerCard != null)
             {
