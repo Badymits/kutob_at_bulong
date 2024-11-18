@@ -58,8 +58,6 @@ public class NightPhaseManager : Photon.MonoBehaviour
             };
 
             Debug.Log("The PhotonPlayer ID: " + photonPlayer.ID);
-
-            
             players.Add(photonPlayer.ID, newPlayer);
         }
 
@@ -78,7 +76,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
         Player actor = GetActor(selfID);
         Player target = GetActor(targetID);
 
-        Debug.Log("The actor: " + actor);
+        Debug.Log("The actor: " + actor + " Actor role: " +  actor.role);
         Debug.Log("The target: " + target);
 
 
@@ -157,7 +155,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
             default:
                 break;
         }
-
+        Debug.Log("On to the next role...");
         MoveToNextTurn();
     }
 
@@ -165,6 +163,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
     {
         ui_manager.SetFalseSpawnPoints();
         ui_manager.cardContainer.SetActive(false);
+        ui_manager.tMP.text = "Wait for your turn";
     }
 
     public Player GetActor(int actorID)
@@ -196,8 +195,8 @@ public class NightPhaseManager : Photon.MonoBehaviour
         if (nightTurnOrder.Count > 0)
         {
             currentTurn = nightTurnOrder.Dequeue(); // Get the next player's turn
+            Debug.Log("Current night turn order value: " + nightTurnOrder.Count);
             NotifyPlayerTurn(currentTurn);
-            ui_manager.ShowRoleUI(currentTurn.ToString());
         }
         else
         {
@@ -211,16 +210,16 @@ public class NightPhaseManager : Photon.MonoBehaviour
         nightTurnOrder = new Queue<NightRole>();
 
         Debug.Log("Called Night phase");
+        Debug.Log("Current night turn order value: " + nightTurnOrder.Count);
 
         // Set turn order for Mangangaso and Aswang roles
         Player mangangaso = FindPlayerByRole("mangangaso");
 
         if (mangangaso != null && mangangaso.isAlive && !mangangaso.skipTurn)
         {
-            ui_manager.ShowRoleUI("mangangaso");
-            Debug.Log("Mangangaso First Turn");
+            
+            Debug.Log("Mangangaso First Turn Added");
             nightTurnOrder.Enqueue(NightRole.Mangangaso);
-            return;
         }
         else
         {
@@ -231,10 +230,8 @@ public class NightPhaseManager : Photon.MonoBehaviour
         {
             if (isAswangAlive(aswangRole))
             {
-                Debug.Log($"{aswangRole} Turn");
-                ui_manager.ShowRoleUI(aswangRole.ToString());
+                Debug.Log($"{aswangRole} Turn Added");
                 nightTurnOrder.Enqueue(aswangRole);
-                return;
             }
             else
             {
@@ -245,18 +242,16 @@ public class NightPhaseManager : Photon.MonoBehaviour
         // Add support roles if alive
         if (IsRoleAlive(NightRole.Babaylan))
         {
-            ui_manager.ShowRoleUI("babaylan");
+            
             nightTurnOrder.Enqueue(NightRole.Babaylan);
-            Debug.Log("Babaylan Turn");
-            return;
+            Debug.Log("Babaylan Turn Added");
         }
 
         if (IsRoleAlive(NightRole.Manghuhula))
         {
-            ui_manager.ShowRoleUI("manghuhula");
+            
             nightTurnOrder.Enqueue(NightRole.Manghuhula);
-            Debug.Log("Manghuhula Turn");
-            return;
+            Debug.Log("Manghuhula Turn Added");
         }
 
         // Only notify turn if there are players in the queue
@@ -296,6 +291,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
     {
         Debug.Log("Transitioning to Discussion Phase...");
         // Implement your logic here to move to discussion phase
+        PhotonNetwork.LoadLevel("DayTransition"); // continue game 
     }
 
     private bool IsAswang(string role)
@@ -372,7 +368,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
     private void NotifyPlayerTurn(NightRole role)
     {
         Debug.Log($"It's {role}'s turn");
-        ui_manager.ShowRoleUI(role.ToString());
+        ui_manager.ShowRoleUI(role.ToString().ToLower());
     }
 
     private void RevealRole(Player seer, Player target)
@@ -397,17 +393,18 @@ public class NightPhaseManager : Photon.MonoBehaviour
             }
         }
 
+        // modify this later to send user to appropriate end game screen depending on their role
         if (aswangCount == 0)
         {
             EndGame("Villagers");
+            PhotonNetwork.LoadLevel("VictoryTaumbayan");
+            return;
         }
         else if (aswangCount >= villagerCount)
         {
             EndGame("Aswangs");
-        }
-        else
-        {
-            PhotonNetwork.LoadLevel("Day Transition"); // continue game 
+            PhotonNetwork.LoadLevel("VictoryAswang");
+            return;
         }
     }
 
