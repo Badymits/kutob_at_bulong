@@ -72,11 +72,11 @@ public class UIManager : MonoBehaviour
     {
         switch (str)
         {
-            case "AswangMandurugo":
+            case "aswangmandurugo":
                 return "aswang - mandurugo";
-            case "AswangManananggal":
+            case "aswangmanananggal":
                 return "aswang - manananggal";
-            case "AswangBerbalang":
+            case "aswangberbalang":
                 return "aswang - berbalang";
 
             default:
@@ -93,7 +93,9 @@ public class UIManager : MonoBehaviour
             string asawngRole = StringModifyAswang(role);
 
             // the aswang roles that were set in RoleManager are: aswang - mandurugo, aswang - manananggal, and aswang - berbalang
-            string localPlayerRole = (string)localPlayer.CustomProperties["Role"]; 
+            string localPlayerRole = (string)localPlayer.CustomProperties["Role"];
+
+            Debug.Log("local Player role: " + localPlayerRole);
 
             if (localPlayerRole == asawngRole)
             {
@@ -102,7 +104,7 @@ public class UIManager : MonoBehaviour
 
             else if (localPlayerRole != asawngRole && localPlayerRole == role)
             {
-                Debug.Log("Current turn in night phse" + localPlayerRole);
+                Debug.Log("Current turn in night phase" + localPlayerRole);
                 return localPlayerRole;
             }
 
