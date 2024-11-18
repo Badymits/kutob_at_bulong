@@ -34,8 +34,7 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
     {
         // refers to the clicked game object. Doesn't necessarily mean it would refer to self
         GameObject playerCard = gameObject;
-        
-        Debug.Log("Prefab clicked: " + playerCard.GetComponent<PhotonView>());
+     
 
         // retrieve scene for conidtional modal opening/closing
         string sceneName = SceneManager.GetActiveScene().name;
@@ -43,16 +42,12 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
         // gets photonview component of target, NOT SELF
         PhotonView photonViewTarget = playerCard.GetComponent<PhotonView>();
         PhotonPlayer photonPlayerTarget = photonViewTarget.owner;
+
         Debug.Log("Photon View component" + photonPlayerTarget.ID);
 
 
         // retrieving photon player ID's and username through the PhotonView component attached to prefab
         photonplayerIDTarget = photonPlayerTarget.ID;
-        Debug.Log("Photon player id target: " + photonplayerIDTarget);
-        Debug.Log("Photon player id self: " + photonplayerIDSelf);
-        
-        string photonViewName = playerCard.GetComponentInChildren<TMP_Text>().text;
-       
 
         if ( sceneName == "NightPhase")
         {
@@ -76,7 +71,24 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
         photonplayerIDTarget = 1111;
         photonplayerIDSelf = 2222;
     }
-    
+
+    public void EliminatedFromGame(string currentPhase)
+    {
+        Debug.Log("");
+        PhotonView photonView = GetComponent<PhotonView>();
+        if (currentPhase == "NightPhase")
+        {
+            photonView.RPC("LoadEliminationScene", photonView.owner);
+        }
+    }
+
+    [PunRPC]
+    public void LoadEliminationScene()
+    {
+        // Load the elimination scene just for this player
+        SceneManager.LoadScene("EliminationScene");
+    }
+
     // Update is called once per frame
     void Update()
     {
