@@ -13,7 +13,8 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
     public int photonViewIDSelf;
     PhotonView photonView;
     [SerializeField] private SelectTarget selectTargetScript;
-    private int photonplayerTarget;
+    public NightPhaseManager nightPhaseManager;
+    private int photonplayerIDTarget;
     private int photonplayerIDSelf;
 
     void Start()
@@ -26,6 +27,7 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
         }
         photonView = GetComponent<PhotonView>();
         selectTargetScript = FindAnyObjectByType<SelectTarget>();
+        nightPhaseManager = FindAnyObjectByType<NightPhaseManager>();
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -40,13 +42,13 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
 
         // gets photonview component of target, NOT SELF
         PhotonView photonViewTarget = playerCard.GetComponent<PhotonView>();
-        PhotonPlayer photonPlayerTarget = photonView.owner;
+        PhotonPlayer photonPlayerTarget = photonViewTarget.owner;
         Debug.Log("Photon View component" + photonPlayerTarget.ID);
-        
+
 
         // retrieving photon player ID's and username through the PhotonView component attached to prefab
-        int photonViewIDTarget = photonViewTarget.ownerId;
-        Debug.Log("Photon player id target: " + photonViewIDTarget);
+        photonplayerIDTarget = photonPlayerTarget.ID;
+        Debug.Log("Photon player id target: " + photonplayerIDTarget);
         Debug.Log("Photon player id self: " + photonplayerIDSelf);
         
         string photonViewName = playerCard.GetComponentInChildren<TMP_Text>().text;
@@ -54,8 +56,25 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
 
         if ( sceneName == "NightPhase")
         {
-            selectTargetScript.OpenSelectTargetModal(photonViewName, photonplayerIDSelf, photonViewIDTarget);
+            //selectTargetScript.OpenSelectTargetModal(photonViewName, photonplayerIDSelf, photonViewIDTarget);
+            selectTargetScript.nightSelectTargetModal.SetActive(true);
         }
+    }
+
+    public void TestTargetConfirmed()
+    {
+        Debug.Log("Sending confirm request to night phase script");
+        Debug.Log("Photon Player self ID: " + photonplayerIDSelf);
+        Debug.Log("Photon Player target ID: " + photonplayerIDTarget);
+        nightPhaseManager.ProcessNightAction(photonplayerIDSelf, photonplayerIDTarget);
+        selectTargetScript.nightSelectTargetModal.SetActive(false);
+        ResetIDs();
+    }
+
+    public void ResetIDs()
+    {
+        photonplayerIDTarget = 1111;
+        photonplayerIDSelf = 2222;
     }
     
     // Update is called once per frame
