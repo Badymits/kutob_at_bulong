@@ -2,6 +2,7 @@ using Photon;
 using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class NightPhaseManager : Photon.MonoBehaviour
 {
@@ -24,6 +25,8 @@ public class NightPhaseManager : Photon.MonoBehaviour
     private int nightCount = 0;
 
     [SerializeField] private UIManager ui_manager;
+    private PrefabClickTest prefabScript;
+
 
     public class Player
     {
@@ -42,6 +45,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
     {
         // manually instantiate at start
         ui_manager = FindObjectOfType<UIManager>();
+        prefabScript = FindAnyObjectByType<PrefabClickTest>();
 
         foreach (PhotonPlayer photonPlayer in PhotonNetwork.playerList)
         {
@@ -249,7 +253,6 @@ public class NightPhaseManager : Photon.MonoBehaviour
 
         if (IsRoleAlive(NightRole.Manghuhula))
         {
-            
             nightTurnOrder.Enqueue(NightRole.Manghuhula);
             Debug.Log("Manghuhula Turn Added");
         }
@@ -273,6 +276,8 @@ public class NightPhaseManager : Photon.MonoBehaviour
             if (player.nightTarget && !player.isProtected)
             {
                 player.isAlive = false; // Mark player as dead if targeted and not protected
+                // call method from script that is attached to the prefab itself
+                prefabScript.EliminatedFromGame("NightPhase");
             }
 
             // Reset night status for all players at the end of the night phase
@@ -283,8 +288,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
 
         CheckWinConditions(); // Check for win conditions after the night phase ends
 
-        // Automatically transition to discussion phase
-        TransitionToDiscussionPhase();
+        
     }
 
     private void TransitionToDiscussionPhase()
@@ -397,20 +401,33 @@ public class NightPhaseManager : Photon.MonoBehaviour
         if (aswangCount == 0)
         {
             EndGame("Villagers");
-            PhotonNetwork.LoadLevel("VictoryTaumbayan");
             return;
         }
-        else if (aswangCount >= villagerCount)
+        else if (aswangCount >= villagerCount && villagerCount == 0)
         {
             EndGame("Aswangs");
-            PhotonNetwork.LoadLevel("VictoryAswang");
+            
             return;
+        }
+        else
+        {
+            // Automatically transition to discussion phase
+            TransitionToDiscussionPhase();
         }
     }
 
     private void EndGame(string winners)
     {
         Debug.Log($"Game Over! {winners} win!");
+        if (winners == "Villagers")
+        {
+            PhotonNetwork.LoadLevel("VictoryTaumbayan");
+        }
+        else
+        {
+            PhotonNetwork.LoadLevel("VictoryAswang");
+        }
+        return;
         // Implement game end logic here. 
     }
 }
