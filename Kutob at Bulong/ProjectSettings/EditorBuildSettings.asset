@@ -48,9 +48,24 @@ EditorBuildSettings:
     path: Assets/Scenes/NightPhase.unity
     guid: 01f92633c05642042b1fb521c75b52b0
   - enabled: 1
+    path: Assets/Scenes/DayTransition.unity
+    guid: 1c84701d485af3246bf5796767a2d0e4
+  - enabled: 1
     path: Assets/Scenes/VotingPhase.unity
     guid: 1d050b208ebc56440bbb91621ccbec2c
   - enabled: 1
     path: Assets/Scenes/Discussion Phase.unity
     guid: c9f8666a9ef9be14184f6fb2dcd1a540
+  - enabled: 1
+    path: Assets/Scenes/DefeatAswang.unity
+    guid: 16eabba2e2bd11646ae98850f6fb15e8
+  - enabled: 1
+    path: Assets/Scenes/DefeatTaumbayan.unity
+    guid: deb08b8f1e68c3844a4b863565cc6977
+  - enabled: 1
+    path: Assets/Scenes/VictoryAswang.unity
+    guid: 83ab29cb971c3ed40878fdd7fda7906c
+  - enabled: 1
+    path: Assets/Scenes/VictoryTaumbayan.unity
+    guid: 708e99af20a0b2a419e7e0904d7d44d4
   m_configObjects: {}
