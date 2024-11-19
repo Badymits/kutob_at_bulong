@@ -15,14 +15,21 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         photonView = GetComponent<PhotonView>();
-        if (photonView == null)
-        {
-            Debug.Log("No photon view");
+    }
+
+    [PunRPC]
+    public void UpdatePlayerTurnUI(string role)
+    {
+        Debug.Log("Role that was passed in parameter: " + role);
+        if (photonView == null) {
+            Debug.Log("Photon view nout found"); 
         }
         else
         {
-            Debug.Log("Photon view present");
+            Debug.Log("Photon view found");
         }
+        //Debug.Log();
+        ShowRoleUI(role);
     }
 
     public void ShowRoleUI(string role) // for cases such as aswang, the value returned here is AswangMandurugo, AswangManananggal, AswangBerbalang
@@ -35,7 +42,7 @@ public class UIManager : MonoBehaviour
         Debug.Log("Player role in UI manager: " + playerRole);
         
 
-        if (photonView.isMine)
+        if (playerRole.ToLower() == role.ToLower())
         {
             switch (playerRole.ToLower())
             {
