@@ -52,4 +52,5 @@ MonoBehaviour:
   - ReceiveVote
   - ReceiveMessage
   - LoadEliminationScene
+  - UpdatePlayerTurnUI
   DisableAutoOpenWizard: 1

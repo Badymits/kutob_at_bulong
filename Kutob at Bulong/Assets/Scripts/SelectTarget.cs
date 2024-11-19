@@ -12,8 +12,6 @@ public class SelectTarget : MonoBehaviour
     public GameObject nightSelectTargetModal;
     public GameObject playerCardPrefab;
     public string playerCardName;
-    private int playerIDSelf;
-    private int playerIDOther;
 
     public NightPhaseManager nightPhaseManager;
     public PrefabClickTest prefabScript;
