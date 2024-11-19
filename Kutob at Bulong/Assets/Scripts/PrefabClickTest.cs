@@ -22,7 +22,7 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
         if (PhotonNetwork.connectedAndReady)
         {
             // If the player is already connected to the room, access the PhotonPlayer ID
-            Debug.Log(PhotonNetwork.player.ID);
+            
             photonplayerIDSelf = PhotonNetwork.player.ID;
         }
         photonView = GetComponent<PhotonView>();
@@ -48,6 +48,7 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
 
         // retrieving photon player ID's and username through the PhotonView component attached to prefab
         photonplayerIDTarget = photonPlayerTarget.ID;
+        Debug.Log(photonplayerIDTarget);
 
         if ( sceneName == "NightPhase")
         {
@@ -61,9 +62,11 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
         Debug.Log("Sending confirm request to night phase script");
         Debug.Log("Photon Player self ID: " + photonplayerIDSelf);
         Debug.Log("Photon Player target ID: " + photonplayerIDTarget);
-        nightPhaseManager.ProcessNightAction(photonplayerIDSelf, photonplayerIDTarget);
+
+        
         selectTargetScript.nightSelectTargetModal.SetActive(false);
-        ResetIDs();
+        
+        nightPhaseManager.ProcessNightAction(photonplayerIDSelf, photonplayerIDTarget);
     }
 
     public void ResetIDs()
