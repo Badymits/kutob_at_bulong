@@ -8,6 +8,8 @@ public class NightPhaseManager : Photon.MonoBehaviour
 {
     public GameObject textBox;
     public TMP_Text moderatorLine;
+    public TMP_Text temp_role;
+    public TMP_Text temp_name;
 
     public enum NightRole
     {
@@ -26,6 +28,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
 
     [SerializeField] private UIManager ui_manager;
     private PrefabClickTest prefabScript;
+    private new PhotonView photonView;
 
 
     public class Player
@@ -46,6 +49,16 @@ public class NightPhaseManager : Photon.MonoBehaviour
         // manually instantiate at start
         ui_manager = FindObjectOfType<UIManager>();
         prefabScript = FindAnyObjectByType<PrefabClickTest>();
+        photonView = GetComponent<PhotonView>();
+
+        if (photonView == null)
+        {
+            Debug.Log("PhotonView not found");
+        }
+        else
+        {
+            Debug.Log("PhotonView found");
+        }
 
         foreach (PhotonPlayer photonPlayer in PhotonNetwork.playerList)
         {
@@ -64,6 +77,12 @@ public class NightPhaseManager : Photon.MonoBehaviour
             Debug.Log("The PhotonPlayer ID: " + photonPlayer.ID);
             players.Add(photonPlayer.ID, newPlayer);
         }
+        PhotonPlayer photonPlayerTest = PhotonNetwork.player;
+        string photonPlayer1 = PhotonNetwork.player.NickName;
+        string photonPlayerRole = (string)photonPlayerTest.CustomProperties["Role"];
+
+        temp_name.text = photonPlayer1;
+        temp_role.text = photonPlayerRole;
 
         Debug.Log("Calling Night phase");
 
@@ -80,8 +99,8 @@ public class NightPhaseManager : Photon.MonoBehaviour
         Player actor = GetActor(selfID);
         Player target = GetActor(targetID);
 
-        Debug.Log("The actor: " + actor + " Actor role: " +  actor.role);
-        Debug.Log("The target: " + target);
+        Debug.Log("The actor: " + actor + " Actor role: " + actor.role);
+        Debug.Log("The target: " + target + " target role: " + target.role);
 
 
         switch (actor.role.ToLower())
@@ -185,7 +204,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
             {
                 Debug.Log("The returned value: " + classPlayer);
                 return classPlayer;
-            }       
+            }
             else
             {
                 Debug.Log("No player found");
@@ -221,7 +240,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
 
         if (mangangaso != null && mangangaso.isAlive && !mangangaso.skipTurn)
         {
-            
+
             Debug.Log("Mangangaso First Turn Added");
             nightTurnOrder.Enqueue(NightRole.Mangangaso);
         }
@@ -246,7 +265,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
         // Add support roles if alive
         if (IsRoleAlive(NightRole.Babaylan))
         {
-            
+
             nightTurnOrder.Enqueue(NightRole.Babaylan);
             Debug.Log("Babaylan Turn Added");
         }
@@ -288,7 +307,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
 
         CheckWinConditions(); // Check for win conditions after the night phase ends
 
-        
+
     }
 
     private void TransitionToDiscussionPhase()
@@ -358,7 +377,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
     private bool IsRoleAlive(NightRole role)
     {
         foreach (var player in players.Values)
-        {   
+        {
             Debug.Log("Finding role: " + player.role);
             if (player.role.Equals(role.ToString(), System.StringComparison.OrdinalIgnoreCase) && player.isAlive)
             {
@@ -372,7 +391,8 @@ public class NightPhaseManager : Photon.MonoBehaviour
     private void NotifyPlayerTurn(NightRole role)
     {
         Debug.Log($"It's {role}'s turn");
-        ui_manager.ShowRoleUI(role.ToString().ToLower());
+        //ui_manager.ShowRoleUI(role.ToString().ToLower());
+        ui_manager.photonView.RPC("UpdatePlayerTurnUI", PhotonTargets.All, role.ToString().ToLower());
     }
 
     private void RevealRole(Player seer, Player target)
