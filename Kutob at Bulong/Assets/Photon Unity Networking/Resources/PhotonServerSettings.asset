@@ -53,4 +53,7 @@ MonoBehaviour:
   - ReceiveMessage
   - LoadEliminationScene
   - UpdatePlayerTurnUI
+  - SyncGameState
+  - SyncNightTurnOrder
+  - SyncTurnOrder
   DisableAutoOpenWizard: 1

@@ -3,6 +3,8 @@ using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Linq;
+using System;
 
 public class NightPhaseManager : Photon.MonoBehaviour
 {
@@ -120,6 +122,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
                 {
                     target.nightTarget = true;
                 }
+                actor.turnDone = true;
                 break;
 
             case "aswang - mandurugo":
@@ -189,36 +192,15 @@ public class NightPhaseManager : Photon.MonoBehaviour
         ui_manager.tMP.text = "Wait for your turn";
     }
 
-    public Player GetActor(int actorID)
-    {
-        Debug.Log("Called Get actor method");
-        foreach (KeyValuePair<int, Player> player in players)
-        {
-            int photonPlayerID = player.Key;
-            Debug.Log("The player key: " + player.Key);
-            Debug.Log("The actor ID: " + actorID);
-            Player classPlayer = player.Value;
-
-            Debug.Log("The class player: " + classPlayer);
-            if (actorID == photonPlayerID)
-            {
-                Debug.Log("The returned value: " + classPlayer);
-                return classPlayer;
-            }
-            else
-            {
-                Debug.Log("No player found");
-            }
-        }
-        return null;
-    }
-
     private void MoveToNextTurn()
     {
         if (nightTurnOrder.Count > 0)
         {
             currentTurn = nightTurnOrder.Dequeue(); // Get the next player's turn
             Debug.Log("Current night turn order value: " + nightTurnOrder.Count);
+
+            // Sync turn for all players
+            ui_manager.photonView.RPC("SyncTurnOrder", PhotonTargets.All, currentTurn.ToString());
             NotifyPlayerTurn(currentTurn);
         }
         else
@@ -276,6 +258,9 @@ public class NightPhaseManager : Photon.MonoBehaviour
             Debug.Log("Manghuhula Turn Added");
         }
 
+
+        ui_manager.photonView.RPC("SyncNightTurnOrder", PhotonTargets.All, GetTurnOrderArray(), nightTurnOrder.Count);
+
         // Only notify turn if there are players in the queue
         if (nightTurnOrder.Count > 0)
         {
@@ -286,6 +271,81 @@ public class NightPhaseManager : Photon.MonoBehaviour
         {
             Debug.Log("No players available for night phase.");
         }
+    }
+
+    private string[] GetTurnOrderArray()
+    {
+        List<string> turnOrderList = new List<string>();
+        foreach (NightRole role in nightTurnOrder)
+        {
+            turnOrderList.Add(role.ToString());
+        }
+        return turnOrderList.ToArray();
+    }
+
+    [PunRPC]
+    public void SyncNightTurnOrder(string[] turnOrderArray, int queueCount)
+    {
+        nightTurnOrder.Clear(); // Reset the queue on all clients
+
+        // Rebuild the nightTurnOrder based on the array received
+        foreach (var role in turnOrderArray)
+        {
+            nightTurnOrder.Enqueue((NightRole)Enum.Parse(typeof(NightRole), role));
+        }
+
+        int nightTurnOrderCount = queueCount; // Sync the queue count
+
+        Debug.Log("Turn order synchronized, current turn is: " + currentTurn);
+    }
+
+    [PunRPC]
+    public void SyncTurnOrder(string currentTurnRole, int queueCount, string[] roleQueue)
+    {
+        // Sync the current turn and the queue state across all players
+        currentTurn = (NightRole)Enum.Parse(typeof(NightRole), currentTurnRole);
+        nightTurnOrder.Clear(); // Reset the local queue
+        foreach (var role in roleQueue)
+        {
+            nightTurnOrder.Enqueue((NightRole)Enum.Parse(typeof(NightRole), role));
+        }
+
+        Debug.Log("Turn synchronized to: " + currentTurn);
+        int nightTurnOrderCount = queueCount;
+
+        // Notify the current player (who can now perform actions) and disable others
+        NotifyPlayerTurn(currentTurn);
+    }
+
+    private void NotifyPlayerTurn(NightRole role)
+    {
+        Debug.Log($"It's {role}'s turn");
+        //ui_manager.ShowRoleUI(role.ToString().ToLower());
+        ui_manager.photonView.RPC("UpdatePlayerTurnUI", PhotonTargets.All, role.ToString().ToLower());
+    }
+
+    public Player GetActor(int actorID)
+    {
+        Debug.Log("Called Get actor method");
+        foreach (KeyValuePair<int, Player> player in players)
+        {
+            int photonPlayerID = player.Key;
+            Debug.Log("The player key: " + player.Key);
+            Debug.Log("The actor ID: " + actorID);
+            Player classPlayer = player.Value;
+
+            Debug.Log("The class player: " + classPlayer);
+            if (actorID == photonPlayerID)
+            {
+                Debug.Log("The returned value: " + classPlayer);
+                return classPlayer;
+            }
+            else
+            {
+                Debug.Log("No player found");
+            }
+        }
+        return null;
     }
 
     private void EndNightPhase()
@@ -386,13 +446,6 @@ public class NightPhaseManager : Photon.MonoBehaviour
         }
 
         return false;
-    }
-
-    private void NotifyPlayerTurn(NightRole role)
-    {
-        Debug.Log($"It's {role}'s turn");
-        //ui_manager.ShowRoleUI(role.ToString().ToLower());
-        ui_manager.photonView.RPC("UpdatePlayerTurnUI", PhotonTargets.All, role.ToString().ToLower());
     }
 
     private void RevealRole(Player seer, Player target)
