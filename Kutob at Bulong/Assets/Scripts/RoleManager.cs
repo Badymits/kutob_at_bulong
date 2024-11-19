@@ -56,7 +56,7 @@ public class RoleManager : MonoBehaviour
 
     public void AssignRoles()
     {
-        StartCoroutine(addDelay()); // add delay for network playerlist to show up
+        
         Debug.Log("adawdawd");
         List<PhotonPlayer> shuffledPlayers = new List<PhotonPlayer>(PhotonNetwork.playerList);
 
@@ -81,7 +81,7 @@ public class RoleManager : MonoBehaviour
                 Debug.Log("Role gacha: " + role);
 
                 // populate list first with most important roles
-                if (playersAssignedRoles.Count >= (normalRoles.Length + aswangCount - 1))
+                if (takenRole.Count >= (normalRoles.Length + aswangCount - 1))
                 {
 
                     AssignRoleToPlayer(player, "taumbayan");
@@ -138,15 +138,9 @@ public class RoleManager : MonoBehaviour
 
         if (PhotonNetwork.isMasterClient)
         {
-            
             photonView.RPC("DistributeScene", PhotonTargets.All);
         }
         
-    }
-
-    IEnumerator addDelay()
-    {
-        yield return new WaitForSecondsRealtime(3f);
     }
 
     // Fisher-Yates shuffle for list of PhotonPlayer
@@ -215,7 +209,12 @@ public class RoleManager : MonoBehaviour
                 
                 Debug.Log(player.NickName + " has role: " + playerRole);
 
-                LoadSceneBasedOnRole(playerRole);
+
+                if (player == PhotonNetwork.player)
+                {
+                    LoadSceneBasedOnRole(playerRole);
+                }
+                
             }
             
         }
@@ -225,7 +224,7 @@ public class RoleManager : MonoBehaviour
     {
         Debug.Log("LoadScenebasedOnRole Reached");
         Debug.Log("Role: " + role);
-        switch (role)
+        switch (role.ToLower())
         {
             case "mangangaso":
                 PhotonNetwork.LoadLevel("MangangasoReveal");
