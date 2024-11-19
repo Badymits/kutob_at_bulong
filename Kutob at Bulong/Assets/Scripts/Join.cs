@@ -127,31 +127,10 @@ public class Join : Photon.MonoBehaviour
             if (player == null) continue;
 
             GameObject playerCard = Instantiate(playerCardPrefab, playerCardsContainer);
+            PhotonView playerPhotonView = playerCard.GetComponent<PhotonView>();
 
-            BoxCollider2D box = playerCard.GetComponent<BoxCollider2D>();
-            if (box != null)
-            {
-                Debug.Log("Has box collider");
-            }
+            playerPhotonView.TransferOwnership(player);
 
-            SpriteRenderer sprite =playerCard.GetComponent<SpriteRenderer>();
-            if (sprite != null) { 
-                Debug.Log("Has sprite renderer"); 
-            } else
-            {
-                
-                Debug.Log("No sprite");
-            }
-
-            PrefabClickTest check = playerCard.GetComponent<PrefabClickTest>();
-            if (check != null)
-            {
-                Debug.Log("Script attached");
-            }
-            else
-            {
-                Debug.Log("No Script attached");
-            }
             if (playerCard != null)
             {
                 SetupPlayerCard(playerCard, player, i, cardHeight, cardSpacing, startYPosition);

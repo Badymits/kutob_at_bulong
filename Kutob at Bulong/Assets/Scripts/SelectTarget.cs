@@ -4,27 +4,53 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class SelectTarget : MonoBehaviour
 {
 
-    PhotonView photonView;
-    ModalControl modalControl;
-    // Detect mouse click on this object
-    void OnMouseDown()
-    {
-        Debug.Log("Image clicked!");
-        modalControl = GetComponent<ModalControl>();
-        modalControl.OpenModal();   
+    public GameObject nightSelectTargetModal;
+    public GameObject playerCardPrefab;
+    public string playerCardName;
 
-        // Additional logic here (e.g., change image, trigger event, etc.)
+    public NightPhaseManager nightPhaseManager;
+    public PrefabClickTest prefabScript;
+
+
+    private void Start()
+    {
+        prefabScript = FindAnyObjectByType<PrefabClickTest>();
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Debug.Log("Clicked on prefab");
+        Debug.Log("Player Name: " + playerCardPrefab.GetComponentInChildren<TMP_Text>().text);
+
+        
+        Debug.Log(nightSelectTargetModal);
+    }
+
+    public void OpenSelectTargetModal(string username, int selfID, int targetID)
+    {
+
+        if (nightSelectTargetModal != null)
+        {
+            nightSelectTargetModal.SetActive(true);
+        }
+        
+    }
+
+    public void CloseSelectTargetModal()
+    {
+        // reset state
+        playerCardName = "";
+        nightSelectTargetModal.SetActive(!gameObject.activeSelf);
     }
 
     public void TargetConfirmed()
     {
-
-        Debug.Log("Target Selected");
-        //SceneManager.LoadScene("");
+        prefabScript.TestTargetConfirmed();
     }
 
     public string CheckRole()

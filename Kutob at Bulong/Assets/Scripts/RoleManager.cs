@@ -22,7 +22,8 @@ public enum RoleAswang
 public class RoleManager : MonoBehaviour
 {
     public static RoleManager Instance;
-    
+    public PhotonView photonView;
+
 
     // Store the roles for each player
 
@@ -31,7 +32,6 @@ public class RoleManager : MonoBehaviour
 
     //keep track of players who already got assigned roles to avoid duplicates.
     private List<PhotonPlayer> playersAssignedRoles = new List<PhotonPlayer>();
-    public PhotonView photonView;
     private List<String> takenRole = new List<String>();
 
 
@@ -54,29 +54,16 @@ public class RoleManager : MonoBehaviour
     }
 
 
-    public void Something()
-    {
-        photonView = GetComponent<PhotonView>();
-        if (photonView == null)
-        {
-            Debug.Log("Null");
-        }
-        else
-        {
-            Debug.Log("Calling assign roles");
-            //AssignRoles();
-        }
-    }
-   
-
     public void AssignRoles()
     {
+        
         Debug.Log("adawdawd");
         List<PhotonPlayer> shuffledPlayers = new List<PhotonPlayer>(PhotonNetwork.playerList);
 
         ShuffleList(shuffledPlayers);
 
-        Debug.Log(PhotonNetwork.playerList);
+        Debug.Log(shuffledPlayers);
+        Debug.Log("Playerlist: "  + PhotonNetwork.playerList);
 
         System.Random random = new System.Random();
 
@@ -91,13 +78,13 @@ public class RoleManager : MonoBehaviour
                 int roleIndex = random.Next(0, 4);
                 RoleNormal role = normalRoles[roleIndex];
 
-                Debug.Log("Role: " + role);
+                Debug.Log("Role gacha: " + role);
 
                 // populate list first with most important roles
-                if (playersAssignedRoles.Count >= (normalRoles.Length + aswangCount - 1))
+                if (takenRole.Count >= (normalRoles.Length + aswangCount - 1))
                 {
 
-                    AssignRoleToPlayer(player, "Taumbayan");
+                    AssignRoleToPlayer(player, "taumbayan");
                     playersAssignedRoles.Add(player);
                     break;
                 }
@@ -106,14 +93,14 @@ public class RoleManager : MonoBehaviour
                 {
                     if (role.ToString() != "Aswang")
                     {
-                        AssignRoleToPlayer(player, role.ToString());
+                        AssignRoleToPlayer(player, role.ToString().ToLower());
                         takenRole.Add(role.ToString());
                         playersAssignedRoles.Add(player);
                         break;
                     }
                     else if (role.ToString() == "Aswang" && aswangCount != 0)
                     {
-                        int aswangIndex = random.Next(0, 2);
+                        int aswangIndex = random.Next(0, 3);
                         RoleAswang role_aswang = aswangRoles[aswangIndex];
 
                         string aswang_modified_role = StringModifyAswang(role_aswang.ToString());
@@ -127,7 +114,7 @@ public class RoleManager : MonoBehaviour
 
                 else if (role.ToString() == "Aswang" && aswangCount != 0)
                 {
-                    int aswangIndex = random.Next(0, 2);
+                    int aswangIndex = random.Next(0, 3);
                     RoleAswang role_aswang = aswangRoles[aswangIndex];
 
                     Debug.Log(role_aswang.ToString());
@@ -151,7 +138,6 @@ public class RoleManager : MonoBehaviour
 
         if (PhotonNetwork.isMasterClient)
         {
-            
             photonView.RPC("DistributeScene", PhotonTargets.All);
         }
         
@@ -223,7 +209,12 @@ public class RoleManager : MonoBehaviour
                 
                 Debug.Log(player.NickName + " has role: " + playerRole);
 
-                LoadSceneBasedOnRole(playerRole);
+
+                if (player == PhotonNetwork.player)
+                {
+                    LoadSceneBasedOnRole(playerRole);
+                }
+                
             }
             
         }
@@ -232,17 +223,18 @@ public class RoleManager : MonoBehaviour
     public void LoadSceneBasedOnRole(string role)
     {
         Debug.Log("LoadScenebasedOnRole Reached");
-        switch (role)
+        Debug.Log("Role: " + role);
+        switch (role.ToLower())
         {
-            case "Mangangaso":
+            case "mangangaso":
                 PhotonNetwork.LoadLevel("MangangasoReveal");
                 break;
 
-            case "Babaylan":
+            case "babaylan":
                 PhotonNetwork.LoadLevel("BabaylanReveal");
                 break;
 
-            case "Manghuhula":
+            case "manghuhula":
                 PhotonNetwork.LoadLevel("ManghuhulaReveal");
                 break;
 

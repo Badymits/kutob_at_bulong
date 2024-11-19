@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using static NightPhaseManager;
 
 public class UIManager : MonoBehaviour
 {
@@ -14,49 +15,55 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         photonView = GetComponent<PhotonView>();
-        if (photonView == null)
-        {
-            Debug.Log("No photon view");
+    }
+
+    [PunRPC]
+    public void UpdatePlayerTurnUI(string role)
+    {
+        Debug.Log("Role that was passed in parameter: " + role);
+        if (photonView == null) {
+            Debug.Log("Photon view nout found"); 
         }
         else
         {
-            Debug.Log("Photon view present");
+            Debug.Log("Photon view found");
         }
+        //Debug.Log();
+        ShowRoleUI(role);
     }
 
-    public void ShowRoleUI(string role)
+    public void ShowRoleUI(string role) // for cases such as aswang, the value returned here is AswangMandurugo, AswangManananggal, AswangBerbalang
     {
+        // get local player
+        PhotonPlayer localPlayer = PhotonNetwork.player;
 
-        if (photonView.isMine)
+        string playerRole = GetPlayerRole(localPlayer, role);
+        Debug.Log("Parameter role: " + role);
+        Debug.Log("Player role in UI manager: " + playerRole);
+        
+
+        if (playerRole.ToLower() == role.ToLower())
         {
-            switch (role)
+            switch (playerRole.ToLower())
             {
-                case "Mangangaso":
+                case "mangangaso":
                     cardContainer.SetActive(true);
                     tMP.text = "Choose who you'll Protect";
                     break;
 
-                case "Babaylan":
+                case "babaylan":
                     cardContainer.SetActive(true);
                     tMP.text = "Choose who you'll SAVE";
                     break;
 
-                case "Manghuhula":
+                case "manghuhula":
                     cardContainer.SetActive(true);
                     tMP.text = "Choose who you'll Guess";
                     break;
 
-                case "aswang - mandurugo":
-                    tMP.text = "Choose who you'll KILL";
-                    cardContainer.SetActive(true);
-                    break;
-
-                case "aswang - manananggal":
-                    tMP.text = "Choose who you'll KILL";
-                    cardContainer.SetActive(true);
-                    break;
-
-                case "aswang - berbalang":
+                case "aswangmandurugo":
+                case "aswangmanananggal":
+                case "aswangberbalang":
                     tMP.text = "Choose who you'll KILL";
                     cardContainer.SetActive(true);
                     break;
@@ -66,6 +73,59 @@ public class UIManager : MonoBehaviour
             }
         }
         
+    }
+
+    public string StringModifyAswang(string str)
+    {
+        switch (str)
+        {
+            case "aswangmandurugo":
+                return "aswang - mandurugo";
+            case "aswangmanananggal":
+                return "aswang - manananggal";
+            case "aswangberbalang":
+                return "aswang - berbalang";
+
+            default:
+                return "";
+
+        }
+    }
+
+    public string GetPlayerRole(PhotonPlayer localPlayer, string role)
+    {
+        
+        if (localPlayer.CustomProperties.ContainsKey("Role"))
+        {
+            string asawngRole = StringModifyAswang(role);
+
+            // the aswang roles that were set in RoleManager are: aswang - mandurugo, aswang - manananggal, and aswang - berbalang
+            string localPlayerRole = (string)localPlayer.CustomProperties["Role"];
+
+            Debug.Log("local Player role: " + localPlayerRole);
+
+            if (localPlayerRole == asawngRole)
+            {
+                return role; // just return the role
+            }
+
+            else if (localPlayerRole != asawngRole && localPlayerRole == role)
+            {
+                Debug.Log("Current turn in night phase" + localPlayerRole);
+                return localPlayerRole;
+            }
+
+            else
+            {
+                return "";
+            }
+
+        }
+        else
+        {
+            Debug.Log("No Role");
+        }
+        return "";
     }
 
     public void SetFalseSpawnPoints()

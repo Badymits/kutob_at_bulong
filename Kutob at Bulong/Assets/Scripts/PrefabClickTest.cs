@@ -2,55 +2,100 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using TMPro;
+using UnityEngine.SceneManagement;
 
-public class PrefabClickTest : MonoBehaviour
+public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
 {
-    // Start is called before the first frame update
-
-    private void OnMouseDown()
-    {
-        Debug.Log("Clicked on prefab");
-    }
+    
+    public Scene currentScene;
+    public int photonViewIDSelf;
+    PhotonView photonView;
+    [SerializeField] private SelectTarget selectTargetScript;
+    public NightPhaseManager nightPhaseManager;
+    private int photonplayerIDTarget;
+    private int photonplayerIDSelf;
 
     void Start()
     {
-        if (GetComponent<BoxCollider2D>() == null)
+        if (PhotonNetwork.connectedAndReady)
         {
-            Debug.LogError("No BoxCollider2D attached!");
+            // If the player is already connected to the room, access the PhotonPlayer ID
+            
+            photonplayerIDSelf = PhotonNetwork.player.ID;
         }
+        photonView = GetComponent<PhotonView>();
+        selectTargetScript = FindAnyObjectByType<SelectTarget>();
+        nightPhaseManager = FindAnyObjectByType<NightPhaseManager>();
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        // refers to the clicked game object. Doesn't necessarily mean it would refer to self
+        GameObject playerCard = gameObject;
+     
+
+        // retrieve scene for conidtional modal opening/closing
+        string sceneName = SceneManager.GetActiveScene().name;
+
+        // gets photonview component of target, NOT SELF
+        PhotonView photonViewTarget = playerCard.GetComponent<PhotonView>();
+        PhotonPlayer photonPlayerTarget = photonViewTarget.owner;
+
+        Debug.Log("Photon View component" + photonPlayerTarget.ID);
+
+
+        // retrieving photon player ID's and username through the PhotonView component attached to prefab
+        photonplayerIDTarget = photonPlayerTarget.ID;
+        Debug.Log(photonplayerIDTarget);
+
+        if ( sceneName == "NightPhase")
+        {
+            //selectTargetScript.OpenSelectTargetModal(photonViewName, photonplayerIDSelf, photonViewIDTarget);
+            selectTargetScript.nightSelectTargetModal.SetActive(true);
+        }
+    }
+
+    public void TestTargetConfirmed()
+    {
+        Debug.Log("Sending confirm request to night phase script");
+        Debug.Log("Photon Player self ID: " + photonplayerIDSelf);
+        Debug.Log("Photon Player target ID: " + photonplayerIDTarget);
+
+        
+        selectTargetScript.nightSelectTargetModal.SetActive(false);
+        
+        nightPhaseManager.ProcessNightAction(photonplayerIDSelf, photonplayerIDTarget);
+    }
+
+    public void ResetIDs()
+    {
+        photonplayerIDTarget = 1111;
+        photonplayerIDSelf = 2222;
+    }
+
+    public void EliminatedFromGame(string currentPhase)
+    {
+        Debug.Log("");
+        PhotonView photonView = GetComponent<PhotonView>();
+        if (currentPhase == "NightPhase")
+        {
+            photonView.RPC("LoadEliminationScene", photonView.owner);
+        }
+    }
+
+    [PunRPC]
+    public void LoadEliminationScene()
+    {
+        // Load the elimination scene just for this player
+        SceneManager.LoadScene("EliminationScene");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)) // Left click
-        {
-            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-
-            if (hit.collider != null)
-            {
-                Debug.Log("aaaa");
-                Debug.Log("Hit: " + hit.collider.gameObject.name);
-            }
-
-            // Raycast on UI elements
-            PointerEventData pointerEventData = new PointerEventData(EventSystem.current)
-            {
-                position = Input.mousePosition
-            };
-
-            // Create a list to store the raycast results
-            List<RaycastResult> raycastResults = new List<RaycastResult>();
-
-            // Perform raycast all and store the results in the list
-            EventSystem.current.RaycastAll(pointerEventData, raycastResults);
-
-            // Check if any UI element was hit
-            if (raycastResults.Count > 0)
-            {
-                Debug.Log("");
-                Debug.Log("clicke on prefab");
-            }
-        }
+       
+        
     }
 }
