@@ -30,7 +30,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
 
     [SerializeField] private UIManager ui_manager;
     private PrefabClickTest prefabScript;
-    private new PhotonView photonView;
+    private PhotonView photonView;
 
 
     public class Player
@@ -199,8 +199,9 @@ public class NightPhaseManager : Photon.MonoBehaviour
             currentTurn = nightTurnOrder.Dequeue(); // Get the next player's turn
             Debug.Log("Current night turn order value: " + nightTurnOrder.Count);
 
-            // Sync turn for all players
-            ui_manager.photonView.RPC("SyncTurnOrder", PhotonTargets.All, currentTurn.ToString());
+
+            // Sync UI for all players
+            photonView.RPC("SyncTurnOrder", PhotonTargets.All, currentTurn.ToString());
             NotifyPlayerTurn(currentTurn);
         }
         else
@@ -258,8 +259,8 @@ public class NightPhaseManager : Photon.MonoBehaviour
             Debug.Log("Manghuhula Turn Added");
         }
 
-
-        ui_manager.photonView.RPC("SyncNightTurnOrder", PhotonTargets.All, GetTurnOrderArray(), nightTurnOrder.Count);
+        // temporary 
+        photonView.RPC("SyncNightTurnOrder", PhotonTargets.All, GetTurnOrderArray(), nightTurnOrder.Count);
 
         // Only notify turn if there are players in the queue
         if (nightTurnOrder.Count > 0)
@@ -273,6 +274,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
         }
     }
 
+    // constructs an array of the roles' order during the night phase
     private string[] GetTurnOrderArray()
     {
         List<string> turnOrderList = new List<string>();
@@ -283,6 +285,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
         return turnOrderList.ToArray();
     }
 
+    // this method is only called at the beginning of the night phase
     [PunRPC]
     public void SyncNightTurnOrder(string[] turnOrderArray, int queueCount)
     {
@@ -299,28 +302,21 @@ public class NightPhaseManager : Photon.MonoBehaviour
         Debug.Log("Turn order synchronized, current turn is: " + currentTurn);
     }
 
+    // this method ensures the current turn to be the same with other clients within the game
     [PunRPC]
-    public void SyncTurnOrder(string currentTurnRole, int queueCount, string[] roleQueue)
+    public void SyncTurnOrder(string currentTurnRole)
     {
-        // Sync the current turn and the queue state across all players
-        currentTurn = (NightRole)Enum.Parse(typeof(NightRole), currentTurnRole);
-        nightTurnOrder.Clear(); // Reset the local queue
-        foreach (var role in roleQueue)
-        {
-            nightTurnOrder.Enqueue((NightRole)Enum.Parse(typeof(NightRole), role));
-        }
+        // You can now use the `currentTurnRole` to display the current player's turn in the UI
+        Debug.Log("Syncing turn order: " + currentTurnRole);
 
-        Debug.Log("Turn synchronized to: " + currentTurn);
-        int nightTurnOrderCount = queueCount;
-
-        // Notify the current player (who can now perform actions) and disable others
-        NotifyPlayerTurn(currentTurn);
+        // You might also want to update other game logic that depends on the current player's turn
+        currentTurn = (NightRole)Enum.Parse(typeof(NightRole), currentTurnRole); // If you need to store the current turn role
     }
 
+    // manages the UI
     private void NotifyPlayerTurn(NightRole role)
     {
         Debug.Log($"It's {role}'s turn");
-        //ui_manager.ShowRoleUI(role.ToString().ToLower());
         ui_manager.photonView.RPC("UpdatePlayerTurnUI", PhotonTargets.All, role.ToString().ToLower());
     }
 
