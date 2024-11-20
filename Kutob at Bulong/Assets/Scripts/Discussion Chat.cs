@@ -18,7 +18,7 @@ public class DiscussionChat : PunBehaviour // Inherit from PunBehaviour for Phot
             return; // Do not send an empty message
         }
 
-        string messageToSend = PhotonNetwork.playerName + " : " + inputField.text; // Use playerName instead of player.Nickname
+        string messageToSend = inputField.text; // Use playerName instead of player.Nickname
         photonView.RPC("GetMessage", PhotonTargets.All, messageToSend); // PhotonTargets.All for Photon PUN 1
 
         inputField.text = ""; // Clear the input field after sending
