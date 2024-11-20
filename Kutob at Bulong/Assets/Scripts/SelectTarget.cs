@@ -46,11 +46,13 @@ public class SelectTarget : MonoBehaviour
         // reset state
         playerCardName = "";
         nightSelectTargetModal.SetActive(!gameObject.activeSelf);
+
     }
 
     public void TargetConfirmed()
     {
         prefabScript.TestTargetConfirmed();
+        nightSelectTargetModal.SetActive(false);
     }
 
     public string CheckRole()

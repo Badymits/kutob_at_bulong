@@ -182,7 +182,15 @@ public class RoleManager : MonoBehaviour
         Debug.Log("Player Role: " + role);
         ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable
         {
-            { "Role", role }
+            { "playerID", GenerateRandomID() },
+            { "Role", role },
+            { "isAlive", true },          // Player starts alive
+            { "isProtected", false },     // No protection by default
+            { "skipTurn", false },        // No turn skipping by default
+            { "nightSkip", 0 },           // Night skip counter
+            { "canExecute", true },       // Player can execute actions
+            { "nightTarget", false },     // No night target initially
+            { "turnDone", false },
         };
         player.SetCustomProperties(playerProperties);
     }
@@ -192,9 +200,24 @@ public class RoleManager : MonoBehaviour
         Debug.Log("Aswang Role: " + role);
         ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable
         {
-            { "Role", role }
+            { "playerID", GenerateRandomID() },
+            { "Role", role },
+            { "isAlive", true },          // Player starts alive
+            { "isProtected", false },     // No protection by default
+            { "skipTurn", false },        // No turn skipping by default
+            { "nightSkip", 0 },           // Night skip counter
+            { "canExecute", true },       // Player can execute actions
+            { "nightTarget", false },     // No night target initially
+            { "turnDone", false },
         };
         player.SetCustomProperties(playerProperties);
+    }
+
+    public string GenerateRandomID()
+    {
+        Guid guid = Guid.NewGuid();
+        string str = guid.ToString();
+        return str;
     }
 
     [PunRPC]

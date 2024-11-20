@@ -14,8 +14,10 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
     PhotonView photonView;
     [SerializeField] private SelectTarget selectTargetScript;
     public NightPhaseManager nightPhaseManager;
-    private int photonplayerIDTarget;
-    private int photonplayerIDSelf;
+    private string photonplayerIDTarget;
+    private string photonplayerIDSelf;
+
+    public float confirmTimer = 3f;
 
     void Start()
     {
@@ -23,7 +25,7 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
         {
             // If the player is already connected to the room, access the PhotonPlayer ID
             
-            photonplayerIDSelf = PhotonNetwork.player.ID;
+            photonplayerIDSelf = (string)PhotonNetwork.player.CustomProperties["playerID"];
         }
         photonView = GetComponent<PhotonView>();
         selectTargetScript = FindAnyObjectByType<SelectTarget>();
@@ -45,9 +47,11 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
 
         Debug.Log("Photon View component" + photonPlayerTarget.ID);
 
+        string playerID = (string)photonPlayerTarget.CustomProperties["playerID"];
+
 
         // retrieving photon player ID's and username through the PhotonView component attached to prefab
-        photonplayerIDTarget = photonPlayerTarget.ID;
+        photonplayerIDTarget = playerID;
         Debug.Log(photonplayerIDTarget);
 
         if ( sceneName == "NightPhase")
@@ -63,16 +67,21 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
         Debug.Log("Photon Player self ID: " + photonplayerIDSelf);
         Debug.Log("Photon Player target ID: " + photonplayerIDTarget);
 
-        
-        selectTargetScript.nightSelectTargetModal.SetActive(false);
+
+        StartCoroutine(addDelay());
         
         nightPhaseManager.ProcessNightAction(photonplayerIDSelf, photonplayerIDTarget);
     }
 
+    IEnumerator addDelay()
+    {
+        yield return new WaitForSeconds(confirmTimer);
+    }
+
     public void ResetIDs()
     {
-        photonplayerIDTarget = 1111;
-        photonplayerIDSelf = 2222;
+        photonplayerIDTarget = "";
+        photonplayerIDSelf = "";
     }
 
     public void EliminatedFromGame(string currentPhase)
