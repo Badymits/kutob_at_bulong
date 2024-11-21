@@ -56,4 +56,5 @@ MonoBehaviour:
   - SyncGameState
   - SyncNightTurnOrder
   - SyncTurnOrder
+  - BroadcastMessage
   DisableAutoOpenWizard: 1

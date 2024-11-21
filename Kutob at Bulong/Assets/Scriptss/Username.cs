@@ -20,6 +20,14 @@ public class Username : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            SaveUsername();
+        }
+    }
+
     public void SaveUsername()
     {
         if (!string.IsNullOrEmpty(inputField.text))
