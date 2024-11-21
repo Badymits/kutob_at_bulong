@@ -17,7 +17,7 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
     private string photonplayerIDTarget;
     private string photonplayerIDSelf;
 
-    public float confirmTimer = 3f;
+    public float confirmTimer = .3f;
 
     void Start()
     {
@@ -56,26 +56,20 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
 
         if ( sceneName == "NightPhase")
         {
-            //selectTargetScript.OpenSelectTargetModal(photonViewName, photonplayerIDSelf, photonViewIDTarget);
-            selectTargetScript.nightSelectTargetModal.SetActive(true);
+            selectTargetScript.OpenSelectTargetModal(photonViewTarget.owner.NickName, photonplayerIDSelf, photonplayerIDTarget);
+            //selectTargetScript.nightSelectTargetModal.SetActive(true);
         }
     }
 
-    public void TestTargetConfirmed()
+    public void TestTargetConfirmed(string targetID)
     {
         Debug.Log("Sending confirm request to night phase script");
         Debug.Log("Photon Player self ID: " + photonplayerIDSelf);
         Debug.Log("Photon Player target ID: " + photonplayerIDTarget);
 
-
-        StartCoroutine(addDelay());
-        
-        nightPhaseManager.ProcessNightAction(photonplayerIDSelf, photonplayerIDTarget);
-    }
-
-    IEnumerator addDelay()
-    {
-        yield return new WaitForSeconds(confirmTimer);
+        /*StartCoroutine(addDelay(targetID));*/
+        selectTargetScript.CloseSelectTargetModal();
+        nightPhaseManager.ProcessNightAction((string)PhotonNetwork.player.CustomProperties["playerID"], targetID);
     }
 
     public void ResetIDs()
