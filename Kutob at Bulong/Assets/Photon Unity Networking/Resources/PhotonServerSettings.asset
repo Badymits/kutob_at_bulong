@@ -56,4 +56,7 @@ MonoBehaviour:
   - SyncGameState
   - SyncNightTurnOrder
   - SyncTurnOrder
+  - SyncTurnForAllUsers
+  - TransitionToDiscussionPhase
+  - MoveToNextTurn
   DisableAutoOpenWizard: 1
