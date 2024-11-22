@@ -59,7 +59,10 @@ public class RoomCode : MonoBehaviour
         roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable
         {
             { "RoomCode", roomCode },  // Store the room code in custom properties
-            { "Scene", "CreateLobby" }
+            { "Scene", "CreateLobby" },
+            { "Announcement_Night", "There were 0 victims during the night" }, // if there are any players eliminated during the night
+            { "Announcement_Day", "The vote is a tie. The game will continue" },
+            { "Game_Winner", "" }
         };
 
         roomOptions.IsVisible = false;
