@@ -86,7 +86,7 @@ public class CycleCount : MonoBehaviour
 
         if (!(bool)photonPlayer.CustomProperties["isAlive"])
         {
-            PhotonNetwork.LoadLevel("EliminationScene");
+            PhotonNetwork.LoadLevel("EliminatedScene");
         }
         else
         {
