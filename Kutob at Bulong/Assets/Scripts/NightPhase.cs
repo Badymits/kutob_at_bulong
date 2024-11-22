@@ -66,21 +66,25 @@ public class NightPhaseManager : Photon.MonoBehaviour
 
         foreach (PhotonPlayer photonPlayer in PhotonNetwork.playerList)
         {
-            Debug.Log("Populating players dictionary");
-            string roleProperty = (string)photonPlayer.CustomProperties["Role"];
-
-            Debug.Log("Player's role is: " + roleProperty);
-
-            // instantiate player class obj
-            Player newPlayer = new()
+            if ((bool)photonPlayer.CustomProperties["isAlive"] && !(bool)photonPlayer.CustomProperties["isVotedOut"]) // only add players that are still in the game
             {
-                playerID = (string)photonPlayer.CustomProperties["playerID"],
-                username = photonPlayer.NickName,
-                role = roleProperty
-            };
+                Debug.Log("Populating players dictionary");
+                string roleProperty = (string)photonPlayer.CustomProperties["Role"];
 
-            Debug.Log("The PhotonPlayer ID: " + photonPlayer.ID);
-            players.Add(photonPlayer.ID, newPlayer);
+                Debug.Log("Player's role is: " + roleProperty);
+
+                // instantiate player class obj
+                Player newPlayer = new()
+                {
+                    playerID = (string)photonPlayer.CustomProperties["playerID"],
+                    username = photonPlayer.NickName,
+                    role = roleProperty
+                };
+
+                Debug.Log("The PhotonPlayer ID: " + photonPlayer.ID);
+                players.Add(photonPlayer.ID, newPlayer);
+            }
+            
         }
         PhotonPlayer photonPlayerTest = PhotonNetwork.player;
         string photonPlayer1 = PhotonNetwork.player.NickName;
@@ -115,8 +119,6 @@ public class NightPhaseManager : Photon.MonoBehaviour
                 if (!(bool)actor.CustomProperties["canExecute"])
                 {
                     target.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "isProtected", true } });
-                    
-
                 }
                 else if ((bool)actor.CustomProperties["skipTurn"] || (int)actor.CustomProperties["nightSkip"] == nightCount)
                 {
@@ -169,7 +171,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
 
             case "babaylan":
                 ResetUIState();
-                if ((bool)actor.CustomProperties["nightTarget"])
+                if ((bool)target.CustomProperties["nightTarget"])
                 {
                     target.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "nightTarget", false } }); // Cancel the target's night action
                 }
@@ -366,6 +368,12 @@ public class NightPhaseManager : Photon.MonoBehaviour
         Debug.Log("Transitioning to Discussion Phase...");
         // Implement your logic here to move to discussion phase
         PhotonNetwork.LoadLevel("DayTransition"); // continue game 
+    }
+
+    [PunRPC]
+    private void TransitionToEliminatedScene()
+    {
+        PhotonNetwork.LoadLevel("EliminatedScene");
     }
 
     private bool IsAswang(string role)

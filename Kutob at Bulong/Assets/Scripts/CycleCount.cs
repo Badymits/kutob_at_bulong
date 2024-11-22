@@ -83,7 +83,7 @@ public class CycleCount : MonoBehaviour
 
     void switchtoDayPhase()
     {
-
+        Debug.Log("local player: " + photonPlayer);
         if (!(bool)photonPlayer.CustomProperties["isAlive"])
         {
             PhotonNetwork.LoadLevel("EliminatedScene");

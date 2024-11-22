@@ -42,7 +42,7 @@ public class VotingSystem : Photon.MonoBehaviour
         // Count the vote
         if (!votes.ContainsKey(votedPlayerName))
             votes[votedPlayerName] = 0;
-        votes[votedPlayerName]++;
+            votes[votedPlayerName]++;
 
         // Check if everyone has voted
         if (HasEveryoneVoted())

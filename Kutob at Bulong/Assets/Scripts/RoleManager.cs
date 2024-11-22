@@ -185,10 +185,11 @@ public class RoleManager : MonoBehaviour
             { "playerID", GenerateRandomID() },
             { "Role", role },
             { "isAlive", true },          // Player starts alive
+            { "isVotedOut", false  },     // Players voted out during voting phase
             { "isProtected", false },     // No protection by default
             { "skipTurn", false },        // No turn skipping by default
             { "nightSkip", 0 },           // Night skip counter
-            { "canExecute", true },       // Player can execute actions
+            { "canExecute", false },       // Player can execute actions
             { "nightTarget", false },     // No night target initially
             { "turnDone", false },
         };
@@ -203,10 +204,11 @@ public class RoleManager : MonoBehaviour
             { "playerID", GenerateRandomID() },
             { "Role", role },
             { "isAlive", true },          // Player starts alive
+            { "isVotedOut", false  },     // Players voted out during voting phase
             { "isProtected", false },     // No protection by default
             { "skipTurn", false },        // No turn skipping by default
             { "nightSkip", 0 },           // Night skip counter
-            { "canExecute", true },       // Player can execute actions
+            { "canExecute", false },       // Player can execute actions
             { "nightTarget", false },     // No night target initially
             { "turnDone", false },
         };
