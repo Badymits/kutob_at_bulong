@@ -67,10 +67,9 @@ public class RoleManager : MonoBehaviour
 
         System.Random random = new System.Random();
 
-        int playerCount = PhotonNetwork.playerList.Length;
         int aswangCount = 1; // Need ko dito yung settings na sinet sa lobby
 
-        foreach (PhotonPlayer player in PhotonNetwork.playerList)
+        foreach (PhotonPlayer player in shuffledPlayers)
         {
 
             while (true)
@@ -104,8 +103,11 @@ public class RoleManager : MonoBehaviour
                         RoleAswang role_aswang = aswangRoles[aswangIndex];
 
                         string aswang_modified_role = StringModifyAswang(role_aswang.ToString());
+
                         AssignAswangRoleToPlayer(player, aswang_modified_role);
+
                         aswangCount--;
+
                         playersAssignedRoles.Add(player);
                         break;
                     }
@@ -192,6 +194,7 @@ public class RoleManager : MonoBehaviour
             { "canExecute", false },       // Player can execute actions
             { "nightTarget", false },     // No night target initially
             { "turnDone", false },
+            { "hasVoted", false }
         };
         player.SetCustomProperties(playerProperties);
     }
@@ -211,6 +214,7 @@ public class RoleManager : MonoBehaviour
             { "canExecute", false },       // Player can execute actions
             { "nightTarget", false },     // No night target initially
             { "turnDone", false },
+            { "hasVoted", false }
         };
         player.SetCustomProperties(playerProperties);
     }
