@@ -5,87 +5,168 @@ using System.Collections.Generic;
 
 public class VotingSystem : Photon.MonoBehaviour
 {
-    public PhotonView photonView;
+    private new PhotonView photonView;
     private Dictionary<string, int> votes = new Dictionary<string, int>();
+
+    HashSet<string> aswangRoles = new HashSet<string>
+    {
+        "aswang - mandurugo",
+        "aswang - manananggal",
+        "aswang - berbalang"
+    };
 
     void Start()
     {
-        // Make all player cards clickable
-        foreach (Transform playerCard in transform)
-        {
-            Debug.Log(playerCard);
-            
-            Button button = playerCard.gameObject.AddComponent<Button>();
-            string playerName = playerCard.GetComponentInChildren<TMPro.TextMeshProUGUI>().text;
-
-            button.onClick.AddListener(() => CastVote(playerName));
-        }
+        
+        photonView = GetComponent<PhotonView>();
     }
 
-    public void CastVote(string votedPlayerName)
+    public void CastVote(string playerID)
     {
-        if (!PhotonNetwork.player.CustomProperties.ContainsKey("hasVoted"))
-        {
-            // Send the vote across the network
-            photonView.RPC("ReceiveVote", PhotonTargets.All, votedPlayerName);
-
-            // Mark this player as having voted
-            ExitGames.Client.Photon.Hashtable properties = new ExitGames.Client.Photon.Hashtable();
-            properties.Add("hasVoted", true);
-            PhotonNetwork.player.SetCustomProperties(properties);
-        }
+        // Send the vote across the network
+        photonView.RPC("ReceiveVote", PhotonTargets.All, playerID);
     }
 
     [PunRPC]
-    void ReceiveVote(string votedPlayerName)
+    void ReceiveVote(string votedPlayerID)
     {
+        Debug.Log("Voted for: " + votedPlayerID);
         // Count the vote
-        if (!votes.ContainsKey(votedPlayerName))
-            votes[votedPlayerName] = 0;
-            votes[votedPlayerName]++;
-
-        // Check if everyone has voted
-        if (HasEveryoneVoted())
+        if (!votes.ContainsKey(votedPlayerID))
         {
-            EliminatePlayer();
+            votes[votedPlayerID] = 0;
+            votes[votedPlayerID]++;
+        } 
+        else
+        {
+            votes[votedPlayerID]++;
         }
+        Debug.Log("The votes: " + votes);
     }
 
-    bool HasEveryoneVoted()
+
+    public void EliminatePlayer()
     {
-        foreach (PhotonPlayer player in PhotonNetwork.playerList)
+
+        // Make sure the votes dictionary is not empty
+        if (votes.Count == 0)
         {
-            if (!player.CustomProperties.ContainsKey("hasVoted"))
-                return false;
+            Debug.LogWarning("No votes have been cast. Cannot determine elimination.");
+            photonView.RPC("TransitionToNextPhase", PhotonTargets.All);
+            return;
         }
-        return true;
-    }
 
-    void EliminatePlayer()
-    {
-        if (!PhotonNetwork.isMasterClient) return;
-
-        // Find player with most votes
+        // Initialize variables to track the highest vote count and the list of tied players
         string playerToEliminate = "";
         int maxVotes = 0;
+        List<string> tiedPlayers = new List<string>();
 
+        // Loop through the votes to find the player(s) with the most votes
         foreach (var vote in votes)
         {
             if (vote.Value > maxVotes)
             {
+                // Found a new highest vote, reset the tied players list
                 maxVotes = vote.Value;
-                playerToEliminate = vote.Key;
+                tiedPlayers.Clear();
+                tiedPlayers.Add(vote.Key);  // Add the player with the highest votes
+            }
+            else if (vote.Value == maxVotes)
+            {
+                // Add to the tied players list if the vote count matches the current max
+                tiedPlayers.Add(vote.Key);
             }
         }
 
-        // Announce elimination
-        photonView.RPC("PlayerEliminated", PhotonTargets.All, playerToEliminate);
+        // Check if there's a tie (i.e., multiple players with the same highest vote count)
+        if (tiedPlayers.Count > 1)
+        {
+            // No elimination if there's a tie
+            Debug.Log("Tie detected! No player will be eliminated.");
+            return;  // Exit the function without eliminating anyone
+        }
+        else
+        {
+            // If there's no tie, eliminate the player with the most votes
+            playerToEliminate = tiedPlayers[0];
+
+            ProcessVoteResults(playerToEliminate);
+
+        }
+    }
+
+    public void ProcessVoteResults(string playerID)
+    {
+        int aswangCount = GetAswangPlayers();
+
+        EliminatePlayer(playerID);
+        SetRoomProperty(aswangCount);
+
+        // Announce the elimination to all players via RPC
+        photonView.RPC("TransitionToNextPhase", PhotonTargets.All);
+    }
+
+    public void SetRoomProperty(int aswangCount)
+    {
+        // Set the announcement message based on aswangCount
+        string announcement = aswangCount switch
+        {
+            0 => "There are no more aswang left in the game. Taumbayan Wins!",
+            1 => "There is one aswang left in the game. The game will continue",
+            2 => "There are 2 more aswang left in the game.",
+            _ => $"There are {aswangCount} aswang left in the game."
+        };
+
+        // Set the room property with the announcement
+        ExitGames.Client.Photon.Hashtable roomProperty = new ExitGames.Client.Photon.Hashtable
+        {
+            { "Announcement_Day", announcement }
+        };
+
+        // Additional logic for aswangCount == 0
+        if (aswangCount == 0)
+        {
+            // Set a different room property when there are no aswang left
+            roomProperty["Game_Winners"] = "Taumbayan Wins! No more aswang left in the game!";
+        }
+
+        // Apply the custom properties
+        PhotonNetwork.room.SetCustomProperties(roomProperty);
+    }
+
+    public int GetAswangPlayers()
+    {
+        int aswangCount = 0;
+        foreach (PhotonPlayer player in PhotonNetwork.playerList)
+        {
+            // must only count aswang players that are alive and not voted out
+            if (aswangRoles.Contains((string)player.CustomProperties["Role"]) &&
+                ((bool)player.CustomProperties["isAlive"] && !(bool)player.CustomProperties["isVotedOut"]))
+            {
+                aswangCount++;
+            }
+        }
+        return aswangCount;
     }
 
     [PunRPC]
-    void PlayerEliminated(string playerName)
+    void TransitionToNextPhase()
     {
-        Debug.Log($"{playerName} has been eliminated!");
-        // Add your elimination logic here (e.g., disable player card, update UI, etc.)
+        PhotonNetwork.LoadLevel("Announcement_Day");
+    }
+
+    public void EliminatePlayer(string playerID)
+    { 
+        foreach(PhotonPlayer player in PhotonNetwork.playerList)
+        {
+            if ((string)player.CustomProperties["playerID"] == playerID)
+            {
+                ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable
+                {
+                    { "isVotedOut", true } // Mark the player as voted out
+                };
+                player.SetCustomProperties(playerProperties);
+            }
+        }  
     }
 }
