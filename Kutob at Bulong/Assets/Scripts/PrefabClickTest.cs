@@ -13,7 +13,10 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
     public int photonViewIDSelf;
     PhotonView photonView;
     [SerializeField] private SelectTarget selectTargetScript;
+    [SerializeField] private SelectVote selectVoteScript;
     public NightPhaseManager nightPhaseManager;
+    public VotingSystem votingSystem;
+
     private string photonplayerIDTarget;
     private string photonplayerIDSelf;
 
@@ -28,7 +31,9 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
             photonplayerIDSelf = (string)PhotonNetwork.player.CustomProperties["playerID"];
         }
         photonView = GetComponent<PhotonView>();
+        votingSystem = FindAnyObjectByType<VotingSystem>();
         selectTargetScript = FindAnyObjectByType<SelectTarget>();
+        selectVoteScript = FindAnyObjectByType<SelectVote>();
         nightPhaseManager = FindAnyObjectByType<NightPhaseManager>();
     }
 
@@ -59,6 +64,10 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
             selectTargetScript.OpenSelectTargetModal(photonViewTarget.owner.NickName, photonplayerIDSelf, photonplayerIDTarget);
             //selectTargetScript.nightSelectTargetModal.SetActive(true);
         }
+        else
+        {
+            selectVoteScript.OpenSelectVoteModal(photonViewTarget.owner.NickName, photonplayerIDTarget);
+        }
     }
 
     public void TestTargetConfirmed(string targetID)
@@ -70,6 +79,12 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
         /*StartCoroutine(addDelay(targetID));*/
         selectTargetScript.CloseSelectTargetModal();
         nightPhaseManager.ProcessNightAction((string)PhotonNetwork.player.CustomProperties["playerID"], targetID);
+    }
+
+    public void VoteConfirmed(string targetID)
+    {
+        Debug.Log("Calling cast vote method...");
+        votingSystem.CastVote(targetID);
     }
 
     public void ResetIDs()
