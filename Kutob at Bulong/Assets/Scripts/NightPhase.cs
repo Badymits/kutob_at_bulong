@@ -322,6 +322,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
     private void EndNightPhase()
     {
         Debug.Log("Ending night phase...");
+        int victimCount = 0;
         foreach (PhotonPlayer player in PhotonNetwork.playerList)
         {
             Debug.Log("Currently removing eliminated players....");
@@ -337,7 +338,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
                 Debug.Log("Setting custom property");
 
                 player.SetCustomProperties(playerProperties);
-
+                victimCount++;
                 
                 // call method from script that is attached to the prefab itself
                 //prefabScript.EliminatedFromGame("NightPhase");
@@ -356,6 +357,17 @@ public class NightPhaseManager : Photon.MonoBehaviour
             player.SetCustomProperties(resetProperties);
         }
 
+        string announcement = victimCount == 1
+        ? $"There was {victimCount} victim during the night"
+        : $"There were {victimCount} victims during the night";
+
+        // Set the room property
+        ExitGames.Client.Photon.Hashtable roomProperty = new ExitGames.Client.Photon.Hashtable
+        {
+            { "Announcement_Night", announcement }
+        };
+        PhotonNetwork.room.SetCustomProperties(roomProperty);
+
         Debug.Log("Calling CheckWinCon method...");
         CheckWinConditions(); // Check for win conditions after the night phase ends
 
@@ -368,12 +380,6 @@ public class NightPhaseManager : Photon.MonoBehaviour
         Debug.Log("Transitioning to Discussion Phase...");
         // Implement your logic here to move to discussion phase
         PhotonNetwork.LoadLevel("DayTransition"); // continue game 
-    }
-
-    [PunRPC]
-    private void TransitionToEliminatedScene()
-    {
-        PhotonNetwork.LoadLevel("EliminatedScene");
     }
 
     private bool IsAswang(string role)
