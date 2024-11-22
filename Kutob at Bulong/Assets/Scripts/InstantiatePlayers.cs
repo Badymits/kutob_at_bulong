@@ -31,8 +31,19 @@ public class InstantiatePlayers : MonoBehaviour
 
         for (int i = 0; i < PhotonNetwork.playerList.Length; i++)
         {
+            
             PhotonPlayer player = PhotonNetwork.playerList[i];
-            if (player == null) continue;
+            Debug.Log("Current player: " + player.NickName);
+            Debug.Log("alive property of player: " + player.CustomProperties["isAlive"]);
+            if (!(bool)player.CustomProperties["isAlive"] || (bool)player.CustomProperties["isVotedOut"] || player == null)
+            {
+                Debug.Log("Skipping eliminated player");
+                continue;
+            }
+            else
+            {
+                Debug.Log("Why....aaaa");
+            }
 
             GameObject playerCard = Instantiate(playerCardPrefab, playerCardsContainer);
             PhotonView playerPhotonView = playerCard.GetComponent<PhotonView>();
