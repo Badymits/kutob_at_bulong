@@ -53,4 +53,6 @@ MonoBehaviour:
   - UpdatePhase
   - UpdatePlayerTurnUI
   - TransitionToEliminatedScene
+  - TransitionToNextPhase
+  - LoadNextScene
   DisableAutoOpenWizard: 1
