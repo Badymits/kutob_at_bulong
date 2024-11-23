@@ -67,6 +67,28 @@ public class InstantiatePlayers : MonoBehaviour
             textComponent.enableAutoSizing = false;
         }
 
+        // Check if the player is the local player (self)
+        if (player == PhotonNetwork.player)  // Or you can compare NickName: player.NickName == PhotonNetwork.LocalPlayer.NickName
+        {
+            // Convert the hex color code (#eab308, shade of yellow) to a Color
+            Color newColor;
+            if (ColorUtility.TryParseHtmlString("#eab308", out newColor))
+            {
+                // Change text color for the local player to the specified hex color
+                textComponent.color = newColor;
+            }
+            else
+            {
+                // In case the color parsing fails, you can set a fallback color (e.g., white)
+                textComponent.color = Color.green;
+            }
+        }
+        else
+        {
+            // Default color for other players
+            textComponent.color = Color.white;
+        }
+
         RectTransform rectTransform = playerCard.GetComponent<RectTransform>();
         if (rectTransform != null)
         {
