@@ -55,4 +55,8 @@ MonoBehaviour:
   - TransitionToEliminatedScene
   - TransitionToNextPhase
   - LoadNextScene
+  - DistributeGameResultsScene
+  - SetNightOrDayCount
+  - TransitionToDay
+  - TransitionToNight
   DisableAutoOpenWizard: 1
