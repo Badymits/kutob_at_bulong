@@ -2,11 +2,13 @@ using Photon;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using TMPro;
 
 public class VotingSystem : Photon.MonoBehaviour
 {
     private new PhotonView photonView;
     private Dictionary<string, int> votes = new Dictionary<string, int>();
+    public TMP_Text announcementText;
 
     HashSet<string> aswangRoles = new HashSet<string>
     {
@@ -17,8 +19,8 @@ public class VotingSystem : Photon.MonoBehaviour
 
     void Start()
     {
-        
         photonView = GetComponent<PhotonView>();
+        announcementText.text = (string)PhotonNetwork.room.CustomProperties["Announcement_Night"];
     }
 
     public void CastVote(string playerID)
@@ -42,6 +44,10 @@ public class VotingSystem : Photon.MonoBehaviour
             votes[votedPlayerID]++;
         }
         Debug.Log("The votes: " + votes);
+        foreach(var vote in votes)
+        {
+            Debug.Log("vote: " + vote);
+        }
     }
 
 
@@ -91,23 +97,41 @@ public class VotingSystem : Photon.MonoBehaviour
             playerToEliminate = tiedPlayers[0];
 
             ProcessVoteResults(playerToEliminate);
-
         }
     }
 
     public void ProcessVoteResults(string playerID)
     {
-        int aswangCount = GetAswangPlayers();
+        
+        // eliminate first before getting aswang count
+        EliminatePhotonPlayer(playerID);
 
-        EliminatePlayer(playerID);
+        int aswangCount = GetAswangPlayers();
         SetRoomProperty(aswangCount);
 
         // Announce the elimination to all players via RPC
         photonView.RPC("TransitionToNextPhase", PhotonTargets.All);
     }
 
+    public void EliminatePhotonPlayer(string playerID)
+    {
+        foreach (PhotonPlayer player in PhotonNetwork.playerList)
+        {
+            Debug.Log("Currently eliminating player");
+            if ((string)player.CustomProperties["playerID"] == playerID)
+            {
+                ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable
+                {
+                    { "isVotedOut", true } // Mark the player as voted out
+                };
+                player.SetCustomProperties(playerProperties);
+            }
+        }
+    }
+
     public void SetRoomProperty(int aswangCount)
     {
+        bool aliveVillagers = CheckAliveForVillagers();
         // Set the announcement message based on aswangCount
         string announcement = aswangCount switch
         {
@@ -124,14 +148,35 @@ public class VotingSystem : Photon.MonoBehaviour
         };
 
         // Additional logic for aswangCount == 0
-        if (aswangCount == 0)
+        if (aswangCount == 0 && aliveVillagers)
         {
             // Set a different room property when there are no aswang left
-            roomProperty["Game_Winners"] = "Taumbayan Wins! No more aswang left in the game!";
+            roomProperty["Game_Winner"] = "Villagers";
+        }
+        else if (aswangCount >= 1 && !aliveVillagers)
+        {
+            roomProperty["Game_Winner"] = "Aswang";
         }
 
         // Apply the custom properties
         PhotonNetwork.room.SetCustomProperties(roomProperty);
+    }
+
+    public bool CheckAliveForVillagers()
+    {
+        int villagerCount = 0; 
+
+        foreach (PhotonPlayer player in PhotonNetwork.playerList)
+        {
+            if ((((bool)player.CustomProperties["isAlive"] &&
+                !(bool)player.CustomProperties["isVotedOut"])))
+            {
+                villagerCount++;
+                
+            }
+        }
+
+        return villagerCount > 0 ? true : false;
     }
 
     public int GetAswangPlayers()
@@ -141,8 +186,10 @@ public class VotingSystem : Photon.MonoBehaviour
         {
             // must only count aswang players that are alive and not voted out
             if (aswangRoles.Contains((string)player.CustomProperties["Role"]) &&
-                ((bool)player.CustomProperties["isAlive"] && !(bool)player.CustomProperties["isVotedOut"]))
+                ((bool)player.CustomProperties["isAlive"] && 
+                !(bool)player.CustomProperties["isVotedOut"]))
             {
+                Debug.Log("Aswang found");
                 aswangCount++;
             }
         }
@@ -155,18 +202,5 @@ public class VotingSystem : Photon.MonoBehaviour
         PhotonNetwork.LoadLevel("Announcement_Day");
     }
 
-    public void EliminatePlayer(string playerID)
-    { 
-        foreach(PhotonPlayer player in PhotonNetwork.playerList)
-        {
-            if ((string)player.CustomProperties["playerID"] == playerID)
-            {
-                ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable
-                {
-                    { "isVotedOut", true } // Mark the player as voted out
-                };
-                player.SetCustomProperties(playerProperties);
-            }
-        }  
-    }
+    
 }
