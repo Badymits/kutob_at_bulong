@@ -14,6 +14,16 @@ public class NightPhaseManager : Photon.MonoBehaviour
     public TMP_Text temp_role;
     public TMP_Text temp_name;
 
+    string player_role = "";
+    string winner_type = "";
+
+    HashSet<string> aswangRoles = new HashSet<string>
+    {
+        "aswang - mandurugo",
+        "aswang - manananggal",
+        "aswang - berbalang"
+    };
+
     public enum NightRole
     {
         Mangangaso, // Hunter
@@ -31,7 +41,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
 
     [SerializeField] private UIManager ui_manager;
     private PrefabClickTest prefabScript;
-    private PhotonView photonView;
+    private new PhotonView photonView;
 
 
     public class Player
@@ -238,14 +248,20 @@ public class NightPhaseManager : Photon.MonoBehaviour
 
         foreach (var aswangRole in new[] { NightRole.AswangMandurugo, NightRole.AswangManananggal, NightRole.AswangBerbalang })
         {
-            if (isAswangAlive(aswangRole))
+            List<Player> aliveAswangs = GetAliveAswangs(aswangRole);
+
+            // If there are any alive Aswangs for this role, add them to the turn order
+            if (aliveAswangs.Count > 0)
             {
-                Debug.Log($"{aswangRole} Turn Added");
-                nightTurnOrder.Enqueue(aswangRole);
+                foreach (var aswang in aliveAswangs)
+                {
+                    Debug.Log($"{aswangRole} Turn Added");
+                    nightTurnOrder.Enqueue(aswangRole);  // Add the role to the queue
+                }
             }
             else
             {
-                Debug.Log("Role: " + aswangRole + " Not found for some reason. ");
+                Debug.Log($"Role: {aswangRole} Not found for some reason. ");
             }
         }
 
@@ -422,21 +438,26 @@ public class NightPhaseManager : Photon.MonoBehaviour
         }
     }
 
-    private bool isAswangAlive(NightRole role)
+    // Modified method to return a list of alive players for the given Aswang role
+    private List<Player> GetAliveAswangs(NightRole role)
     {
+        List<Player> aliveAswangs = new List<Player>();
+
         foreach (var player in players.Values)
         {
             Debug.Log("Finding role: " + player.role);
             string modifiedString = StringModifyAswang(player.role);
             Debug.Log("Modified String: " + modifiedString);
             Debug.Log("Player role: " + role);
+
+            // If role matches and the player is alive, add them to the list
             if (modifiedString.Equals(role.ToString(), System.StringComparison.OrdinalIgnoreCase) && player.isAlive)
             {
-                return true;
+                aliveAswangs.Add(player);
             }
         }
-        return false;
 
+        return aliveAswangs;
     }
 
     private bool IsRoleAlive(NightRole role)
@@ -483,7 +504,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
         }
         else if (aswangCount >= villagerCount && villagerCount == 0)
         {
-            EndGame("Aswangs");
+            EndGame("Aswang");
             
             return;
         }
@@ -497,15 +518,59 @@ public class NightPhaseManager : Photon.MonoBehaviour
     private void EndGame(string winners)
     {
         Debug.Log($"Game Over! {winners} win!");
-        if (winners == "Villagers")
+        ExitGames.Client.Photon.Hashtable roomProperty = new ExitGames.Client.Photon.Hashtable
         {
-            PhotonNetwork.LoadLevel("VictoryTaumbayan");
-        }
-        else
-        {
-            PhotonNetwork.LoadLevel("VictoryAswang");
-        }
+            { "Game_Winner", winners }
+        };
+
+        PhotonNetwork.room.SetCustomProperties(roomProperty);
+
+        photonView.RPC("DistributeGameResultsScene", PhotonTargets.All);
         return;
-        // Implement game end logic here. 
+    }
+
+    [PunRPC]
+    void DistributeGameResultsScene()
+    {
+
+        string gameWinner = (string)PhotonNetwork.room.CustomProperties["Game_Winner"];
+
+        bool isAswang = aswangRoles.Contains(player_role);
+        bool isVillagers = gameWinner == "Villagers";
+        bool isAswangWinner = gameWinner == "Aswang";
+
+
+        if (isVillagers)
+        {
+            winner_type = isAswang ? "d" : "a";  // "d" if Aswang, "a" if Villagers
+        }
+        else if (isAswangWinner)
+        {
+            winner_type = isAswang ? "c" : "b";  // "c" if Aswang, "b" if Villagers
+        }
+
+
+        GoToGameResults(winner_type);
+    }
+
+    void GoToGameResults(string type)
+    {
+        switch (type)
+        {
+            case "a":
+                PhotonNetwork.LoadLevel("VictoryTaumbayan");
+                break;
+            case "b":
+                PhotonNetwork.LoadLevel("DefeatTaumbayan");
+                break;
+            case "c":
+                PhotonNetwork.LoadLevel("VictoryAswang");
+                break;
+            case "d":
+                PhotonNetwork.LoadLevel("DefeatAswang");
+                break;
+            default:
+                break;
+        }
     }
 }
