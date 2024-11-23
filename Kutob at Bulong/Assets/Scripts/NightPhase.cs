@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using System;
+using System.Data;
 
 public class NightPhaseManager : Photon.MonoBehaviour
 {
@@ -30,11 +31,12 @@ public class NightPhaseManager : Photon.MonoBehaviour
 
     [SerializeField] private UIManager ui_manager;
     private PrefabClickTest prefabScript;
-    private new PhotonView photonView;
+    private PhotonView photonView;
 
 
     public class Player
     {
+        public string playerID; // seems redundant since we're applying PhotonPlayer id to int key to dictionary but still necessary
         public string username;
         public string role;
         public bool isAlive = true;
@@ -64,20 +66,25 @@ public class NightPhaseManager : Photon.MonoBehaviour
 
         foreach (PhotonPlayer photonPlayer in PhotonNetwork.playerList)
         {
-            Debug.Log("Populating players dictionary");
-            string roleProperty = (string)photonPlayer.CustomProperties["Role"];
-
-            Debug.Log("Player's role is: " + roleProperty);
-
-            // instantiate player class obj
-            Player newPlayer = new Player
+            if ((bool)photonPlayer.CustomProperties["isAlive"] && !(bool)photonPlayer.CustomProperties["isVotedOut"]) // only add players that are still in the game
             {
-                username = photonPlayer.NickName,
-                role = roleProperty
-            };
+                Debug.Log("Populating players dictionary");
+                string roleProperty = (string)photonPlayer.CustomProperties["Role"];
 
-            Debug.Log("The PhotonPlayer ID: " + photonPlayer.ID);
-            players.Add(photonPlayer.ID, newPlayer);
+                Debug.Log("Player's role is: " + roleProperty);
+
+                // instantiate player class obj
+                Player newPlayer = new()
+                {
+                    playerID = (string)photonPlayer.CustomProperties["playerID"],
+                    username = photonPlayer.NickName,
+                    role = roleProperty
+                };
+
+                Debug.Log("The PhotonPlayer ID: " + photonPlayer.ID);
+                players.Add(photonPlayer.ID, newPlayer);
+            }
+            
         }
         PhotonPlayer photonPlayerTest = PhotonNetwork.player;
         string photonPlayer1 = PhotonNetwork.player.NickName;
@@ -96,51 +103,50 @@ public class NightPhaseManager : Photon.MonoBehaviour
         StartNightPhase();
     }
 
-    public void ProcessNightAction(int selfID, int targetID) // receieves photon player id for self and for target
+    public void ProcessNightAction(string selfID, string targetID) // receieves photon player id for self and for target
     {
-        Player actor = GetActor(selfID);
-        Player target = GetActor(targetID);
+        PhotonPlayer actor = GetActor(selfID);
+        PhotonPlayer target = GetActor(targetID);
+        
 
-        Debug.Log("The actor: " + actor + " Actor role: " + actor.role);
-        Debug.Log("The target: " + target + " target role: " + target.role);
+        Debug.Log("The actor: " + actor + " Actor role: " + actor.CustomProperties["Role"].ToString());
+        Debug.Log("The target: " + target + " target role: " + target.CustomProperties["Role"].ToString());
 
-
-        switch (actor.role.ToLower())
+        switch (actor.CustomProperties["Role"].ToString().ToLower())
         {
             case "mangangaso":
                 ResetUIState();
-                if (!actor.canExecute)
+                if (!(bool)actor.CustomProperties["canExecute"])
                 {
-                    target.isProtected = true;
+                    target.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "isProtected", true } });
                 }
-                else if (actor.skipTurn || actor.nightSkip == nightCount)
+                else if ((bool)actor.CustomProperties["skipTurn"] || (int)actor.CustomProperties["nightSkip"] == nightCount)
                 {
                     // Skip turn if disabled by Manananggal
                     return;
                 }
                 else
                 {
-                    target.nightTarget = true;
+                    target.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "nightTarget", true } });
                 }
-                actor.turnDone = true;
+              
                 break;
 
             case "aswang - mandurugo":
                 ResetUIState();
-                if (!IsAswang(target.role))
+                if (!IsAswang(target.CustomProperties["Role"].ToString()))
                 {
-                    target.nightTarget = true;
+                    target.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "nightTarget", true } });
                 }
-                actor.turnDone = true;
                 break;
 
             case "aswang - manananggal":
                 ResetUIState();
-                if (!IsAswang(target.role))
+                if (!IsAswang(target.CustomProperties["Role"].ToString()))
                 {
-                    if (!target.isProtected)
+                    if (!(bool)actor.CustomProperties["isProtected"])
                     {
-                        target.nightTarget = true;
+                        target.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "nightTarget", true } });
                     }
                     else
                     {
@@ -153,23 +159,21 @@ public class NightPhaseManager : Photon.MonoBehaviour
                         }
                     }
                 }
-                actor.turnDone = true;
                 break;
 
             case "aswang - berbalang":
                 ResetUIState();
-                if (!IsAswang(target.role) && !target.isProtected)
+                if (!IsAswang(target.CustomProperties["Role"].ToString()) && !(bool)target.CustomProperties["isProtected"])
                 {
-                    target.nightTarget = true;
+                    target.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "nightTarget", true } });
                 }
-                actor.turnDone = true;
                 break;
 
             case "babaylan":
                 ResetUIState();
-                if (target.nightTarget)
+                if ((bool)target.CustomProperties["nightTarget"])
                 {
-                    target.nightTarget = false; // Cancel the target's night action
+                    target.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "nightTarget", false } }); // Cancel the target's night action
                 }
                 break;
 
@@ -181,8 +185,10 @@ public class NightPhaseManager : Photon.MonoBehaviour
             default:
                 break;
         }
+        
+        actor.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "turnDone", true } });
         Debug.Log("On to the next role...");
-        MoveToNextTurn();
+        photonView.RPC("MoveToNextTurn", PhotonTargets.All);
     }
 
     private void ResetUIState()
@@ -192,15 +198,14 @@ public class NightPhaseManager : Photon.MonoBehaviour
         ui_manager.tMP.text = "Wait for your turn";
     }
 
+    [PunRPC]
     private void MoveToNextTurn()
     {
+
         if (nightTurnOrder.Count > 0)
         {
-            currentTurn = nightTurnOrder.Dequeue(); // Get the next player's turn
+            currentTurn = nightTurnOrder.Dequeue();
             Debug.Log("Current night turn order value: " + nightTurnOrder.Count);
-
-            // Sync turn for all players
-            ui_manager.photonView.RPC("SyncTurnOrder", PhotonTargets.All, currentTurn.ToString());
             NotifyPlayerTurn(currentTurn);
         }
         else
@@ -258,8 +263,12 @@ public class NightPhaseManager : Photon.MonoBehaviour
             Debug.Log("Manghuhula Turn Added");
         }
 
-
-        ui_manager.photonView.RPC("SyncNightTurnOrder", PhotonTargets.All, GetTurnOrderArray(), nightTurnOrder.Count);
+        Debug.Log("The night turn order: " + nightTurnOrder);
+        foreach (var roles in nightTurnOrder)
+        {
+            Debug.Log("role: " + roles);
+        }
+        
 
         // Only notify turn if there are players in the queue
         if (nightTurnOrder.Count > 0)
@@ -273,66 +282,28 @@ public class NightPhaseManager : Photon.MonoBehaviour
         }
     }
 
-    private string[] GetTurnOrderArray()
-    {
-        List<string> turnOrderList = new List<string>();
-        foreach (NightRole role in nightTurnOrder)
-        {
-            turnOrderList.Add(role.ToString());
-        }
-        return turnOrderList.ToArray();
-    }
-
-    [PunRPC]
-    public void SyncNightTurnOrder(string[] turnOrderArray, int queueCount)
-    {
-        nightTurnOrder.Clear(); // Reset the queue on all clients
-
-        // Rebuild the nightTurnOrder based on the array received
-        foreach (var role in turnOrderArray)
-        {
-            nightTurnOrder.Enqueue((NightRole)Enum.Parse(typeof(NightRole), role));
-        }
-
-        int nightTurnOrderCount = queueCount; // Sync the queue count
-
-        Debug.Log("Turn order synchronized, current turn is: " + currentTurn);
-    }
-
-    [PunRPC]
-    public void SyncTurnOrder(string currentTurnRole, int queueCount, string[] roleQueue)
-    {
-        // Sync the current turn and the queue state across all players
-        currentTurn = (NightRole)Enum.Parse(typeof(NightRole), currentTurnRole);
-        nightTurnOrder.Clear(); // Reset the local queue
-        foreach (var role in roleQueue)
-        {
-            nightTurnOrder.Enqueue((NightRole)Enum.Parse(typeof(NightRole), role));
-        }
-
-        Debug.Log("Turn synchronized to: " + currentTurn);
-        int nightTurnOrderCount = queueCount;
-
-        // Notify the current player (who can now perform actions) and disable others
-        NotifyPlayerTurn(currentTurn);
-    }
-
+    // manages the UI
     private void NotifyPlayerTurn(NightRole role)
     {
         Debug.Log($"It's {role}'s turn");
-        //ui_manager.ShowRoleUI(role.ToString().ToLower());
+        Debug.Log("Showing roles....");
+        foreach (var roles in nightTurnOrder)
+        {
+            Debug.Log(roles);  // Assuming NightRole has a meaningful ToString implementation
+        }
         ui_manager.photonView.RPC("UpdatePlayerTurnUI", PhotonTargets.All, role.ToString().ToLower());
     }
 
-    public Player GetActor(int actorID)
+    public PhotonPlayer GetActor(string actorID)
     {
         Debug.Log("Called Get actor method");
-        foreach (KeyValuePair<int, Player> player in players)
+        foreach (PhotonPlayer player in PhotonNetwork.playerList)
         {
-            int photonPlayerID = player.Key;
-            Debug.Log("The player key: " + player.Key);
+
+            string photonPlayerID = (string)player.CustomProperties["playerID"];
+            Debug.Log("The player ID: " + player.ID);
             Debug.Log("The actor ID: " + actorID);
-            Player classPlayer = player.Value;
+            PhotonPlayer classPlayer = player;
 
             Debug.Log("The class player: " + classPlayer);
             if (actorID == photonPlayerID)
@@ -350,26 +321,60 @@ public class NightPhaseManager : Photon.MonoBehaviour
 
     private void EndNightPhase()
     {
-        foreach (var player in players.Values)
+        Debug.Log("Ending night phase...");
+        int victimCount = 0;
+        foreach (PhotonPlayer player in PhotonNetwork.playerList)
         {
-            if (player.nightTarget && !player.isProtected)
+            Debug.Log("Currently removing eliminated players....");
+            if ((bool)player.CustomProperties["nightTarget"] && !(bool)player.CustomProperties["isProtected"])
             {
-                player.isAlive = false; // Mark player as dead if targeted and not protected
+                Debug.Log("Setting isAlive value to player: ");
+                // Mark player as dead by setting "isAlive" to false in custom properties
+                ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable
+                {
+                    { "isAlive", false } // Mark the player as dead
+                };
+
+                Debug.Log("Setting custom property");
+
+                player.SetCustomProperties(playerProperties);
+                victimCount++;
+                
                 // call method from script that is attached to the prefab itself
-                prefabScript.EliminatedFromGame("NightPhase");
+                //prefabScript.EliminatedFromGame("NightPhase");
             }
 
+            Debug.Log("Resetting player values for next night");
             // Reset night status for all players at the end of the night phase
-            player.nightTarget = false;
-            player.isProtected = false;
-            player.turnDone = false;
+            ExitGames.Client.Photon.Hashtable resetProperties = new ExitGames.Client.Photon.Hashtable
+            {
+                { "nightTarget", false },
+                { "isProtected", false },
+                { "turnDone", false }
+            };
+
+            Debug.Log("setting reset custom properties");
+            player.SetCustomProperties(resetProperties);
         }
 
+        string announcement = victimCount == 1
+        ? $"There was {victimCount} victim during the night"
+        : $"There were {victimCount} victims during the night";
+
+        // Set the room property
+        ExitGames.Client.Photon.Hashtable roomProperty = new ExitGames.Client.Photon.Hashtable
+        {
+            { "Announcement_Night", announcement }
+        };
+        PhotonNetwork.room.SetCustomProperties(roomProperty);
+
+        Debug.Log("Calling CheckWinCon method...");
         CheckWinConditions(); // Check for win conditions after the night phase ends
 
 
     }
 
+    [PunRPC]
     private void TransitionToDiscussionPhase()
     {
         Debug.Log("Transitioning to Discussion Phase...");
@@ -448,9 +453,9 @@ public class NightPhaseManager : Photon.MonoBehaviour
         return false;
     }
 
-    private void RevealRole(Player seer, Player target)
+    private void RevealRole(PhotonPlayer seer, PhotonPlayer target)
     {
-        Debug.Log($"Revealed {target.role} to {seer.username}");
+        Debug.Log($"Revealed {(string)target.CustomProperties["Role"]} to {(string)seer.CustomProperties["Role"]}");
         // Implement UI to show target's role to the seer here.
     }
 
@@ -485,7 +490,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
         else
         {
             // Automatically transition to discussion phase
-            TransitionToDiscussionPhase();
+            photonView.RPC("TransitionToDiscussionPhase", PhotonTargets.All);
         }
     }
 

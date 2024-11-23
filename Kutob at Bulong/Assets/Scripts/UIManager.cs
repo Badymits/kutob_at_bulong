@@ -58,7 +58,7 @@ public class UIManager : MonoBehaviour
 
                 case "manghuhula":
                     cardContainer.SetActive(true);
-                    tMP.text = "Choose who you'll Guess";
+                    tMP.text = "Choose who you'll Guess. The Role will be revealed to you in the Discussion phase";
                     break;
 
                 case "aswangmandurugo":

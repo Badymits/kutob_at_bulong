@@ -6,9 +6,11 @@ public class Timer : MonoBehaviour
     public float timeRemaining = 60;
     public bool timerIsRunning = false;
     public TMP_Text timerText; // Use TMP_Text for TextMeshPro
+    VotingSystem votingSystem;
 
     void Start()
     {
+        votingSystem = FindAnyObjectByType<VotingSystem>();
         timerIsRunning = true;
         UpdateTimerText();
     }
@@ -28,6 +30,9 @@ public class Timer : MonoBehaviour
                 timeRemaining = 0;
                 timerIsRunning = false;
                 // Handle what happens when the timer runs out
+
+                votingSystem.EliminatePlayer();
+
             }
         }
     }

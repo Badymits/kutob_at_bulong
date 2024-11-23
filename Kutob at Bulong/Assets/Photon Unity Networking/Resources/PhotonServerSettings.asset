@@ -28,33 +28,31 @@ MonoBehaviour:
   NetworkLogging: 1
   RunInBackground: 1
   RpcList:
+  - BroadcastMessage
   - Chat
   - ColorRpc
   - DestroyRpc
+  - DistributeScene
   - DoJump
   - Flash
-  - GetMessage
   - InstantiateRpc
+  - LoadEliminationScene
   - Marco
+  - MoveToNextTurn
   - PickupItemInit
+  - PlayerEliminated
   - Polo
   - PunPickup
   - PunPickupSimple
   - PunRespawn
+  - ReceiveVote
   - RequestForPickupItems
   - RequestForPickupTimes
   - TaggedPlayer
+  - TransitionToDiscussionPhase
   - UpdatePhase
-  - AssignRoleToPlayer
-  - SetPositionRPC
-  - DistributeScene
-  - PlayerEliminated
-  - ReceiveVote
-  - ReceiveMessage
-  - LoadEliminationScene
   - UpdatePlayerTurnUI
-  - SyncGameState
-  - SyncNightTurnOrder
-  - SyncTurnOrder
-  - BroadcastMessage
+  - TransitionToEliminatedScene
+  - TransitionToNextPhase
+  - LoadNextScene
   DisableAutoOpenWizard: 1

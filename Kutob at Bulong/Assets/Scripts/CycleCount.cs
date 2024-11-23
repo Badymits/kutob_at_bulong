@@ -11,9 +11,11 @@ public class CycleCount : MonoBehaviour
     public float roleSceneTimer = 5f;
     int night_counter = 0;
     int day_counter = 0;
+    public PhotonPlayer photonPlayer;
 
     void Start()
     {
+        photonPlayer = PhotonNetwork.player;
         Scene currentScene = SceneManager.GetActiveScene();
         Debug.Log(currentScene.name.ToString());
         StartCoroutine(TimerToNextScene(currentScene.name.ToString()));
@@ -81,6 +83,16 @@ public class CycleCount : MonoBehaviour
 
     void switchtoDayPhase()
     {
-        PhotonNetwork.LoadLevel("Discussion Phase");
+        Debug.Log("local player: " + photonPlayer);
+        if (!(bool)photonPlayer.CustomProperties["isAlive"])
+        {
+            //PhotonNetwork.LoadLevel("EliminatedScene");
+            SceneManager.LoadScene("EliminatedScene");
+        }
+        else
+        {
+            PhotonNetwork.LoadLevel("Discussion Phase");
+        }
+        
     }
 }

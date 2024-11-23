@@ -13,9 +13,14 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
     public int photonViewIDSelf;
     PhotonView photonView;
     [SerializeField] private SelectTarget selectTargetScript;
+    [SerializeField] private SelectVote selectVoteScript;
     public NightPhaseManager nightPhaseManager;
-    private int photonplayerIDTarget;
-    private int photonplayerIDSelf;
+    public VotingSystem votingSystem;
+
+    private string photonplayerIDTarget;
+    private string photonplayerIDSelf;
+
+    public float confirmTimer = .3f;
 
     void Start()
     {
@@ -23,10 +28,12 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
         {
             // If the player is already connected to the room, access the PhotonPlayer ID
             
-            photonplayerIDSelf = PhotonNetwork.player.ID;
+            photonplayerIDSelf = (string)PhotonNetwork.player.CustomProperties["playerID"];
         }
         photonView = GetComponent<PhotonView>();
+        votingSystem = FindAnyObjectByType<VotingSystem>();
         selectTargetScript = FindAnyObjectByType<SelectTarget>();
+        selectVoteScript = FindAnyObjectByType<SelectVote>();
         nightPhaseManager = FindAnyObjectByType<NightPhaseManager>();
     }
 
@@ -45,34 +52,45 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
 
         Debug.Log("Photon View component" + photonPlayerTarget.ID);
 
+        string playerID = (string)photonPlayerTarget.CustomProperties["playerID"];
+
 
         // retrieving photon player ID's and username through the PhotonView component attached to prefab
-        photonplayerIDTarget = photonPlayerTarget.ID;
+        photonplayerIDTarget = playerID;
         Debug.Log(photonplayerIDTarget);
 
         if ( sceneName == "NightPhase")
         {
-            //selectTargetScript.OpenSelectTargetModal(photonViewName, photonplayerIDSelf, photonViewIDTarget);
-            selectTargetScript.nightSelectTargetModal.SetActive(true);
+            selectTargetScript.OpenSelectTargetModal(photonViewTarget.owner.NickName, photonplayerIDSelf, photonplayerIDTarget);
+            //selectTargetScript.nightSelectTargetModal.SetActive(true);
+        }
+        else
+        {
+            selectVoteScript.OpenSelectVoteModal(photonViewTarget.owner.NickName, photonplayerIDTarget);
         }
     }
 
-    public void TestTargetConfirmed()
+    public void TestTargetConfirmed(string targetID)
     {
         Debug.Log("Sending confirm request to night phase script");
         Debug.Log("Photon Player self ID: " + photonplayerIDSelf);
         Debug.Log("Photon Player target ID: " + photonplayerIDTarget);
 
-        
-        selectTargetScript.nightSelectTargetModal.SetActive(false);
-        
-        nightPhaseManager.ProcessNightAction(photonplayerIDSelf, photonplayerIDTarget);
+        /*StartCoroutine(addDelay(targetID));*/
+        selectTargetScript.CloseSelectTargetModal();
+        nightPhaseManager.ProcessNightAction((string)PhotonNetwork.player.CustomProperties["playerID"], targetID);
+    }
+
+    public void VoteConfirmed(string targetID)
+    {
+        Debug.Log("Calling cast vote method...");
+        votingSystem.CastVote(targetID);
     }
 
     public void ResetIDs()
     {
-        photonplayerIDTarget = 1111;
-        photonplayerIDSelf = 2222;
+        photonplayerIDTarget = "";
+        photonplayerIDSelf = "";
     }
 
     public void EliminatedFromGame(string currentPhase)
