@@ -16,11 +16,19 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
     [SerializeField] private SelectVote selectVoteScript;
     public NightPhaseManager nightPhaseManager;
     public VotingSystem votingSystem;
+    private PopupMessage popupMessage;
 
     private string photonplayerIDTarget;
     private string photonplayerIDSelf;
 
     public float confirmTimer = .3f;
+
+    HashSet<string> aswangRoles = new HashSet<string>
+    {
+        "aswang - mandurugo",
+        "aswang - manananggal",
+        "aswang - berbalang"
+    };
 
     void Start()
     {
@@ -30,18 +38,24 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
             
             photonplayerIDSelf = (string)PhotonNetwork.player.CustomProperties["playerID"];
         }
+        InitializeGameObjects();
+    }
+
+
+    public void InitializeGameObjects()
+    {
         photonView = GetComponent<PhotonView>();
         votingSystem = FindAnyObjectByType<VotingSystem>();
         selectTargetScript = FindAnyObjectByType<SelectTarget>();
         selectVoteScript = FindAnyObjectByType<SelectVote>();
         nightPhaseManager = FindAnyObjectByType<NightPhaseManager>();
+        popupMessage = FindAnyObjectByType<PopupMessage>();
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         // refers to the clicked game object. Doesn't necessarily mean it would refer to self
         GameObject playerCard = gameObject;
-     
 
         // retrieve scene for conidtional modal opening/closing
         string sceneName = SceneManager.GetActiveScene().name;
@@ -50,24 +64,37 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
         PhotonView photonViewTarget = playerCard.GetComponent<PhotonView>();
         PhotonPlayer photonPlayerTarget = photonViewTarget.owner;
 
-        Debug.Log("Photon View component" + photonPlayerTarget.ID);
 
         string playerID = (string)photonPlayerTarget.CustomProperties["playerID"];
 
-
         // retrieving photon player ID's and username through the PhotonView component attached to prefab
         photonplayerIDTarget = playerID;
-        Debug.Log(photonplayerIDTarget);
 
-        if ( sceneName == "NightPhase")
+
+        if ( sceneName == "NightPhase" && CheckValidTarget(photonPlayerTarget))
         {
             selectTargetScript.OpenSelectTargetModal(photonViewTarget.owner.NickName, photonplayerIDSelf, photonplayerIDTarget);
-            //selectTargetScript.nightSelectTargetModal.SetActive(true);
+            return;
         }
         else
         {
             selectVoteScript.OpenSelectVoteModal(photonViewTarget.owner.NickName, photonplayerIDTarget);
         }
+    }
+
+    // disallow aswang players to select themselves or other fellow aswangs as target
+    public bool CheckValidTarget(PhotonPlayer player)
+    {
+        string targetRole = (string)player.CustomProperties["Role"];
+        string selfRole = (string)PhotonNetwork.player.CustomProperties["Role"];
+
+        if (aswangRoles.Contains(targetRole) && aswangRoles.Contains(selfRole))
+        {
+            popupMessage.OpenMessage();
+            return false;
+        }
+
+        return true;
     }
 
     public void TestTargetConfirmed(string targetID)
@@ -76,15 +103,16 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
         Debug.Log("Photon Player self ID: " + photonplayerIDSelf);
         Debug.Log("Photon Player target ID: " + photonplayerIDTarget);
 
-        /*StartCoroutine(addDelay(targetID));*/
         selectTargetScript.CloseSelectTargetModal();
         nightPhaseManager.ProcessNightAction((string)PhotonNetwork.player.CustomProperties["playerID"], targetID);
+        return;
     }
 
     public void VoteConfirmed(string targetID)
     {
         Debug.Log("Calling cast vote method...");
         votingSystem.CastVote(targetID);
+        return;
     }
 
     public void ResetIDs()
