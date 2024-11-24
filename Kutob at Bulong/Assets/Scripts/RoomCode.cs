@@ -64,7 +64,8 @@ public class RoomCode : MonoBehaviour
             { "Announcement_Day", "The vote is a tie. The game will continue" },
             { "Game_Winner", "" },
             { "Night_Count", 0 },
-            { "Day_Count", 0 }
+            { "Day_Count", 0 },
+            { "End_Phase", "" } // to synchronize the ending phase for other users that were eliminated beforehand
         };
 
         roomOptions.IsVisible = false;
