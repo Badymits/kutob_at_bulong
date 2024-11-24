@@ -30,9 +30,13 @@ public class JoinModalControl : MonoBehaviour
 
     public void EnterRoomCode()
     {
+        string userInput = inputField.text;
+
+        // Remove all whitespaces
+        userInput = userInput.Replace(" ", "");
         if (!string.IsNullOrEmpty(inputField.text))
         {
-            PhotonNetwork.JoinRoom(inputField.text.ToUpper());
+            PhotonNetwork.JoinRoom(userInput.ToUpper());
         }
         else
         {
