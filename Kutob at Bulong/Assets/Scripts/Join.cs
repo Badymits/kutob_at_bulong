@@ -11,6 +11,9 @@ public class Join : Photon.MonoBehaviour
     public Transform playerCardsContainer;
     public TMP_Text roomCodeTMP;
     public Transform[] spawnPoints;
+    public GameObject gameSetingsContainer;
+    public GameObject startGameBtn;
+    public GameObject chatBox;
 
     private List<PhotonPlayer> playersInRoom = new List<PhotonPlayer>();
     private PhotonView photonView;
@@ -210,10 +213,20 @@ public class Join : Photon.MonoBehaviour
     void ShowOwnerUI()
     {
         // Show UI elements for the lobby owner
+        gameSetingsContainer.SetActive(true);
+        
     }
 
     void HideOwnerUI()
     {
         // Hide UI elements for non-owners
+        gameSetingsContainer?.SetActive(false);
+        startGameBtn.SetActive(false);
+
+        Vector3 currentPosition = chatBox.transform.position;
+
+        currentPosition.y = 1f;
+
+        chatBox.transform.position = currentPosition;
     }
 }
