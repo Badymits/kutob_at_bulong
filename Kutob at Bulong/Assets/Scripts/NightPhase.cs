@@ -103,6 +103,13 @@ public class NightPhaseManager : Photon.MonoBehaviour
         temp_name.text = photonPlayer1;
         temp_role.text = photonPlayerRole;
 
+        // reset announcement
+        ExitGames.Client.Photon.Hashtable roomProperty = new ExitGames.Client.Photon.Hashtable();
+        roomProperty["Announcement_Day"] = "The vote is a tie. The game will continue";
+        PhotonNetwork.room.SetCustomProperties(roomProperty);
+
+
+
         Debug.Log("Calling Night phase");
 
         if (ui_manager == null)
@@ -167,6 +174,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
                             mangangaso.skipTurn = true;
                             mangangaso.nightSkip = nightCount + 2; // Skip next two nights
                         }
+                        UpdatePhotonPlayer(mangangaso.playerID);
                     }
                 }
                 break;
@@ -199,6 +207,21 @@ public class NightPhaseManager : Photon.MonoBehaviour
         actor.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "turnDone", true } });
         Debug.Log("On to the next role...");
         photonView.RPC("MoveToNextTurn", PhotonTargets.All);
+    }
+
+    public void UpdatePhotonPlayer(string playerID)
+    {
+        ExitGames.Client.Photon.Hashtable playerProperty = new ExitGames.Client.Photon.Hashtable();
+        foreach (PhotonPlayer player in PhotonNetwork.playerList)
+        {
+            if ((string)player.CustomProperties["playerID"] == playerID)
+            {
+                playerProperty["skipTurn"] = true;
+                playerProperty["nightSkip"] = (int)playerProperty["nightSkip"] + 2;
+
+                player.SetCustomProperties(playerProperty);
+            }
+        }
     }
 
     private void ResetUIState()
@@ -342,7 +365,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
         foreach (PhotonPlayer player in PhotonNetwork.playerList)
         {
             Debug.Log("Currently removing eliminated players....");
-            if ((bool)player.CustomProperties["nightTarget"] && !(bool)player.CustomProperties["isProtected"])
+            if ((bool)player.CustomProperties["nightTarget"])
             {
                 Debug.Log("Setting isAlive value to player: ");
                 // Mark player as dead by setting "isAlive" to false in custom properties
@@ -356,8 +379,6 @@ public class NightPhaseManager : Photon.MonoBehaviour
                 player.SetCustomProperties(playerProperties);
                 victimCount++;
                 
-                // call method from script that is attached to the prefab itself
-                //prefabScript.EliminatedFromGame("NightPhase");
             }
 
             Debug.Log("Resetting player values for next night");
@@ -485,25 +506,43 @@ public class NightPhaseManager : Photon.MonoBehaviour
         int aswangCount = 0;
         int villagerCount = 0;
 
-        foreach (var player in players.Values)
+        foreach (PhotonPlayer player in PhotonNetwork.playerList)
         {
-            if (player.isAlive)
+            if ((bool)player.CustomProperties["isAlive"] && !(bool)player.CustomProperties["isVotedOut"])
             {
-                if (IsAswang(player.role))
+                if (IsAswang((string)player.CustomProperties["Role"]))
+                {
                     aswangCount++;
+                }
                 else
+                {
                     villagerCount++;
+                }
+                    
             }
         }
-
+        Debug.Log("aswang count: " + aswangCount);
+        Debug.Log("Villager count: " + villagerCount);
         // modify this later to send user to appropriate end game screen depending on their role
         if (aswangCount == 0)
         {
+            ExitGames.Client.Photon.Hashtable roomProperty = new ExitGames.Client.Photon.Hashtable
+            {
+                { "Announcement_Day", "There are no more aswang left in the game. Taumbayan Wins!" }
+            };
+
+            PhotonNetwork.room.SetCustomProperties(roomProperty);
             EndGame("Villagers");
             return;
         }
-        else if (aswangCount >= villagerCount && villagerCount == 0)
+        else if (aswangCount > villagerCount && villagerCount == 0)
         {
+            ExitGames.Client.Photon.Hashtable roomProperty = new ExitGames.Client.Photon.Hashtable
+            {
+                { "Announcement_Day", "There are no more players left aside from the aswang. Aswang Wins!" }
+            };
+
+            PhotonNetwork.room.SetCustomProperties(roomProperty);
             EndGame("Aswang");
             
             return;
@@ -532,45 +571,7 @@ public class NightPhaseManager : Photon.MonoBehaviour
     [PunRPC]
     void DistributeGameResultsScene()
     {
-
-        string gameWinner = (string)PhotonNetwork.room.CustomProperties["Game_Winner"];
-
-        bool isAswang = aswangRoles.Contains(player_role);
-        bool isVillagers = gameWinner == "Villagers";
-        bool isAswangWinner = gameWinner == "Aswang";
-
-
-        if (isVillagers)
-        {
-            winner_type = isAswang ? "d" : "a";  // "d" if Aswang, "a" if Villagers
-        }
-        else if (isAswangWinner)
-        {
-            winner_type = isAswang ? "c" : "b";  // "c" if Aswang, "b" if Villagers
-        }
-
-
-        GoToGameResults(winner_type);
+        PhotonNetwork.LoadLevel("Announcement_Day");
     }
 
-    void GoToGameResults(string type)
-    {
-        switch (type)
-        {
-            case "a":
-                PhotonNetwork.LoadLevel("VictoryTaumbayan");
-                break;
-            case "b":
-                PhotonNetwork.LoadLevel("DefeatTaumbayan");
-                break;
-            case "c":
-                PhotonNetwork.LoadLevel("VictoryAswang");
-                break;
-            case "d":
-                PhotonNetwork.LoadLevel("DefeatAswang");
-                break;
-            default:
-                break;
-        }
-    }
 }
