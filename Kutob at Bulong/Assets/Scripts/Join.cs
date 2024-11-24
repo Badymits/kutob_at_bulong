@@ -11,6 +11,9 @@ public class Join : Photon.MonoBehaviour
     public Transform playerCardsContainer;
     public TMP_Text roomCodeTMP;
     public Transform[] spawnPoints;
+    public GameObject gameSetingsContainer;
+    public GameObject startGameBtn;
+    public GameObject chatBox;
 
     private List<PhotonPlayer> playersInRoom = new List<PhotonPlayer>();
     private PhotonView photonView;
@@ -149,6 +152,28 @@ public class Join : Photon.MonoBehaviour
             textComponent.enableAutoSizing = false;
         }
 
+        // Check if the player is the local player (self)
+        if (player == PhotonNetwork.player)  // Or you can compare NickName: player.NickName == PhotonNetwork.LocalPlayer.NickName
+        {
+            // Convert the hex color code (#eab308, shade of yellow) to a Color
+            Color newColor;
+            if (ColorUtility.TryParseHtmlString("#eab308", out newColor))
+            {
+                // Change text color for the local player to the specified hex color
+                textComponent.color = newColor;
+            }
+            else
+            {
+                // In case the color parsing fails, you can set a fallback color (e.g., white)
+                textComponent.color = Color.green;
+            }
+        }
+        else
+        {
+            // Default color for other players
+            textComponent.color = Color.white;
+        }
+
         RectTransform rectTransform = playerCard.GetComponent<RectTransform>();
         if (rectTransform != null)
         {
@@ -188,10 +213,20 @@ public class Join : Photon.MonoBehaviour
     void ShowOwnerUI()
     {
         // Show UI elements for the lobby owner
+        gameSetingsContainer.SetActive(true);
+        
     }
 
     void HideOwnerUI()
     {
         // Hide UI elements for non-owners
+        gameSetingsContainer?.SetActive(false);
+        startGameBtn.SetActive(false);
+
+        Vector3 currentPosition = chatBox.transform.position;
+
+        currentPosition.y = 1f;
+
+        chatBox.transform.position = currentPosition;
     }
 }

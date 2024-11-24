@@ -6,7 +6,7 @@ using UnityEngine;
 public class Manghuhula : MonoBehaviour
 {
     // Start is called before the first frame update
-    PhotonView photonView;
+    private PhotonView photonView;
     public GameObject player;
 
     // The Seer can inspect a player's role

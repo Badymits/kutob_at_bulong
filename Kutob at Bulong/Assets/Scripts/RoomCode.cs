@@ -62,7 +62,10 @@ public class RoomCode : MonoBehaviour
             { "Scene", "CreateLobby" },
             { "Announcement_Night", "There were 0 victims during the night" }, // if there are any players eliminated during the night
             { "Announcement_Day", "The vote is a tie. The game will continue" },
-            { "Game_Winner", "" }
+            { "Game_Winner", "" },
+            { "Night_Count", 0 },
+            { "Day_Count", 0 },
+            { "End_Phase", "" } // to synchronize the ending phase for other users that were eliminated beforehand
         };
 
         roomOptions.IsVisible = false;
