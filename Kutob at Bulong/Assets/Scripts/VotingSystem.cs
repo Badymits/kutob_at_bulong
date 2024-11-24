@@ -63,7 +63,7 @@ public class VotingSystem : Photon.MonoBehaviour
         }
 
         // Initialize variables to track the highest vote count and the list of tied players
-        string playerToEliminate = "";
+        //string playerToEliminate = "";
         int maxVotes = 0;
         List<string> tiedPlayers = new List<string>();
 
@@ -89,55 +89,92 @@ public class VotingSystem : Photon.MonoBehaviour
         {
             // No elimination if there's a tie
             Debug.Log("Tie detected! No player will be eliminated.");
+
+            ExitGames.Client.Photon.Hashtable roomProperty = new ExitGames.Client.Photon.Hashtable
+            {
+                { "Announcement_Day", "The vote is a tie. The game will continue" } // Mark the player as voted out
+            };
+
+            PhotonNetwork.room.SetCustomProperties(roomProperty);
+
+            photonView.RPC("TransitionToNextPhase", PhotonTargets.All);
             return;  // Exit the function without eliminating anyone
         }
         else
         {
             // If there's no tie, eliminate the player with the most votes
-            playerToEliminate = tiedPlayers[0];
+            string playerToEliminate = tiedPlayers[0];
 
             ProcessVoteResults(playerToEliminate);
+            return;
         }
     }
 
     public void ProcessVoteResults(string playerID)
     {
-        
         // eliminate first before getting aswang count
-        EliminatePhotonPlayer(playerID);
+        PhotonPlayer eliminatedPlayer = EliminatePhotonPlayer(playerID);
 
         int aswangCount = GetAswangPlayers();
-        SetRoomProperty(aswangCount);
+        SetRoomProperty(aswangCount, CheckEliminatedPlayerRole((string)eliminatedPlayer.CustomProperties["playerID"]));
 
         // Announce the elimination to all players via RPC
         photonView.RPC("TransitionToNextPhase", PhotonTargets.All);
+        return;
     }
 
-    public void EliminatePhotonPlayer(string playerID)
+
+    // checking role of eliminated player to notify users if they have eliminated the aswang
+    public bool CheckEliminatedPlayerRole(string playerID)
     {
         foreach (PhotonPlayer player in PhotonNetwork.playerList)
         {
             Debug.Log("Currently eliminating player");
             if ((string)player.CustomProperties["playerID"] == playerID)
             {
+                return aswangRoles.Contains((string)player.CustomProperties["Role"]);
+            }
+        }
+        return false;
+    }
+
+
+    // setting the custom property of the eliminated player
+    public PhotonPlayer EliminatePhotonPlayer(string playerID)
+    {
+        foreach (PhotonPlayer player in PhotonNetwork.playerList)
+        {
+            Debug.Log("Currently eliminating player");
+            if ((string)player.CustomProperties["playerID"] == playerID)
+            {
+                Debug.Log("Eliminate player: " + player.NickName);
                 ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable
                 {
                     { "isVotedOut", true } // Mark the player as voted out
                 };
                 player.SetCustomProperties(playerProperties);
+                return player;
             }
         }
+        return null;
     }
 
-    public void SetRoomProperty(int aswangCount)
+    public void SetRoomProperty(int aswangCount, bool isAswangEliminated)
     {
         bool aliveVillagers = CheckAliveForVillagers();
-        // Set the announcement message based on aswangCount
+        // Set the announcement message based on aswangCount and eliminated player role
         string announcement = aswangCount switch
         {
             0 => "There are no more aswang left in the game. Taumbayan Wins!",
-            1 => "There is one aswang left in the game. The game will continue",
-            2 => "There are 2 more aswang left in the game.",
+
+            1 => isAswangEliminated
+                ? "The eliminated player is the aswang. There is one aswang left in the game. The game will continue."
+                : "The eliminated player is not the aswang. There is one aswang left in the game. The game will continue.",
+
+            2 => isAswangEliminated
+                ? "The eliminated player is the aswang. There are 2 more aswang left in the game. The game will continue."
+                : "The eliminated player is not the aswang. There are 2 more aswang left in the game. The game will continue.",
+
             _ => $"There are {aswangCount} aswang left in the game."
         };
 
@@ -176,7 +213,7 @@ public class VotingSystem : Photon.MonoBehaviour
             }
         }
 
-        return villagerCount > 0 ? true : false;
+        return villagerCount > 0;
     }
 
     public int GetAswangPlayers()
@@ -199,7 +236,17 @@ public class VotingSystem : Photon.MonoBehaviour
     [PunRPC]
     void TransitionToNextPhase()
     {
-        PhotonNetwork.LoadLevel("Announcement_Day");
+        if ((bool)PhotonNetwork.player.CustomProperties["isVotedOut"])
+        {
+            PhotonNetwork.LoadLevel("VotedOutScene");
+            return;
+        }
+
+        if ((bool)PhotonNetwork.player.CustomProperties["isAlive"] || !(bool)PhotonNetwork.player.CustomProperties["isVotedOut"])
+        {
+            PhotonNetwork.LoadLevel("Announcement_Day");
+            return;
+        }
     }
 
     
