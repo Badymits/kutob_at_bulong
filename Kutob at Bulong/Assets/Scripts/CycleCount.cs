@@ -20,18 +20,14 @@ public class CycleCount : MonoBehaviour
         night_counter = (int)PhotonNetwork.room.CustomProperties["Night_Count"];
         day_counter = (int)PhotonNetwork.room.CustomProperties["Day_Count"];
 
-        
-        photonView = FindAnyObjectByType<PhotonView>();
+        photonView = FindObjectOfType<PhotonView>();
 
         // Update the UI with current values
         Scene currentScene = SceneManager.GetActiveScene();
         Debug.Log(currentScene.name);
 
-        // Set custom properties if it's the master client
-        if (PhotonNetwork.isMasterClient)
-        {
-            photonView.RPC("SetNightOrDayCount", PhotonTargets.All, currentScene.name);
-        }
+        // You can trigger the initial scene count setting from any client, not just Master Client
+        photonView.RPC("SetNightOrDayCount", PhotonTargets.All, currentScene.name);
     }
 
     [PunRPC]
@@ -59,22 +55,6 @@ public class CycleCount : MonoBehaviour
 
         // Start timer for next scene transition
         StartCoroutine(TimerToNextScene(sceneName));
-    }
-
-    // Listen for custom property changes (will be called on all clients)
-    void OnPhotonCustomRoomPropertiesChanged(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
-    {
-        if (propertiesThatChanged.ContainsKey("Night_Count"))
-        {
-            night_counter = (int)propertiesThatChanged["Night_Count"];
-            count.text = night_counter.ToString();
-        }
-
-        if (propertiesThatChanged.ContainsKey("Day_Count"))
-        {
-            day_counter = (int)propertiesThatChanged["Day_Count"];
-            count.text = day_counter.ToString();
-        }
     }
 
     private IEnumerator TimerToNextScene(string name)
@@ -136,8 +116,8 @@ public class CycleCount : MonoBehaviour
     [PunRPC]
     void TransitionToDay()
     {
-        Debug.Log("local player: " + photonPlayer);
-        photonPlayer = PhotonNetwork.player;  // Using PhotonPlayer in PUN 1
+        Debug.Log("local player: " + PhotonNetwork.player);
+        PhotonPlayer photonPlayer = PhotonNetwork.player;  // Using PhotonPlayer in PUN 1
         if (!(bool)photonPlayer.CustomProperties["isAlive"])
         {
             // For players who are eliminated, load the eliminated scene
