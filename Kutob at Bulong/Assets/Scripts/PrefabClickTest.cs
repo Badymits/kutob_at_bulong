@@ -78,6 +78,12 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
         }
         else
         {
+            if ((bool)PhotonNetwork.player.CustomProperties["hasVoted"])
+            {
+                // will add popup message later
+                Debug.Log("Cannot vote twice");
+                return;
+            }
             selectVoteScript.OpenSelectVoteModal(photonViewTarget.owner.NickName, photonplayerIDTarget);
         }
     }
