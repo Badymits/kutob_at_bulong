@@ -26,8 +26,13 @@ public class CycleCount : MonoBehaviour
         Scene currentScene = SceneManager.GetActiveScene();
         Debug.Log(currentScene.name);
 
-        // You can trigger the initial scene count setting from any client, not just Master Client
-        photonView.RPC("SetNightOrDayCount", PhotonTargets.All, currentScene.name);
+        if (PhotonNetwork.isMasterClient)
+        {
+            photonView.RPC("SetNightOrDayCount", PhotonTargets.All, currentScene.name);
+        }
+        
+        // Start timer for next scene transition
+        StartCoroutine(TimerToNextScene(currentScene.name));
     }
 
     [PunRPC]
@@ -53,8 +58,7 @@ public class CycleCount : MonoBehaviour
         // Update the UI locally
         count.text = (sceneName == "NightTransition") ? night_counter.ToString() : day_counter.ToString();
 
-        // Start timer for next scene transition
-        StartCoroutine(TimerToNextScene(sceneName));
+        
     }
 
     private IEnumerator TimerToNextScene(string name)
