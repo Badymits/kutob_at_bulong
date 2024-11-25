@@ -5,8 +5,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using static NightPhaseManager;
 
-public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
+public class PrefabClickTest : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     
     public Scene currentScene;
@@ -17,11 +18,15 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
     public NightPhaseManager nightPhaseManager;
     public VotingSystem votingSystem;
     private PopupMessage popupMessage;
+    private SpriteRenderer spriteRenderer;
 
     private string photonplayerIDTarget;
     private string photonplayerIDSelf;
 
+    public ExitGames.Client.Photon.Hashtable playerProperty = new ExitGames.Client.Photon.Hashtable();
+
     public float confirmTimer = .3f;
+    public float opacityReductionAmount = 0.1f;
 
     HashSet<string> aswangRoles = new HashSet<string>
     {
@@ -45,6 +50,7 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
     public void InitializeGameObjects()
     {
         photonView = GetComponent<PhotonView>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         votingSystem = FindAnyObjectByType<VotingSystem>();
         selectTargetScript = FindAnyObjectByType<SelectTarget>();
         selectVoteScript = FindAnyObjectByType<SelectVote>();
@@ -54,6 +60,10 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (PhotonNetwork.player.CustomProperties == null)
+        {
+            return;
+        }
         // refers to the clicked game object. Doesn't necessarily mean it would refer to self
         GameObject playerCard = gameObject;
 
@@ -78,14 +88,42 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler
         }
         else
         {
-            if ((bool)PhotonNetwork.player.CustomProperties["hasVoted"])
+            if ((bool)PhotonNetwork.player.CustomProperties["hasVoted"] && PhotonNetwork.player.CustomProperties != null)
             {
                 // will add popup message later
                 Debug.Log("Cannot vote twice");
                 return;
             }
+            UpdatePlayerProperty((string)PhotonNetwork.player.CustomProperties["playerID"]);
             selectVoteScript.OpenSelectVoteModal(photonViewTarget.owner.NickName, photonplayerIDTarget);
         }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        Debug.Log("Hover");
+        // Change cursor to pointer (hand icon)
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);  // You can also use a custom cursor texture if needed
+        Cursor.SetCursor(Resources.Load<Texture2D>("PointerCursor"), Vector2.zero, CursorMode.Auto);
+
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        Debug.Log("Hover not");
+
+        // Reset cursor to default
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+    }
+
+    // to avoid player voting twice
+    public void UpdatePlayerProperty(string playerID)
+    {
+        if (PhotonNetwork.player.CustomProperties.TryGetValue("playerID", out var playerIDValue) && playerIDValue.ToString() == playerID)
+        {
+            PhotonNetwork.player.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "hasVoted", true } });
+        }
+        return;
     }
 
     // disallow aswang players to select themselves or other fellow aswangs as target
