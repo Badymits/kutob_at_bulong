@@ -94,7 +94,6 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler, IPointerEnte
                 Debug.Log("Cannot vote twice");
                 return;
             }
-            UpdatePlayerProperty((string)PhotonNetwork.player.CustomProperties["playerID"]);
             selectVoteScript.OpenSelectVoteModal(photonViewTarget.owner.NickName, photonplayerIDTarget);
         }
     }
@@ -155,6 +154,7 @@ public class PrefabClickTest : MonoBehaviour, IPointerClickHandler, IPointerEnte
     public void VoteConfirmed(string targetID)
     {
         Debug.Log("Calling cast vote method...");
+        UpdatePlayerProperty((string)PhotonNetwork.player.CustomProperties["playerID"]);
         votingSystem.CastVote(targetID);
         return;
     }
