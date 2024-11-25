@@ -430,9 +430,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4562fa8861a845f42b4d245d6bb790ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modal: {fileID: 0}
   currentScene:
     m_Handle: 0
+  photonViewIDSelf: 0
+  selectTargetScript: {fileID: 0}
+  selectVoteScript: {fileID: 0}
+  nightPhaseManager: {fileID: 0}
+  votingSystem: {fileID: 0}
+  confirmTimer: 0.3
 --- !u!114 &1259045689594241098
 MonoBehaviour:
   m_ObjectHideFlags: 0
