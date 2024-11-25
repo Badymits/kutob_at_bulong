@@ -249,5 +249,13 @@ public class VotingSystem : Photon.MonoBehaviour
         }
     }
 
+    public void ResetPhotonPlayerProperty()
+    {
+        foreach (PhotonPlayer player in PhotonNetwork.playerList)
+        {
+            player.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "hasVoted", false } });
+        }
+        return;
+    }
     
 }
