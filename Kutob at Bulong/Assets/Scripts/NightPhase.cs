@@ -14,16 +14,6 @@ public class NightPhaseManager : Photon.MonoBehaviour
     public TMP_Text temp_role;
     public TMP_Text temp_name;
 
-    string player_role = "";
-    string winner_type = "";
-
-    HashSet<string> aswangRoles = new HashSet<string>
-    {
-        "aswang - mandurugo",
-        "aswang - manananggal",
-        "aswang - berbalang"
-    };
-
     public enum NightRole
     {
         Mangangaso, // Hunter
@@ -498,6 +488,9 @@ public class NightPhaseManager : Photon.MonoBehaviour
     private void RevealRole(PhotonPlayer seer, PhotonPlayer target)
     {
         Debug.Log($"Revealed {(string)target.CustomProperties["Role"]} to {(string)seer.CustomProperties["Role"]}");
+
+        seer.CustomProperties["roleRevealed"] = (string)target.CustomProperties["Role"];
+
         // Implement UI to show target's role to the seer here.
     }
 
