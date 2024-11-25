@@ -79,7 +79,7 @@ public class VoteResultsTransition : MonoBehaviour
     [PunRPC]
     void LoadNextScene()
     {
-        if ((bool)PhotonNetwork.player.CustomProperties["isAlive"] && !(bool)PhotonNetwork.player.CustomProperties["isVotedOut"])
+        if ((bool)PhotonNetwork.player.CustomProperties["isAlive"] || !(bool)PhotonNetwork.player.CustomProperties["isVotedOut"])
         {
             PhotonNetwork.LoadLevel("NightTransition");
         }
