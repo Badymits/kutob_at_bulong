@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class Dialogue : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class Dialogue : MonoBehaviour
     private int currentLineIndex;
     private bool isTyping;
     private Coroutine typeCoroutine;
+
+    private SceneManager currentScene;
 
     private void Start()
     {
@@ -66,6 +69,9 @@ public class Dialogue : MonoBehaviour
     {
         textComponent.text = string.Empty;
         gameObject.SetActive(false);
-        PhotonNetwork.LoadLevel("NightTransition");
+        if (SceneManager.GetActiveScene().name == "Introduction")
+        {
+            PhotonNetwork.LoadLevel("NightTransition");
+        }
     }
 }
