@@ -2110,8 +2110,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -376, y: -329}
-  m_SizeDelta: {x: 959.84, y: 50}
+  m_AnchoredPosition: {x: -376, y: -337.3}
+  m_SizeDelta: {x: 959.84, y: 81.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &641153312
 MonoBehaviour:
@@ -2133,7 +2133,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Discuss and Decide who you want to vote.... choose carefully....
+  m_text: 'Discuss and Decide who you want to vote.... choose carefully....
+
+    Once
+    you vote, you cannot vote again.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0fcce26f8914ae84f963fbfbb4ae8880, type: 2}
   m_sharedMaterial: {fileID: -5674233584170648920, guid: 0fcce26f8914ae84f963fbfbb4ae8880, type: 2}
@@ -4658,7 +4661,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 127.8, y: -37.5}
+  m_AnchoredPosition: {x: 127.8, y: -53.7}
   m_SizeDelta: {x: 792.51, y: 69.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1482910855
@@ -5214,7 +5217,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -729.68, y: -406.4}
+  m_AnchoredPosition: {x: -729.68, y: -423.4}
   m_SizeDelta: {x: 252.48, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1687770053
