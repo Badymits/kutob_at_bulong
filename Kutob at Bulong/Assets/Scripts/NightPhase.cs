@@ -93,6 +93,8 @@ public class NightPhaseManager : Photon.MonoBehaviour
         temp_name.text = photonPlayer1;
         temp_role.text = photonPlayerRole;
 
+
+
         // reset announcement
         ExitGames.Client.Photon.Hashtable roomProperty = new ExitGames.Client.Photon.Hashtable();
         roomProperty["Announcement_Day"] = "The vote is a tie. The game will continue";

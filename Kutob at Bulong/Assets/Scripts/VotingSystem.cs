@@ -58,6 +58,7 @@ public class VotingSystem : Photon.MonoBehaviour
         if (votes.Count == 0)
         {
             Debug.LogWarning("No votes have been cast. Cannot determine elimination.");
+            ResetPhotonPlayerProperty();
             photonView.RPC("TransitionToNextPhase", PhotonTargets.All);
             return;
         }
@@ -83,7 +84,7 @@ public class VotingSystem : Photon.MonoBehaviour
                 tiedPlayers.Add(vote.Key);
             }
         }
-
+        ResetPhotonPlayerProperty();
         // Check if there's a tie (i.e., multiple players with the same highest vote count)
         if (tiedPlayers.Count > 1)
         {
@@ -96,7 +97,7 @@ public class VotingSystem : Photon.MonoBehaviour
             };
 
             PhotonNetwork.room.SetCustomProperties(roomProperty);
-
+            
             photonView.RPC("TransitionToNextPhase", PhotonTargets.All);
             return;  // Exit the function without eliminating anyone
         }
@@ -104,7 +105,6 @@ public class VotingSystem : Photon.MonoBehaviour
         {
             // If there's no tie, eliminate the player with the most votes
             string playerToEliminate = tiedPlayers[0];
-
             ProcessVoteResults(playerToEliminate);
             return;
         }
@@ -117,7 +117,7 @@ public class VotingSystem : Photon.MonoBehaviour
 
         int aswangCount = GetAswangPlayers();
         SetRoomProperty(aswangCount, CheckEliminatedPlayerRole((string)eliminatedPlayer.CustomProperties["playerID"]));
-
+       
         // Announce the elimination to all players via RPC
         photonView.RPC("TransitionToNextPhase", PhotonTargets.All);
         return;
