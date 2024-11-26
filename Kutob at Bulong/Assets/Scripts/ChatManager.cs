@@ -21,7 +21,6 @@ public class ChatManager : MonoBehaviour
 
     void Update()
     {
-        // Check if the Enter key is pressed and the input field is focused
         if (Input.GetKeyDown(KeyCode.Return))
         {
             SendMessage();

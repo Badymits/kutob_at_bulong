@@ -2647,7 +2647,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   messageInput: {fileID: 631159189}
-  chatDisplay: {fileID: 0}
+  chatDisplay: {fileID: 1978994279}
 --- !u!114 &845373225
 MonoBehaviour:
   m_ObjectHideFlags: 0
