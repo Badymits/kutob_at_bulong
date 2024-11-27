@@ -229,4 +229,22 @@ public class Join : Photon.MonoBehaviour
 
         chatBox.transform.position = currentPosition;
     }
+
+    public void CopyRoomCode()
+    {
+        // Retrieve the room code from PlayerPrefs
+        string roomCode = PlayerPrefs.GetString("RoomCode", string.Empty);
+
+        // Check if the room code exists
+        if (!string.IsNullOrEmpty(roomCode))
+        {
+            GUIUtility.systemCopyBuffer = roomCode; // Copy to clipboard
+            Debug.Log("Room code copied to clipboard: " + roomCode);
+        }
+        else
+        {
+            Debug.LogWarning("No room code found to copy!");
+        }
+    }
+
 }
