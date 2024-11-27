@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class RoomCode : MonoBehaviour
 {
     //public InputField roomCodeInputField;
-
+    public TMP_Text playerStatusText;
 
     private void Start()
     {
@@ -16,6 +17,11 @@ public class RoomCode : MonoBehaviour
     {
         Debug.Log("Connected to master server");
         //GoToGameScene(GenerateRoomCode(8));
+
+        if (playerStatusText != null)
+        {
+            playerStatusText.text = "Player Connected";
+        }
     }
 
     public void GenerateRandomRoomCode()
