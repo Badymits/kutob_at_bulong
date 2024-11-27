@@ -59,4 +59,6 @@ MonoBehaviour:
   - SetNightOrDayCount
   - TransitionToDay
   - TransitionToNight
+  - UpdateRoomSettings
+  - UpdatePlayerRoomSettings
   DisableAutoOpenWizard: 1

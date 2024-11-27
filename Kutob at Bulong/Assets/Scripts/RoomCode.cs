@@ -54,7 +54,7 @@ public class RoomCode : MonoBehaviour
         PlayerPrefs.Save();
 
         RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = 10;
+        roomOptions.MaxPlayers = 5;
 
         roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable
         {
@@ -65,6 +65,8 @@ public class RoomCode : MonoBehaviour
             { "Game_Winner", "" },
             { "Night_Count", 0 },
             { "Day_Count", 0 },
+            { "Player_Count", 5 },
+            { "Aswang_Count", 1 },
             { "End_Phase", "" } // to synchronize the ending phase for other users that were eliminated beforehand
         };
 

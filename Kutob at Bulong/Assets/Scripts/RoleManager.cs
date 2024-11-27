@@ -67,7 +67,7 @@ public class RoleManager : MonoBehaviour
 
         System.Random random = new System.Random();
 
-        int aswangCount = 1; // Need ko dito yung settings na sinet sa lobby
+        int aswangCount = (int)PhotonNetwork.room.CustomProperties["Aswang_Count"];
 
         foreach (PhotonPlayer player in shuffledPlayers)
         {
