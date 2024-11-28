@@ -8,9 +8,16 @@ using System.Linq;
 public class VotingSystem : Photon.MonoBehaviour
 {
     private new PhotonView photonView;
+    // A dictionary to store references to Text components for each player
+    private Dictionary<string, Text> voteTextDict = new Dictionary<string, Text>();
     private Dictionary<string, int> votes = new Dictionary<string, int>();
     public TMP_Text announcementText;
+    public TMP_Text voteDisplayText;
     public GameObject voteNotif;
+    public TextMeshProUGUI voteBoard;
+    public GameObject cardContainer;
+
+    private ChatManager chatManager;
 
     HashSet<string> aswangRoles = new HashSet<string>
     {
@@ -22,13 +29,23 @@ public class VotingSystem : Photon.MonoBehaviour
     void Start()
     {
         photonView = GetComponent<PhotonView>();
+        chatManager = FindAnyObjectByType<ChatManager>();
         announcementText.text = (string)PhotonNetwork.room.CustomProperties["Announcement_Night"];
     }
 
     public void CastVote(string playerID)
     {
+        // send message to chat box to notify players who voted
+        string playerName = GetPlayerById(playerID);
+        chatManager.SendHasVotedMessage($"{playerName} has voted");
+
+        // set opacity of card panel to notify user that they have voted
+        Image cardContainerImg = cardContainer.GetComponent<Image>();
+        cardContainerImg.color = new Color(255, 255, 255, 40);
+
         // Send the vote across the network
         photonView.RPC("ReceiveVote", PhotonTargets.All, playerID);
+
     }
 
     [PunRPC]
@@ -46,10 +63,45 @@ public class VotingSystem : Photon.MonoBehaviour
             votes[votedPlayerID]++;
         }
         Debug.Log("The votes: " + votes);
-        foreach(var vote in votes)
+
+        DisplayVotes();
+        
+    }
+
+    public void DisplayVotes()
+    {
+        // Clear any existing vote UI elements
+        /*foreach (Transform child in voteBoard.transform)
         {
-            Debug.Log("vote: " + vote);
+            Destroy(child.gameObject); // Remove previous vote displays
+        }*/
+
+        // Clear the previous vote display
+        voteBoard.text = string.Empty; // Set text to an empty string to clear the previous votes
+
+        // Loop through the votes dictionary to create/update vote UI elements
+        foreach (var vote in votes)
+        {
+            
+            voteBoard.text += $"<b>{GetPlayerById(vote.Key)}:</b> {vote.Value}\n";
         }
+
+    }
+
+    public string GetPlayerById(string id)
+    {
+        // Find the player by the custom property "playerID"
+        PhotonPlayer player = PhotonNetwork.playerList
+            .FirstOrDefault(p => (string)p.CustomProperties["playerID"] == id);
+
+        // If a player is found, return their username (NickName)
+        if (player != null)
+        {
+            return player.NickName;
+        }
+
+        // If no player is found, return null or an appropriate message
+        return null;  // or "Player not found"
     }
 
     public void OpenVoteNotif()

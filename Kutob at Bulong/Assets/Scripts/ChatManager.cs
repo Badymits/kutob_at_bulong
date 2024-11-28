@@ -48,6 +48,11 @@ public class ChatManager : MonoBehaviour
         }
     }
 
+    public void SendHasVotedMessage(string message)
+    {
+        photonView.RPC("BroadcastMessage", PhotonTargets.All, "Server", message);
+    }
+
     [PunRPC]
     void BroadcastMessage(string sender, string message)
     {
