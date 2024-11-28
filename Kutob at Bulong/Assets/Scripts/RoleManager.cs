@@ -24,6 +24,8 @@ public class RoleManager : MonoBehaviour
     public static RoleManager Instance;
     public PhotonView photonView;
 
+    public GameObject playerCountErrorMsg;
+
 
     // Store the roles for each player
 
@@ -53,10 +55,22 @@ public class RoleManager : MonoBehaviour
 
     }
 
+    IEnumerator CloseErrorMsg()
+    {
+        yield return new WaitForSecondsRealtime(5f);
+
+        playerCountErrorMsg.SetActive(false);
+    }
 
     public void AssignRoles()
     {
-        
+        if (PhotonNetwork.playerList.Length < (int)PhotonNetwork.room.CustomProperties["Player_Count"])
+        {
+            Debug.Log("Not Enough players cannot start game");
+            playerCountErrorMsg.SetActive(true);
+            StartCoroutine(CloseErrorMsg());
+            return;
+        }
         Debug.Log("adawdawd");
         List<PhotonPlayer> shuffledPlayers = new List<PhotonPlayer>(PhotonNetwork.playerList);
 
