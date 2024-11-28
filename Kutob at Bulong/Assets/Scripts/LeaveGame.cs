@@ -13,7 +13,6 @@ public class LeaveGame : MonoBehaviour
 
     public void LeaveGameSession()
     {
-        PhotonNetwork.Disconnect();
         SceneManager.LoadScene("HomeScene");
     }
 

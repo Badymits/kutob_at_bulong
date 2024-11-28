@@ -1,23 +1,26 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-
 
 public class JoinModalControl : MonoBehaviour
 {
-    public TMP_InputField inputField;
-    public GameObject message;
-    public GameObject modal;
+    public TMP_InputField inputField;  // For user input
+    public GameObject modal;          // Join room modal
+    public TMP_Text errorMessageText; // Reference to the text for displaying errors
     private PopupMessage popupMessage;
 
     void Start()
     {
         popupMessage = FindAnyObjectByType<PopupMessage>();
+
+        // Ensure the error message text is hidden at the start
+        if (errorMessageText != null)
+        {
+            errorMessageText.text = ""; // Clear the text
+            errorMessageText.gameObject.SetActive(false); // Hide initially
+        }
     }
-    // Start is called before the first frame update
+
     public void OpenModal()
     {
         if (modal != null) { modal.SetActive(true); }
@@ -34,46 +37,45 @@ public class JoinModalControl : MonoBehaviour
 
         // Remove all whitespaces
         userInput = userInput.Replace(" ", "");
-        if (!string.IsNullOrEmpty(inputField.text))
+        if (!string.IsNullOrEmpty(userInput))
         {
             PhotonNetwork.JoinRoom(userInput.ToUpper());
         }
         else
         {
-            ShowErrorMessage();
+            ShowErrorMessage("Room code cannot be empty!");
         }
     }
 
-    private void ShowErrorMessage()
+    private void ShowErrorMessage(string message)
     {
-        message.SetActive(true);
-        CloseMessage();
-    }
-
-    // added delay to not close immediately
-    public void CloseMessage()
-    {
-        if (message != null && message.activeInHierarchy)
+        if (errorMessageText != null)
         {
-            StartCoroutine(CloseMessageObject());
+            errorMessageText.text = message;           // Set the error message text
+            errorMessageText.gameObject.SetActive(true); // Show the text
+            StartCoroutine(HideErrorMessageAfterDelay(5f)); // Hide after 5 seconds
         }
-        return;
     }
 
-    IEnumerator CloseMessageObject()
+    IEnumerator HideErrorMessageAfterDelay(float delay)
     {
-        yield return new WaitForSeconds(5f);
-
-        message.SetActive(false);
+        yield return new WaitForSeconds(delay);
+        if (errorMessageText != null)
+        {
+            errorMessageText.text = ""; // Clear the text
+            errorMessageText.gameObject.SetActive(false); // Hide the text
+        }
     }
 
-    // This is called when the room join fails in Photon 1.x
     public void OnPhotonJoinRoomFailed(object[] codeAndMsg)
     {
-        // codeAndMsg contains the error code and the error message
+        // Extract the error code and message from the parameters
         short errorCode = (short)codeAndMsg[0];
         string errorMsg = (string)codeAndMsg[1];
 
-        
+        Debug.LogError($"Failed to join room: Error {errorCode} - {errorMsg}");
+
+        // Show the error message on the screen
+        ShowErrorMessage("Invalid Room Code! Please try again.");
     }
 }
