@@ -36,12 +36,7 @@ public class VotingSystem : Photon.MonoBehaviour
     public void CastVote(string playerID)
     {
         // send message to chat box to notify players who voted
-        string playerName = GetPlayerById(playerID);
-        chatManager.SendHasVotedMessage($"{playerName} has voted");
-
-        // set opacity of card panel to notify user that they have voted
-        Image cardContainerImg = cardContainer.GetComponent<Image>();
-        cardContainerImg.color = new Color(255, 255, 255, 40);
+        chatManager.SendHasVotedMessage($"{PhotonNetwork.player.NickName} has voted");
 
         // Send the vote across the network
         photonView.RPC("ReceiveVote", PhotonTargets.All, playerID);
