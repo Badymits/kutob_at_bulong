@@ -35,6 +35,20 @@ public class CycleCount : MonoBehaviour
         StartCoroutine(TimerToNextScene(currentScene.name));
     }
 
+    // Called when the master client switches
+   /* void OnMasterClientSwitched(PhotonPlayer newMasterClient)
+    {
+        // When the master client switches, the new master client should call the RPC to update the count
+        if (PhotonNetwork.isMasterClient)
+        {
+            Scene currentScene = SceneManager.GetActiveScene();
+            // Update the count for all players by calling the RPC
+            photonView.RPC("SetNightOrDayCount", PhotonTargets.All, currentScene.name);
+        }
+    }*/
+
+
+
     [PunRPC]
     void SetNightOrDayCount(string sceneName)
     {

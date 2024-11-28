@@ -19,6 +19,10 @@ public class Timer : MonoBehaviour
     {
         if (timerIsRunning)
         {
+            if (timeRemaining == 30)
+            {
+                votingSystem.OpenVoteNotif();
+            }
             if (timeRemaining > 0)
             {
                 timeRemaining -= Time.deltaTime;

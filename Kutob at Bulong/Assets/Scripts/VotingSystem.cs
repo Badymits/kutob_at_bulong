@@ -3,12 +3,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
+using System.Linq;
 
 public class VotingSystem : Photon.MonoBehaviour
 {
     private new PhotonView photonView;
     private Dictionary<string, int> votes = new Dictionary<string, int>();
     public TMP_Text announcementText;
+    public GameObject voteNotif;
 
     HashSet<string> aswangRoles = new HashSet<string>
     {
@@ -50,9 +52,17 @@ public class VotingSystem : Photon.MonoBehaviour
         }
     }
 
+    public void OpenVoteNotif()
+    {
+        voteNotif.SetActive(true);
+    }
 
+    
     public void EliminatePlayer()
     {
+
+        // set vote notif to false to hide next round
+        voteNotif.SetActive(false);
 
         // Make sure the votes dictionary is not empty
         if (votes.Count == 0)
@@ -105,6 +115,16 @@ public class VotingSystem : Photon.MonoBehaviour
         {
             // If there's no tie, eliminate the player with the most votes
             string playerToEliminate = tiedPlayers[0];
+
+            PhotonPlayer masterClient = PhotonNetwork.masterClient;
+
+            // Check if the player being eliminated is the Master Client
+            if ((string)masterClient.CustomProperties["playerID"] == playerToEliminate)
+            {
+                // Transfer the master client before eliminating
+                TransferMasterClient();
+            }
+
             ProcessVoteResults(playerToEliminate);
             return;
         }
@@ -231,6 +251,43 @@ public class VotingSystem : Photon.MonoBehaviour
             }
         }
         return aswangCount;
+    }
+
+    void TransferMasterClient()
+    {
+        // Ensure only the current Master Client can change the role
+        if (PhotonNetwork.isMasterClient)
+        {
+            // Get a list of players to choose the new Master Client from
+            PhotonPlayer newMasterClient = GetNewMasterClient();
+
+            // Set the new Master Client
+            PhotonNetwork.SetMasterClient(newMasterClient);
+
+            // Optionally, notify all players of the new Master Client
+            photonView.RPC("NotifyMasterClientChange", PhotonTargets.All, newMasterClient.ID);
+        }
+    }
+
+    PhotonPlayer GetNewMasterClient()
+    {
+        // Get the list of all players (excluding the current Master Client)
+        List<PhotonPlayer> allPlayers = new List<PhotonPlayer>(PhotonNetwork.playerList);
+        PhotonPlayer currentMasterClient = PhotonNetwork.masterClient;
+        allPlayers.Remove(currentMasterClient);
+
+        // Find and return the first player that is alive and not voted out
+        return PhotonNetwork.playerList.FirstOrDefault(player => (bool)player.CustomProperties["isAlive"] && !(bool)player.CustomProperties["isVotedOut"]);
+    }
+
+    [PunRPC]
+    void NotifyMasterClientChange(int newMasterClientID)
+    {
+        // Find the player with the matching custom playerID
+        PhotonPlayer newMasterClient = PhotonNetwork.playerList
+            .FirstOrDefault(player => player.CustomProperties.ContainsKey("playerID") &&
+                                      player.CustomProperties["playerID"].ToString() == newMasterClientID.ToString());
+        
     }
 
     [PunRPC]

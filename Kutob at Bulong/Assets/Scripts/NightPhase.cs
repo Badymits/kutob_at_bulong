@@ -354,12 +354,17 @@ public class NightPhaseManager : Photon.MonoBehaviour
     {
         Debug.Log("Ending night phase...");
         int victimCount = 0;
+        PhotonPlayer masterClient = PhotonNetwork.masterClient;
         foreach (PhotonPlayer player in PhotonNetwork.playerList)
         {
-            Debug.Log("Currently removing eliminated players....");
             if ((bool)player.CustomProperties["nightTarget"])
             {
-                Debug.Log("Setting isAlive value to player: ");
+                
+                if ((string)masterClient.CustomProperties["playerID"] == (string)player.CustomProperties["playerID"])
+                {
+                    TransferMasterClient();
+                }
+
                 // Mark player as dead by setting "isAlive" to false in custom properties
                 ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable
                 {
@@ -561,6 +566,43 @@ public class NightPhaseManager : Photon.MonoBehaviour
 
         photonView.RPC("DistributeGameResultsScene", PhotonTargets.All);
         return;
+    }
+
+    void TransferMasterClient()
+    {
+        // Ensure only the current Master Client can change the role
+        if (PhotonNetwork.isMasterClient)
+        {
+            // Get a list of players to choose the new Master Client from
+            PhotonPlayer newMasterClient = GetNewMasterClient();
+
+            // Set the new Master Client
+            PhotonNetwork.SetMasterClient(newMasterClient);
+
+            // Optionally, notify all players of the new Master Client
+            photonView.RPC("NotifyMasterClientChange", PhotonTargets.All, newMasterClient.ID);
+        }
+    }
+
+    PhotonPlayer GetNewMasterClient()
+    {
+        // Get the list of all players (excluding the current Master Client)
+        List<PhotonPlayer> allPlayers = new List<PhotonPlayer>(PhotonNetwork.playerList);
+        PhotonPlayer currentMasterClient = PhotonNetwork.masterClient;
+        allPlayers.Remove(currentMasterClient);
+
+        // Find and return the first player that is alive and not voted out
+        return PhotonNetwork.playerList.FirstOrDefault(player => (bool)player.CustomProperties["isAlive"] && !(bool)player.CustomProperties["isVotedOut"]);
+    }
+
+    [PunRPC]
+    void NotifyMasterClientChange(int newMasterClientID)
+    {
+        // Find the player with the matching custom playerID
+        PhotonPlayer newMasterClient = PhotonNetwork.playerList
+            .FirstOrDefault(player => player.CustomProperties.ContainsKey("playerID") &&
+                                      player.CustomProperties["playerID"].ToString() == newMasterClientID.ToString());
+
     }
 
     [PunRPC]
